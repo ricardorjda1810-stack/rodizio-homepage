@@ -1,4 +1,4 @@
-import { motion } from 'framer-motion';
+import React from 'react';
 
 const appScreens = [
   {
@@ -90,12 +90,7 @@ export default function App() {
   return (
     <main className="min-h-screen overflow-hidden font-sans">
       <section className="mx-auto grid min-h-[92vh] max-w-7xl items-center gap-12 px-5 py-12 sm:px-8 lg:grid-cols-[1fr_420px] lg:px-10">
-        <motion.div
-          initial={{ opacity: 0, y: 18 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.55 }}
-          className="max-w-3xl"
-        >
+        <div className="max-w-3xl">
           <p className="text-sm font-semibold uppercase tracking-[0.18em] text-moss">
             Organização leve para famílias
           </p>
@@ -120,19 +115,14 @@ export default function App() {
               Como funciona
             </a>
           </div>
-        </motion.div>
+        </div>
 
-        <motion.div
-          initial={{ opacity: 0, y: 24, rotate: 2 }}
-          animate={{ opacity: 1, y: 0, rotate: 0 }}
-          transition={{ duration: 0.65, delay: 0.1 }}
-          className="relative"
-        >
+        <div className="relative">
           <ScreenshotFrame
             image="/screenshots/home-rodada.png"
             title="Rodada da semana no Rodízio de Brinquedos"
           />
-        </motion.div>
+        </div>
       </section>
 
       <section id="telas" className="px-5 py-20 sm:px-8 lg:px-10">
@@ -143,13 +133,9 @@ export default function App() {
         />
 
         <div className="mx-auto mt-12 grid max-w-7xl gap-8 sm:grid-cols-2 lg:grid-cols-3">
-          {appScreens.map((screen, index) => (
-            <motion.article
+          {appScreens.map((screen) => (
+            <article
               key={screen.image}
-              initial={{ opacity: 0, y: 24 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: '-80px' }}
-              transition={{ duration: 0.45, delay: index * 0.04 }}
               className="rounded-3xl border border-stone-200/80 bg-white/70 p-5 shadow-sm backdrop-blur"
             >
               <ScreenshotFrame image={screen.image} title={screen.title} />
@@ -159,7 +145,7 @@ export default function App() {
               <p className="mt-2 text-sm leading-6 text-stone-600">
                 {screen.description}
               </p>
-            </motion.article>
+            </article>
           ))}
         </div>
       </section>
