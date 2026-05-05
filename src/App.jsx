@@ -285,17 +285,17 @@ function PhoneMockup({ screen, index }) {
 
   return (
     <div className="relative mx-auto w-full max-w-[320px]">
-      <div className="rounded-[2.4rem] border-2 border-[#2C1710] bg-[#2C1710] p-3 shadow-[8px_8px_0_#2C1710]">
-        <div className="overflow-hidden rounded-[1.8rem] bg-[#FFF4E8]">
+      <div className="rounded-[2.4rem] border-2 border-[#2C1710] bg-[#2C1710] p-2 shadow-[8px_8px_0_#2C1710]">
+        <div className="aspect-[9/19.5] overflow-hidden rounded-[1.8rem] bg-[#FFF4E8]">
           {screen.imageSrc && !imageFailed ? (
             <img
               src={screen.imageSrc}
               alt={screen.title}
-              className="h-[520px] w-full bg-[#FFF4E8] object-contain object-top"
+              className="h-full w-full bg-[#FFF4E8] object-contain object-top"
               onError={() => setImageFailed(true)}
             />
           ) : (
-            <div className="min-h-[470px] p-5">
+            <div className="h-full p-5">
               <div className="mx-auto mb-5 h-5 w-24 rounded-full bg-[#2C1710]" />
               <div className="mb-5 flex items-center justify-between gap-3">
                 <div className="min-w-0">
@@ -328,23 +328,25 @@ function TutorialScreenshotCard({ item, index }) {
 
   return (
     <div className="rounded-[2rem] border-2 border-[#2C1710] bg-[#FFF4E8] p-5 shadow-[7px_7px_0_#2C1710]">
-      <div className="overflow-hidden rounded-[1.6rem] border-2 border-[#2C1710] bg-white">
-        {item.imageSrc && !imageFailed ? (
-          <img
-            src={item.imageSrc}
-            alt={item.title}
-            className="h-[520px] w-full bg-[#FFF4E8] object-contain object-top"
-            onError={() => setImageFailed(true)}
-          />
-        ) : (
-          <div className="flex h-[520px] items-center justify-center bg-white p-8 text-center">
-            <div>
-              <p className="text-6xl">📱</p>
-              <p className="mt-5 text-lg font-black">Screenshot {index + 1}</p>
-              <p className="mt-2 text-sm font-bold text-[#5F453A]">Coloque a imagem em {item.imageSrc}</p>
+      <div className="mx-auto max-w-[320px] rounded-[2.1rem] border-2 border-[#2C1710] bg-[#2C1710] p-2">
+        <div className="aspect-[9/19.5] overflow-hidden rounded-[1.5rem] bg-[#FFF4E8]">
+          {item.imageSrc && !imageFailed ? (
+            <img
+              src={item.imageSrc}
+              alt={item.title}
+              className="h-full w-full bg-[#FFF4E8] object-contain object-top"
+              onError={() => setImageFailed(true)}
+            />
+          ) : (
+            <div className="flex h-full items-center justify-center bg-white p-8 text-center">
+              <div>
+                <p className="text-6xl">📱</p>
+                <p className="mt-5 text-lg font-black">Screenshot {index + 1}</p>
+                <p className="mt-2 text-sm font-bold text-[#5F453A]">Coloque a imagem em {item.imageSrc}</p>
+              </div>
             </div>
-          </div>
-        )}
+          )}
+        </div>
       </div>
       <p className="mt-5 text-sm font-black uppercase tracking-[0.18em] text-[#FF5A3D]">Passo {index + 1}</p>
       <h3 className="mt-2 text-2xl font-black">{item.title}</h3>
