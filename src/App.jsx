@@ -1,7 +1,7 @@
 import React from "react";
 import { motion } from "framer-motion";
 
-const APP_STORE_URL = "https://apps.apple.com/br/app/rodizio-de-brinquedos/id6759603735";
+const APP_STORE_URL = "https://apps.apple.com/br/app/rodizio-brinquedos/id6759603735";
 const PRIVACY_URL = "https://first-lime-7b2.notion.site/Pol-tica-de-Privacidade-Rod-zio-de-Brinquedos-d40b83abf35f4d089e1ae5f46423b4ca?pvs=143";
 const TERMS_URL = "https://first-lime-7b2.notion.site/Termos-de-Uso-Rod-zio-de-Brinquedos-34c496b60a598015ba29cb3322ebfbc6?pvs=143";
 
