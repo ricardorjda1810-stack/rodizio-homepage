@@ -284,14 +284,14 @@ function PhoneMockup({ screen, index }) {
   const [imageFailed, setImageFailed] = React.useState(false);
 
   return (
-    <div className="relative mx-auto w-full max-w-[280px]">
+    <div className="relative mx-auto w-full max-w-[320px]">
       <div className="rounded-[2.4rem] border-2 border-[#2C1710] bg-[#2C1710] p-3 shadow-[8px_8px_0_#2C1710]">
         <div className="overflow-hidden rounded-[1.8rem] bg-[#FFF4E8]">
           {screen.imageSrc && !imageFailed ? (
             <img
               src={screen.imageSrc}
               alt={screen.title}
-              className="h-[520px] w-full object-cover object-top"
+              className="h-[520px] w-full bg-[#FFF4E8] object-contain object-top"
               onError={() => setImageFailed(true)}
             />
           ) : (
@@ -333,7 +333,7 @@ function TutorialScreenshotCard({ item, index }) {
           <img
             src={item.imageSrc}
             alt={item.title}
-            className="h-[520px] w-full object-cover object-top"
+            className="h-[520px] w-full bg-[#FFF4E8] object-contain object-top"
             onError={() => setImageFailed(true)}
           />
         ) : (
