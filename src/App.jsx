@@ -1,5 +1,6 @@
 import React from "react";
 import { motion } from "framer-motion";
+import { Analytics } from "@vercel/analytics/react";
 
 const APP_STORE_URL = "https://apps.apple.com/br/app/rodizio-brinquedos/id6759603735";
 const PRIVACY_URL = "https://first-lime-7b2.notion.site/Pol-tica-de-Privacidade-Rod-zio-de-Brinquedos-d40b83abf35f4d089e1ae5f46423b4ca?pvs=143";
@@ -766,6 +767,7 @@ export default function LandingPageRodizioBrinquedos() {
           </div>
         </div>
       </footer>
+      <Analytics />
     </div>
   );
 }
