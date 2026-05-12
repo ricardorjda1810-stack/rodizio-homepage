@@ -26,6 +26,24 @@ const problemCards = [
   }
 ];
 
+const educationalCards = [
+  {
+    icon: "🎯",
+    title: "Foco e atenção",
+    text: "Com menos brinquedos disponíveis, a criança tende a ter menos distrações visuais e mais chance de permanecer em uma brincadeira."
+  },
+  {
+    icon: "🧭",
+    title: "Autocontrole e escolha",
+    text: "O rodízio reduz o excesso de opções e ajuda a transformar a escolha em uma rotina mais simples e previsível."
+  },
+  {
+    icon: "✨",
+    title: "Criatividade e redescoberta",
+    text: "Quando um brinquedo volta para a rodada, ele pode despertar novo interesse e novas formas de brincar."
+  }
+];
+
 const howItWorksCards = [
   {
     icon: "🧸",
@@ -555,6 +573,43 @@ export default function LandingPageRodizioBrinquedos() {
                   <p className="text-base font-medium leading-relaxed text-[#5F453A]">{item.text}</p>
                 </div>
               ))}
+            </div>
+          </div>
+        </section>
+
+        <section className="border-b-2 border-[#2C1710] bg-[#FFE9D2]">
+          <div className="mx-auto max-w-7xl px-5 py-20 md:px-8">
+            <div className="grid gap-10 lg:grid-cols-[0.9fr_1.1fr] lg:items-start">
+              <div>
+                <p className="mb-3 text-sm font-black uppercase tracking-[0.25em] text-[#FF5A3D]">Desenvolvimento infantil</p>
+                <h2 className="font-serif text-5xl font-black leading-tight md:text-6xl">Por que o rodízio funciona?</h2>
+                <p className="mt-5 text-xl font-bold leading-relaxed text-[#5F453A]">
+                  Menos estímulos à vista podem facilitar foco, escolha e brincadeiras mais profundas.
+                </p>
+                <div className="mt-7 space-y-5 text-lg font-medium leading-relaxed text-[#5F453A]">
+                  <p>
+                    Na primeira infância, a criança ainda está desenvolvendo habilidades como foco, memória de trabalho, autocontrole e flexibilidade cognitiva.
+                  </p>
+                  <p>
+                    Quando há brinquedos demais à vista, o ambiente pode ficar visualmente carregado e a escolha se torna mais difícil. O rodízio ajuda a simplificar esse cenário: menos brinquedos disponíveis, mais clareza para escolher e mais tempo para explorar cada brincadeira.
+                  </p>
+                  <p>
+                    O resultado é uma rotina mais calma, organizada e favorável a brincadeiras mais profundas.
+                  </p>
+                </div>
+              </div>
+
+              <div className="grid gap-5">
+                {educationalCards.map((item) => (
+                  <div key={item.title} className="rounded-[2rem] border-2 border-[#2C1710] bg-white p-7 shadow-[7px_7px_0_#2C1710]">
+                    <div className="mb-5 flex h-14 w-14 items-center justify-center rounded-2xl border-2 border-[#2C1710] bg-[#CFE8D8]">
+                      <EmojiIcon className="text-3xl">{item.icon}</EmojiIcon>
+                    </div>
+                    <h3 className="mb-3 text-2xl font-black">{item.title}</h3>
+                    <p className="text-base font-medium leading-relaxed text-[#5F453A]">{item.text}</p>
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
         </section>
