@@ -92,7 +92,7 @@ const tutorialScreens = [
     imageSrc: "/screenshots/home-rodada.png"
   },
   {
-    title: "3. Revise o catalogo",
+    title: "3. Revise o catálogo",
     text: "Na tela Brinquedos, use filtros por categoria, caixa e local para revisar o catálogo antes de ajustar a rodada.",
     imageSrc: "/screenshots/catalogo-brinquedos.png"
   },
@@ -357,7 +357,7 @@ export default function LandingPageRodizioBrinquedos() {
               </h1>
 
               <p className="mt-7 max-w-2xl text-xl font-medium leading-relaxed text-[#5F453A]">
-                O Rodízio de Brinquedos ajuda a transformar excesso em escolha, bagunça em rotina e brinquedos esquecidos em novas brincadeiras.
+                Descubra como o rodízio de brinquedos pode aumentar foco, organização e interesse nas brincadeiras.
               </p>
 
               <div className="mt-9 flex flex-col gap-4 sm:flex-row">
@@ -376,20 +376,41 @@ export default function LandingPageRodizioBrinquedos() {
                   Baixar na App Store
                 </a>
               </div>
+
+              <div className="mt-10 grid gap-3">
+                {emotionalSignals.map((text, index) => (
+                  <div key={text} className="flex items-start gap-3 rounded-3xl border-2 border-[#2C1710] bg-white p-4 shadow-[4px_4px_0_#2C1710]">
+                    <span className="mt-0.5 flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-[#FFE1B7] text-xs font-black">0{index + 1}</span>
+                    <p className="font-bold leading-relaxed text-[#5F453A]">{text}</p>
+                  </div>
+                ))}
+              </div>
             </motion.div>
 
             <motion.div
               initial={false}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 0.7, delay: 0.15 }}
-              className="grid gap-4"
+              className="relative mx-auto flex h-[420px] w-full max-w-[560px] items-center justify-center sm:h-[560px]"
+              aria-hidden="true"
             >
-              {emotionalSignals.map((text, index) => (
-                <div key={text} className="rounded-[2rem] border-2 border-[#2C1710] bg-white p-6 shadow-[7px_7px_0_#2C1710]">
-                  <p className="mb-3 text-sm font-black text-[#FF5A3D]">0{index + 1}</p>
-                  <p className="text-2xl font-black leading-tight">{text}</p>
-                </div>
-              ))}
+              <div className="absolute h-[280px] w-[280px] rounded-full border-2 border-[#2C1710] bg-gradient-to-br from-[#FFA46B] to-[#FF5A3D] shadow-[10px_10px_0_#2C1710] sm:h-[390px] sm:w-[390px]" />
+              <div className="absolute h-[330px] w-[330px] rounded-full border-2 border-dashed border-[#2C1710] opacity-80 sm:h-[450px] sm:w-[450px]" />
+              <div className="absolute top-12 rounded-3xl border-2 border-[#2C1710] bg-white p-4 shadow-[6px_6px_0_#2C1710] rotate-[-8deg] sm:top-16">
+                <EmojiIcon className="text-4xl">🧺</EmojiIcon>
+              </div>
+              <div className="absolute right-5 top-24 rounded-3xl border-2 border-[#2C1710] bg-white p-4 shadow-[6px_6px_0_#2C1710] rotate-[8deg] sm:right-8 sm:top-28">
+                <EmojiIcon className="text-4xl">📦</EmojiIcon>
+              </div>
+              <div className="absolute bottom-20 left-7 rounded-3xl border-2 border-[#2C1710] bg-white p-4 shadow-[6px_6px_0_#2C1710] rotate-[10deg] sm:bottom-24 sm:left-12">
+                <EmojiIcon className="text-4xl">✨</EmojiIcon>
+              </div>
+              <div className="absolute bottom-16 right-0 rounded-full border-2 border-[#2C1710] bg-white px-4 py-3 text-xs font-black shadow-[6px_6px_0_#2C1710] rotate-[6deg] sm:bottom-20 sm:right-2 sm:px-5 sm:text-sm">Poucos à vista</div>
+              <div className="absolute right-0 top-48 rounded-full border-2 border-[#2C1710] bg-white px-4 py-3 text-xs font-black shadow-[6px_6px_0_#2C1710] rotate-[-8deg] sm:top-56 sm:px-5 sm:text-sm">Brinquedos demais?</div>
+              <div className="relative z-10 text-center">
+                <div className="text-7xl sm:text-8xl">🧸</div>
+                <p className="mt-3 font-serif text-3xl font-black italic text-white drop-shadow">brinque</p>
+              </div>
             </motion.div>
           </div>
         </section>
@@ -398,7 +419,7 @@ export default function LandingPageRodizioBrinquedos() {
           <div className="mx-auto grid max-w-7xl gap-10 px-5 py-20 md:grid-cols-[0.9fr_1.1fr] md:px-8">
             <div>
               <p className="mb-3 text-sm font-black uppercase tracking-[0.25em] text-[#FF5A3D]">Um minuto para enxergar diferente</p>
-              <h2 className="font-serif text-5xl font-black leading-tight md:text-6xl">A mudança começa quando tudo não precisa ficar à vista.</h2>
+              <h2 className="font-serif text-5xl font-black leading-tight md:text-6xl">Não é sobre guardar brinquedos. É sobre mudar o clima da casa.</h2>
               <p className="mt-6 text-xl font-medium leading-relaxed text-[#5F453A]">
                 A proposta não é comprar mais brinquedos. É criar um ambiente em que a criança consiga escolher melhor, brincar por mais tempo e redescobrir o que já tem.
               </p>
@@ -422,7 +443,7 @@ export default function LandingPageRodizioBrinquedos() {
           <div className="mx-auto max-w-7xl px-5 py-20 md:px-8">
             <div className="mx-auto max-w-4xl text-center">
               <p className="mb-3 text-sm font-black uppercase tracking-[0.25em] text-[#FF5A3D]">Transformação</p>
-              <h2 className="font-serif text-5xl font-black leading-tight md:text-6xl">Do excesso para uma brincadeira que respira.</h2>
+              <h2 className="font-serif text-5xl font-black leading-tight md:text-6xl">Menos bagunça. Mais brincadeira de verdade.</h2>
               <p className="mt-6 text-xl font-medium leading-relaxed text-[#5F453A]">
                 O rodízio cria um antes, um durante e um depois. A casa continua tendo brinquedos, mas a criança não precisa lidar com todos ao mesmo tempo.
               </p>
@@ -487,7 +508,7 @@ export default function LandingPageRodizioBrinquedos() {
         <section id="telas" className="scroll-mt-28 border-b-2 border-[#2C1710] bg-[#FFF4E8]">
           <div className="mx-auto max-w-7xl px-5 py-20 md:px-8">
             <div className="mx-auto max-w-4xl text-center">
-              <p className="mb-3 text-sm font-black uppercase tracking-[0.25em] text-[#FF5A3D]">O app entra para sustentar a rotina</p>
+              <p className="mb-3 text-sm font-black uppercase tracking-[0.25em] text-[#FF5A3D]">Agora entra o app</p>
               <h2 className="font-serif text-5xl font-black leading-tight md:text-6xl">Depois que a ideia faz sentido, o app ajuda a manter.</h2>
               <p className="mt-6 text-xl font-medium leading-relaxed text-[#5F453A]">
                 Cadastre brinquedos, organize caixas, escolha categorias e monte rodadas semanais sem depender da memória ou de listas soltas.
@@ -508,7 +529,7 @@ export default function LandingPageRodizioBrinquedos() {
               <p className="mb-3 text-sm font-black uppercase tracking-[0.25em] text-[#2D8C75]">Tutorial visual</p>
               <h2 className="font-serif text-5xl font-black leading-tight md:text-6xl">Da primeira rodada ao planejamento semanal.</h2>
               <p className="mt-6 text-xl font-medium leading-relaxed text-[#5F453A]">
-                As telas mostram como a familia sai da ideia para a pratica: catalogo, sugestao de rodada, categorias e semana planejada.
+                As telas mostram como a família sai da ideia para a prática: catálogo, sugestão de rodada, categorias e semana planejada.
               </p>
             </div>
 
@@ -524,7 +545,7 @@ export default function LandingPageRodizioBrinquedos() {
           <div className="mx-auto max-w-7xl px-5 py-20 md:px-8">
             <div className="mx-auto max-w-4xl text-center">
               <p className="mb-3 text-sm font-black uppercase tracking-[0.25em] text-[#FF5A3D]">Tutorial</p>
-              <h2 className="font-serif text-5xl font-black leading-tight md:text-6xl">Como transformar excesso em uma rodada possivel.</h2>
+              <h2 className="font-serif text-5xl font-black leading-tight md:text-6xl">Como transformar excesso em uma rodada possível.</h2>
             </div>
 
             <div className="mt-12 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
@@ -542,7 +563,7 @@ export default function LandingPageRodizioBrinquedos() {
         <section id="planos" className="scroll-mt-28 mx-auto max-w-7xl px-5 py-20 md:px-8">
           <div className="mx-auto max-w-3xl text-center">
             <p className="mb-3 text-sm font-black uppercase tracking-[0.25em] text-[#FF5A3D]">Planos</p>
-            <h2 className="font-serif text-5xl font-black leading-tight md:text-6xl">Comece simples. Organize no seu ritmo.</h2>
+            <h2 className="font-serif text-5xl font-black leading-tight md:text-6xl">Teste uma casa com menos brinquedos à vista.</h2>
             <p className="mt-5 text-xl font-medium text-[#5F453A]">Teste o app e veja como o rodízio pode deixar a rotina mais leve.</p>
           </div>
 
