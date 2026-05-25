@@ -4,6 +4,8 @@ import { motion } from "framer-motion";
 const APP_STORE_URL = "https://apps.apple.com/br/app/rodizio-brinquedos/id6759603735";
 const PRIVACY_URL = "https://first-lime-7b2.notion.site/Pol-tica-de-Privacidade-Rod-zio-de-Brinquedos-d40b83abf35f4d089e1ae5f46423b4ca?pvs=143";
 const TERMS_URL = "https://first-lime-7b2.notion.site/Termos-de-Uso-Rod-zio-de-Brinquedos-34c496b60a598015ba29cb3322ebfbc6?pvs=143";
+const TRANSFORMATION_VIDEO_URL = "/videos/rodizio-transformacao.mp4";
+const TRANSFORMATION_VIDEO_POSTER = "/og-whatsapp.jpg";
 
 const emotionalSignals = [
   "A caixa está cheia, mas a brincadeira dura pouco.",
@@ -295,11 +297,85 @@ function TutorialScreenshotCard({ item, index }) {
   );
 }
 
+function TransformationVideo() {
+  const [videoStatus, setVideoStatus] = React.useState("checking");
+
+  React.useEffect(() => {
+    let isMounted = true;
+
+    fetch(TRANSFORMATION_VIDEO_URL, { method: "HEAD" })
+      .then((response) => {
+        if (!isMounted) return;
+        const contentType = response.headers.get("content-type") ?? "";
+        const hasPlayableVideo = response.ok && contentType.startsWith("video/");
+        setVideoStatus(hasPlayableVideo ? "ready" : "unavailable");
+      })
+      .catch(() => {
+        if (isMounted) {
+          setVideoStatus("unavailable");
+        }
+      });
+
+    return () => {
+      isMounted = false;
+    };
+  }, []);
+
+  if (videoStatus !== "ready") {
+    return (
+      <div className="relative z-10 overflow-hidden rounded-[2rem] border-2 border-[#2C1710] bg-[#2C1710] shadow-[9px_9px_0_#2C1710]">
+        <div className="relative aspect-video bg-[#2C1710]">
+          <img
+            src={TRANSFORMATION_VIDEO_POSTER}
+            alt=""
+            className="h-full w-full object-cover opacity-80"
+            aria-hidden="true"
+          />
+          <div className="absolute inset-0 bg-[#2C1710]/35" />
+          <div className="absolute inset-0 flex items-center justify-center p-6 text-center">
+            <div className="max-w-sm rounded-[2rem] border-2 border-[#2C1710] bg-[#FFF4E8] p-6 shadow-[6px_6px_0_#2C1710]">
+              <p className="text-sm font-black uppercase tracking-[0.18em] text-[#FF5A3D]">Vídeo em preparação</p>
+              <p className="mt-3 text-lg font-bold leading-relaxed text-[#5F453A]">
+                Enquanto o vídeo final chega, veja o passo a passo do método.
+              </p>
+              <a
+                href="#como-funciona"
+                className="mt-5 inline-flex items-center justify-center gap-2 rounded-full border-2 border-[#2C1710] bg-[#FF5A3D] px-6 py-3 text-sm font-black text-white shadow-[4px_4px_0_#2C1710] transition hover:-translate-y-0.5 hover:shadow-[6px_6px_0_#2C1710]"
+              >
+                Veja como funciona <SvgIcon name="arrow-right" className="h-4 w-4" />
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="relative z-10 overflow-hidden rounded-[2rem] border-2 border-[#2C1710] bg-[#2C1710] shadow-[9px_9px_0_#2C1710]">
+      <video
+        className="pointer-events-auto aspect-video h-full w-full bg-[#2C1710] object-cover"
+        controls
+        playsInline
+        preload="metadata"
+        poster={TRANSFORMATION_VIDEO_POSTER}
+        onError={() => setVideoStatus("unavailable")}
+      >
+        <source
+          src={TRANSFORMATION_VIDEO_URL}
+          type="video/mp4"
+          onError={() => setVideoStatus("unavailable")}
+        />
+      </video>
+    </div>
+  );
+}
+
 function runLandingPageSelfTests() {
   return [
     { name: "appStoreUrlUsesAppleId", passed: /id6759603735$/.test(APP_STORE_URL) },
     { name: "legalLinksUseHttps", passed: PRIVACY_URL.startsWith("https://") && TERMS_URL.startsWith("https://") },
-    { name: "videoPathIsPreserved", passed: "/videos/rodizio-transformacao.mp4".startsWith("/videos/") },
+    { name: "videoPathIsPreserved", passed: TRANSFORMATION_VIDEO_URL.startsWith("/videos/") },
     { name: "screenshotsArePreserved", passed: appScreens.every((item) => item.imageSrc.startsWith("/screenshots/")) },
     { name: "emotionalNarrativeExists", passed: emotionalSignals.length === 3 && transformationCards.length === 3 }
   ];
@@ -425,17 +501,7 @@ export default function LandingPageRodizioBrinquedos() {
               </p>
             </div>
 
-            <div className="overflow-hidden rounded-[2rem] border-2 border-[#2C1710] bg-[#2C1710] shadow-[9px_9px_0_#2C1710]">
-              <video
-                className="aspect-video h-full w-full bg-[#2C1710] object-cover"
-                controls
-                playsInline
-                preload="metadata"
-                poster="/og-whatsapp.jpg"
-              >
-                <source src="/videos/rodizio-transformacao.mp4" type="video/mp4" />
-              </video>
-            </div>
+            <TransformationVideo />
           </div>
         </section>
 
