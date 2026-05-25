@@ -5,70 +5,55 @@ const APP_STORE_URL = "https://apps.apple.com/br/app/rodizio-brinquedos/id675960
 const PRIVACY_URL = "https://first-lime-7b2.notion.site/Pol-tica-de-Privacidade-Rod-zio-de-Brinquedos-d40b83abf35f4d089e1ae5f46423b4ca?pvs=143";
 const TERMS_URL = "https://first-lime-7b2.notion.site/Termos-de-Uso-Rod-zio-de-Brinquedos-34c496b60a598015ba29cb3322ebfbc6?pvs=143";
 
-const audienceFaces = ["👶", "🧒", "👧", "🧸"];
-const ratingStars = [1, 2, 3, 4, 5];
+const emotionalSignals = [
+  "A caixa está cheia, mas a brincadeira dura pouco.",
+  "A criança pula de um brinquedo para outro sem se envolver.",
+  "A casa fica visualmente carregada e todo mundo se cansa mais rápido."
+];
 
-const problemCards = [
+const transformationCards = [
   {
     title: "Antes",
     emoji: "🧺",
-    text: "Brinquedos espalhados, difícil escolher e bagunça constante."
+    text: "Muitos brinquedos visíveis, escolhas demais e uma sensação constante de bagunça."
   },
   {
     title: "Durante",
     emoji: "🧸",
-    text: "Poucos brinquedos disponíveis, ambiente mais calmo e escolha mais simples."
+    text: "Poucos brinquedos disponíveis por vez, com categorias claras e uma rodada simples de seguir."
   },
   {
     title: "Depois",
     emoji: "✨",
-    text: "Brincadeira com mais foco, brinquedos valorizados e rotina mais fácil."
-  }
-];
-
-const educationalCards = [
-  {
-    icon: "🎯",
-    title: "Foco e atenção",
-    text: "Com menos brinquedos disponíveis, a criança tende a ter menos distrações visuais e mais chance de permanecer em uma brincadeira."
-  },
-  {
-    icon: "🧭",
-    title: "Autocontrole e escolha",
-    text: "O rodízio reduz o excesso de opções e ajuda a transformar a escolha em uma rotina mais simples e previsível."
-  },
-  {
-    icon: "✨",
-    title: "Criatividade e redescoberta",
-    text: "Quando um brinquedo volta para a rodada, ele pode despertar novo interesse e novas formas de brincar."
+    text: "Mais tempo de brincadeira, menos excesso visual e brinquedos redescobertos com interesse."
   }
 ];
 
 const howItWorksCards = [
   {
-    icon: "🧸",
-    title: "Cadastre os brinquedos",
-    text: "Registre nome, foto, categoria, caixa e local. Tudo fica fácil de encontrar."
+    icon: "📦",
+    title: "Guarde parte dos brinquedos",
+    text: "O objetivo não é tirar a brincadeira da criança. É reduzir o excesso visível para abrir espaço para foco."
   },
   {
-    icon: "📦",
-    title: "Monte uma rodada",
-    text: "Escolha uma quantidade menor de brinquedos para ficar disponível na semana."
+    icon: "🧭",
+    title: "Monte uma rodada menor",
+    text: "Escolha uma seleção por categorias: montar, livros, faz de conta, movimento, sensorial e educativo."
   },
   {
     icon: "📅",
     title: "Troque no momento certo",
-    text: "Acompanhe o rodízio e renove o ambiente sem precisar comprar mais brinquedos."
+    text: "Quando a rodada muda, o brinquedo volta com cara de novidade e a rotina fica mais fácil de manter."
   }
 ];
 
 const benefits = [
   "Reduz a bagunça visual da casa",
-  "Ajuda a criança a focar melhor",
-  "Evita brinquedos esquecidos",
+  "Ajuda a criança a permanecer mais tempo em uma brincadeira",
+  "Evita que brinquedos bons fiquem esquecidos",
   "Organiza caixas, categorias e locais",
-  "Cria rotina semanal de troca",
-  "Funciona como apoio para famílias"
+  "Cria uma rotina semanal de troca",
+  "Apoia pais e responsáveis sem exigir perfeição"
 ];
 
 const appScreens = [
@@ -103,103 +88,61 @@ const tutorialScreens = [
   },
   {
     title: "2. Toque em Sugerir rodada",
-    text: "O botão Sugerir rodada usa a configuração por categoria para montar uma seleção equilibrada de brinquedos.",
+    text: "O botão Sugerir rodada usa a configuração por categoria para montar uma seleção equilibrada.",
     imageSrc: "/screenshots/home-rodada.png"
   },
   {
-    title: "3. Revise o catálogo",
-    text: "Na tela Brinquedos, use filtros por categoria, caixa e local para revisar o catálogo antes de montar ou ajustar a rodada.",
+    title: "3. Revise o catalogo",
+    text: "Na tela Brinquedos, use filtros por categoria, caixa e local para revisar o catálogo antes de ajustar a rodada.",
     imageSrc: "/screenshots/catalogo-brinquedos.png"
   },
   {
     title: "4. Ajuste a composição",
-    text: "Em Configurações, defina quantos brinquedos de cada categoria entram na rodada. O total é calculado automaticamente.",
+    text: "Em Configurações, defina quantos brinquedos de cada categoria entram na rodada.",
     imageSrc: "/screenshots/composicao-rodada.png"
   },
   {
     title: "5. Gerencie categorias",
-    text: "Em Gerenciar categorias, mantenha nomes e exemplos claros. Você pode criar, editar, renomear ou desativar categorias.",
+    text: "Em Gerenciar categorias, mantenha nomes e exemplos claros para a sua casa.",
     imageSrc: "/screenshots/gerenciar-categorias.png"
   },
   {
     title: "6. Configure a semana",
-    text: "No Planejamento semanal, escolha quando usar o padrão e quando cada dia terá quantidades próprias por categoria.",
+    text: "No Planejamento semanal, escolha quando usar o padrão e quando cada dia terá quantidades próprias.",
     imageSrc: "/screenshots/planejamento-semanal.png"
   }
-];
-
-const screenshotFiles = [
-  { original: "IMG_3026.PNG", suggested: "public/screenshots/home-rodada.png", use: "Home, planejamento resumido e Sugerir rodada" },
-  { original: "IMG_3033.PNG", suggested: "public/screenshots/catalogo-brinquedos.png", use: "Catálogo de brinquedos e filtros" },
-  { original: "IMG_3034.PNG", suggested: "public/screenshots/caixas.png", use: "Tela de caixas" },
-  { original: "IMG_3032.PNG", suggested: "public/screenshots/composicao-rodada.png", use: "Composição da rodada por categoria" },
-  { original: "IMG_3031.PNG", suggested: "public/screenshots/gerenciar-categorias.png", use: "Gerenciar categorias" },
-  { original: "IMG_3027.PNG", suggested: "public/screenshots/configuracoes.png", use: "Configurações do app" },
-  { original: "IMG_3028.PNG", suggested: "public/screenshots/planejamento-semanal.png", use: "Planejamento semanal completo" },
-  { original: "IMG_3029.PNG", suggested: "public/screenshots/dia-personalizado.png", use: "Dia personalizado por categoria" }
 ];
 
 const tutorialSteps = [
   {
     number: "01",
     title: "Cadastre os brinquedos",
-    text: "Adicione cada brinquedo com nome, foto, categoria, caixa e local. Isso cria uma visão clara do que existe em casa antes de montar qualquer rodada."
+    text: "Adicione nome, foto, categoria, caixa e local para enxergar melhor o que já existe em casa."
   },
   {
     number: "02",
     title: "Organize por categorias",
-    text: "Separe os brinquedos por tipos, como montar, livros, faz de conta, movimento, sensorial ou educativo. As categorias ajudam a rodada a ficar equilibrada, e não apenas cheia."
+    text: "Separe por montar, livros, faz de conta, movimento, sensorial ou educativo. A rodada fica mais equilibrada."
   },
   {
     number: "03",
-    title: "Defina a quantidade por categoria",
-    text: "Em vez de escolher somente um total geral, configure quantos brinquedos de cada categoria devem aparecer. Exemplo: 2 de montar, 1 livro, 1 sensorial e 1 faz de conta."
+    title: "Defina quantidades menores",
+    text: "Em vez de deixar tudo disponivel, escolha poucos brinquedos por categoria para cada rodada."
   },
   {
     number: "04",
     title: "Use Sugerir rodada",
-    text: "Ao tocar em Sugerir rodada, o app usa as quantidades por categoria para montar uma seleção equilibrada. O objetivo é evitar excesso e dar variedade à brincadeira."
+    text: "O app monta uma seleção coerente com a configuração do dia e evita concentrar tudo em um único tipo."
   },
   {
     number: "05",
-    title: "Ative o Planejamento semanal",
-    text: "Com o planejamento semanal, cada dia pode usar a configuração padrão ou uma composição própria por categoria. Assim, segunda pode ter mais montar e terça pode ter mais livros ou faz de conta."
+    title: "Planeje a semana",
+    text: "Cada dia pode usar o padrão ou uma composição própria, respeitando a rotina da família."
   },
   {
     number: "06",
-    title: "Entenda o total automático",
-    text: "O total de brinquedos da rodada nasce da soma das categorias. Se a configuração tem 2 de montar, 1 livro, 1 sensorial e 1 movimento, o app mostra total 5, mas a lógica principal continua sendo por categoria."
-  },
-  {
-    number: "07",
-    title: "Ajuste categorias quando precisar",
-    text: "Com o tempo, você pode renomear categorias, adaptar a organização à idade da criança e mudar a forma como os brinquedos são agrupados."
-  },
-  {
-    number: "08",
-    title: "Exclua categorias que não usa",
-    text: "Se uma categoria não fizer mais sentido para sua casa, você pode removê-la ou deixar de usá-la para manter o sistema simples, limpo e fácil de manter."
-  }
-];
-
-const weeklyExamples = [
-  {
-    day: "Segunda-feira",
-    mode: "Usar padrão",
-    rows: ["Montar: 2", "Livro: 1", "Sensorial: 1", "Faz de conta: 1"],
-    total: "Total automático: 5 brinquedos"
-  },
-  {
-    day: "Terça-feira",
-    mode: "Personalizado",
-    rows: ["Movimento: 2", "Livro: 1", "Faz de conta: 2"],
-    total: "Total automático: 5 brinquedos"
-  },
-  {
-    day: "Sábado",
-    mode: "Personalizado",
-    rows: ["Montar: 1", "Sensorial: 2", "Movimento: 2", "Livro: 1"],
-    total: "Total automático: 6 brinquedos"
+    title: "Troque sem drama",
+    text: "Quando a rodada muda, alguns brinquedos descansam e outros voltam a despertar interesse."
   }
 ];
 
@@ -250,10 +193,10 @@ function SvgIcon({ name, className = "h-5 w-5", title }) {
     );
   }
 
-  if (name === "star") {
+  if (name === "heart") {
     return (
-      <svg {...commonProps} fill="currentColor" stroke="none">
-        <path d="m12 2.4 2.86 5.8 6.4.93-4.63 4.52 1.1 6.38L12 17l-5.73 3.03 1.1-6.38-4.63-4.52 6.4-.93L12 2.4Z" />
+      <svg {...commonProps}>
+        <path d="M19.5 12.6 12 20l-7.5-7.4A5 5 0 0 1 12 6a5 5 0 0 1 7.5 6.6Z" />
       </svg>
     );
   }
@@ -282,22 +225,6 @@ function EmojiIcon({ children, className = "text-3xl" }) {
   );
 }
 
-function ScreenshotFallback({ screen }) {
-  return (
-    <div className="space-y-3">
-      {screen.rows.map((row) => (
-        <div key={row} className="flex items-center gap-3 rounded-2xl border-2 border-[#2C1710] bg-white p-3 shadow-[3px_3px_0_#2C1710]">
-          <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-[#FFE1B7] text-lg">🧩</div>
-          <div className="min-w-0">
-            <p className="truncate text-sm font-black">{row}</p>
-            <p className="text-xs font-bold text-[#8B6B5E]">Organização simples</p>
-          </div>
-        </div>
-      ))}
-    </div>
-  );
-}
-
 function PhoneMockup({ screen, index }) {
   const [imageFailed, setImageFailed] = React.useState(false);
 
@@ -315,19 +242,15 @@ function PhoneMockup({ screen, index }) {
           ) : (
             <div className="h-full p-5">
               <div className="mx-auto mb-5 h-5 w-24 rounded-full bg-[#2C1710]" />
-              <div className="mb-5 flex items-center justify-between gap-3">
-                <div className="min-w-0">
-                  <p className="text-xs font-black uppercase tracking-[0.18em] text-[#FF5A3D]">Tela {index + 1}</p>
-                  <h3 className="mt-1 text-2xl font-black leading-tight">{screen.title}</h3>
-                </div>
-                <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl border-2 border-[#2C1710] bg-white text-2xl shadow-[3px_3px_0_#2C1710]">
-                  {screen.emoji}
-                </div>
-              </div>
-              <p className="mb-5 text-sm font-bold leading-relaxed text-[#5F453A]">{screen.subtitle}</p>
-              <ScreenshotFallback screen={screen} />
-              <div className="mt-5 rounded-2xl border-2 border-[#2C1710] bg-[#CFE8D8] p-4 text-center text-sm font-black">
-                Pronto para a próxima rodada
+              <p className="text-xs font-black uppercase tracking-[0.18em] text-[#FF5A3D]">Tela {index + 1}</p>
+              <h3 className="mt-1 text-2xl font-black leading-tight">{screen.title}</h3>
+              <p className="mt-4 text-sm font-bold leading-relaxed text-[#5F453A]">{screen.subtitle}</p>
+              <div className="mt-5 space-y-3">
+                {screen.rows.map((row) => (
+                  <div key={row} className="rounded-2xl border-2 border-[#2C1710] bg-white p-3 text-sm font-black shadow-[3px_3px_0_#2C1710]">
+                    {row}
+                  </div>
+                ))}
               </div>
             </div>
           )}
@@ -360,7 +283,6 @@ function TutorialScreenshotCard({ item, index }) {
               <div>
                 <p className="text-6xl">📱</p>
                 <p className="mt-5 text-lg font-black">Screenshot {index + 1}</p>
-                <p className="mt-2 text-sm font-bold text-[#5F453A]">Coloque a imagem em {item.imageSrc}</p>
               </div>
             </div>
           )}
@@ -374,72 +296,13 @@ function TutorialScreenshotCard({ item, index }) {
 }
 
 function runLandingPageSelfTests() {
-  const results = [];
-
-  results.push({
-    name: "appStoreUrlUsesAppleId",
-    passed: /id6759603735$/.test(APP_STORE_URL)
-  });
-
-  results.push({
-    name: "legalLinksUseHttps",
-    passed: PRIVACY_URL.startsWith("https://") && TERMS_URL.startsWith("https://")
-  });
-
-  results.push({
-    name: "problemCardsHaveThreeSteps",
-    passed: problemCards.length === 3 && problemCards.every((item) => item.title && item.text)
-  });
-
-  results.push({
-    name: "howItWorksCardsHaveThreeSteps",
-    passed: howItWorksCards.length === 3 && howItWorksCards.every((item) => item.icon && item.title && item.text)
-  });
-
-  results.push({
-    name: "appScreensHaveThreeMockups",
-    passed: appScreens.length === 3 && appScreens.every((item) => item.title && item.subtitle && item.rows.length >= 3 && item.imageSrc)
-  });
-
-  results.push({
-    name: "tutorialScreensHaveRealImagePaths",
-    passed: tutorialScreens.length >= 6 && tutorialScreens.every((item) => item.title && item.text && item.imageSrc.startsWith("/screenshots/"))
-  });
-
-  results.push({
-    name: "screenshotFilePlanIsComplete",
-    passed: screenshotFiles.length >= 8 && screenshotFiles.every((item) => item.original && item.suggested && item.use)
-  });
-
-  results.push({
-    name: "premiumFeaturesArePresent",
-    passed: premiumFeatures.length >= 4
-  });
-
-  results.push({
-    name: "tutorialExplainsCategoryQuantities",
-    passed:
-      tutorialSteps.length >= 8 &&
-      tutorialSteps.some((item) => item.text.includes("quantos brinquedos de cada categoria")) &&
-      tutorialSteps.some((item) => item.title.includes("Sugerir rodada")) &&
-      tutorialSteps.some((item) => item.title.includes("Planejamento semanal")) &&
-      tutorialSteps.some((item) => item.text.includes("renomear categorias")) &&
-      tutorialSteps.some((item) => item.text.includes("removê-la"))
-  });
-
-  results.push({
-    name: "weeklyExamplesExplainAutomaticTotals",
-    passed:
-      weeklyExamples.length === 3 &&
-      weeklyExamples.every((item) => item.day && item.mode && item.rows.length >= 3 && item.total.includes("Total automático"))
-  });
-
-  results.push({
-    name: "navigationTargetsExist",
-    passed: ["como-funciona", "beneficios", "telas", "tutorial-visual", "tutorial", "planos"].every(Boolean)
-  });
-
-  return results;
+  return [
+    { name: "appStoreUrlUsesAppleId", passed: /id6759603735$/.test(APP_STORE_URL) },
+    { name: "legalLinksUseHttps", passed: PRIVACY_URL.startsWith("https://") && TERMS_URL.startsWith("https://") },
+    { name: "videoPathIsPreserved", passed: "/videos/rodizio-transformacao.mp4".startsWith("/videos/") },
+    { name: "screenshotsArePreserved", passed: appScreens.every((item) => item.imageSrc.startsWith("/screenshots/")) },
+    { name: "emotionalNarrativeExists", passed: emotionalSignals.length === 3 && transformationCards.length === 3 }
+  ];
 }
 
 if (typeof window !== "undefined") {
@@ -458,11 +321,11 @@ export default function LandingPageRodizioBrinquedos() {
             <span className="font-serif text-2xl font-black tracking-tight">Rodízio</span>
           </a>
 
-          <nav className="hidden items-center gap-10 text-sm font-bold md:flex" aria-label="Navegação principal">
+          <nav className="hidden items-center gap-8 text-sm font-bold md:flex" aria-label="Navegação principal">
+            <a href="#transformacao" className="hover:text-[#FF5A3D]">Transformação</a>
             <a href="#como-funciona" className="hover:text-[#FF5A3D]">Como funciona</a>
             <a href="#beneficios" className="hover:text-[#FF5A3D]">Benefícios</a>
             <a href="#telas" className="hover:text-[#FF5A3D]">Telas</a>
-            <a href="#tutorial-visual" className="hover:text-[#FF5A3D]">Tutorial</a>
             <a href="#planos" className="hover:text-[#FF5A3D]">Planos</a>
           </nav>
 
@@ -482,54 +345,36 @@ export default function LandingPageRodizioBrinquedos() {
           <div className="absolute right-0 top-0 h-full w-1/2 bg-gradient-to-br from-[#FFD7B8] via-[#FFB68F] to-[#FFF4E8] opacity-80" />
           <div className="absolute bottom-0 left-0 h-56 w-56 rounded-full bg-[#CFE8D8] blur-3xl" />
 
-          <div className="relative mx-auto grid max-w-7xl items-center gap-10 px-5 py-14 md:grid-cols-2 md:px-8 md:py-24">
+          <div className="relative mx-auto grid max-w-7xl items-center gap-10 px-5 py-14 md:grid-cols-[1.05fr_0.95fr] md:px-8 md:py-24">
             <motion.div initial={false} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}>
               <div className="mb-8 inline-flex items-center gap-2 rounded-full border-2 border-[#2C1710] bg-white px-5 py-3 text-sm font-bold shadow-[3px_3px_0_#2C1710]">
-                <span className="h-2.5 w-2.5 rounded-full bg-[#2D8C75]" />
-                Menos bagunça. Mais brincadeira.
+                <SvgIcon name="heart" className="h-4 w-4 text-[#FF5A3D]" />
+                Para famílias cansadas do excesso
               </div>
 
-              <h1 className="max-w-2xl font-serif text-5xl font-black leading-[0.98] tracking-tight sm:text-6xl md:text-7xl lg:text-8xl">
-                Menos brinquedos à vista. <span className="italic text-[#FF5A3D]">Mais foco</span> na brincadeira.
+              <h1 className="max-w-3xl font-serif text-5xl font-black leading-[0.98] tracking-tight sm:text-6xl md:text-7xl lg:text-8xl">
+                Seu filho tem muitos brinquedos… <span className="italic text-[#FF5A3D]">e brinca cada vez menos?</span>
               </h1>
 
-              <p className="mt-7 max-w-xl text-xl font-medium leading-relaxed text-[#5F453A]">
-                O Rodízio de Brinquedos ajuda pais e responsáveis a organizar brinquedos por caixas, categorias e rodadas semanais — para reduzir a bagunça e criar brincadeiras de maior qualidade.
+              <p className="mt-7 max-w-2xl text-xl font-medium leading-relaxed text-[#5F453A]">
+                O Rodízio de Brinquedos ajuda a transformar excesso em escolha, bagunça em rotina e brinquedos esquecidos em novas brincadeiras.
               </p>
 
               <div className="mt-9 flex flex-col gap-4 sm:flex-row">
                 <a
+                  href="#como-funciona"
+                  className="inline-flex items-center justify-center gap-2 rounded-full border-2 border-[#2C1710] bg-[#FF5A3D] px-8 py-4 text-base font-black text-white shadow-[6px_6px_0_#2C1710] transition hover:-translate-y-0.5 hover:shadow-[8px_8px_0_#2C1710]"
+                >
+                  Veja como funciona <SvgIcon name="arrow-right" className="h-5 w-5" />
+                </a>
+                <a
                   href={APP_STORE_URL}
                   target="_blank"
                   rel="noreferrer"
-                  className="inline-flex items-center justify-center gap-2 rounded-full border-2 border-[#2C1710] bg-[#FF5A3D] px-8 py-4 text-base font-black text-white shadow-[6px_6px_0_#2C1710] transition hover:-translate-y-0.5 hover:shadow-[8px_8px_0_#2C1710]"
-                >
-                  Baixar na App Store <SvgIcon name="arrow-right" className="h-5 w-5" />
-                </a>
-                <a
-                  href="#como-funciona"
                   className="inline-flex items-center justify-center gap-2 rounded-full border-2 border-[#2C1710] bg-white px-8 py-4 text-base font-black shadow-[6px_6px_0_#2C1710] transition hover:-translate-y-0.5 hover:shadow-[8px_8px_0_#2C1710]"
                 >
-                  <SvgIcon name="play" className="h-5 w-5" /> Ver como funciona
+                  Baixar na App Store
                 </a>
-              </div>
-
-              <div className="mt-10 flex items-center gap-4">
-                <div className="flex -space-x-3" aria-hidden="true">
-                  {audienceFaces.map((item) => (
-                    <div key={item} className="flex h-10 w-10 items-center justify-center rounded-full border-2 border-[#2C1710] bg-[#FFE1B7] text-lg">
-                      {item}
-                    </div>
-                  ))}
-                </div>
-                <div>
-                  <div className="flex text-[#FFB02E]" aria-label="Avaliação visual de cinco estrelas">
-                    {ratingStars.map((item) => (
-                      <SvgIcon key={item} name="star" className="h-4 w-4" title={`${item} estrela`} />
-                    ))}
-                  </div>
-                  <p className="text-sm font-black">Feito para famílias que querem brincar melhor</p>
-                </div>
               </div>
             </motion.div>
 
@@ -537,37 +382,55 @@ export default function LandingPageRodizioBrinquedos() {
               initial={false}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 0.7, delay: 0.15 }}
-              className="relative mx-auto flex h-[420px] w-full max-w-[560px] items-center justify-center sm:h-[560px]"
-              aria-hidden="true"
+              className="grid gap-4"
             >
-              <div className="absolute h-[280px] w-[280px] rounded-full border-2 border-[#2C1710] bg-gradient-to-br from-[#FFA46B] to-[#FF5A3D] shadow-[10px_10px_0_#2C1710] sm:h-[390px] sm:w-[390px]" />
-              <div className="absolute h-[330px] w-[330px] rounded-full border-2 border-dashed border-[#2C1710] opacity-80 sm:h-[450px] sm:w-[450px]" />
-              <div className="absolute top-12 rounded-3xl border-2 border-[#2C1710] bg-white p-4 shadow-[6px_6px_0_#2C1710] rotate-[-8deg] sm:top-16"><EmojiIcon className="text-4xl">📅</EmojiIcon></div>
-              <div className="absolute right-5 top-24 rounded-3xl border-2 border-[#2C1710] bg-white p-4 shadow-[6px_6px_0_#2C1710] rotate-[8deg] sm:right-8 sm:top-28"><EmojiIcon className="text-4xl">📦</EmojiIcon></div>
-              <div className="absolute bottom-20 left-7 rounded-3xl border-2 border-[#2C1710] bg-white p-4 shadow-[6px_6px_0_#2C1710] rotate-[10deg] sm:bottom-24 sm:left-12"><EmojiIcon className="text-4xl">✨</EmojiIcon></div>
-              <div className="absolute bottom-16 right-0 rounded-full border-2 border-[#2C1710] bg-white px-4 py-3 text-xs font-black shadow-[6px_6px_0_#2C1710] rotate-[6deg] sm:bottom-20 sm:right-2 sm:px-5 sm:text-sm">Rodada pronta</div>
-              <div className="absolute right-0 top-48 rounded-full border-2 border-[#2C1710] bg-white px-4 py-3 text-xs font-black shadow-[6px_6px_0_#2C1710] rotate-[-8deg] sm:top-56 sm:px-5 sm:text-sm">Menos excessos</div>
-              <div className="relative z-10 text-center">
-                <div className="text-7xl sm:text-8xl">🧸</div>
-                <p className="mt-3 font-serif text-3xl font-black italic text-white drop-shadow">brinque</p>
-              </div>
+              {emotionalSignals.map((text, index) => (
+                <div key={text} className="rounded-[2rem] border-2 border-[#2C1710] bg-white p-6 shadow-[7px_7px_0_#2C1710]">
+                  <p className="mb-3 text-sm font-black text-[#FF5A3D]">0{index + 1}</p>
+                  <p className="text-2xl font-black leading-tight">{text}</p>
+                </div>
+              ))}
             </motion.div>
           </div>
         </section>
 
         <section className="border-b-2 border-[#2C1710] bg-white">
+          <div className="mx-auto grid max-w-7xl gap-10 px-5 py-20 md:grid-cols-[0.9fr_1.1fr] md:px-8">
+            <div>
+              <p className="mb-3 text-sm font-black uppercase tracking-[0.25em] text-[#FF5A3D]">Um minuto para enxergar diferente</p>
+              <h2 className="font-serif text-5xl font-black leading-tight md:text-6xl">A mudança começa quando tudo não precisa ficar à vista.</h2>
+              <p className="mt-6 text-xl font-medium leading-relaxed text-[#5F453A]">
+                A proposta não é comprar mais brinquedos. É criar um ambiente em que a criança consiga escolher melhor, brincar por mais tempo e redescobrir o que já tem.
+              </p>
+            </div>
+
+            <div className="overflow-hidden rounded-[2rem] border-2 border-[#2C1710] bg-[#2C1710] shadow-[9px_9px_0_#2C1710]">
+              <video
+                className="aspect-video h-full w-full bg-[#2C1710] object-cover"
+                controls
+                playsInline
+                preload="metadata"
+                poster="/og-whatsapp.jpg"
+              >
+                <source src="/videos/rodizio-transformacao.mp4" type="video/mp4" />
+              </video>
+            </div>
+          </div>
+        </section>
+
+        <section id="transformacao" className="scroll-mt-28 border-b-2 border-[#2C1710] bg-[#FFE9D2]">
           <div className="mx-auto max-w-7xl px-5 py-20 md:px-8">
             <div className="mx-auto max-w-4xl text-center">
-              <p className="mb-3 text-sm font-black uppercase tracking-[0.25em] text-[#FF5A3D]">O problema</p>
-              <h2 className="font-serif text-5xl font-black leading-tight md:text-6xl">Quando tudo está disponível, nada chama atenção por muito tempo.</h2>
+              <p className="mb-3 text-sm font-black uppercase tracking-[0.25em] text-[#FF5A3D]">Transformação</p>
+              <h2 className="font-serif text-5xl font-black leading-tight md:text-6xl">Do excesso para uma brincadeira que respira.</h2>
               <p className="mt-6 text-xl font-medium leading-relaxed text-[#5F453A]">
-                Muitos brinquedos espalhados podem gerar excesso visual, desorganização e pouca concentração. O rodízio ajuda a criança a reencontrar interesse pelos brinquedos, enquanto a casa fica mais leve e organizada.
+                O rodízio cria um antes, um durante e um depois. A casa continua tendo brinquedos, mas a criança não precisa lidar com todos ao mesmo tempo.
               </p>
             </div>
 
             <div className="mt-12 grid gap-5 md:grid-cols-3">
-              {problemCards.map((item) => (
-                <div key={item.title} className="rounded-[2rem] border-2 border-[#2C1710] bg-[#FFF4E8] p-7 shadow-[7px_7px_0_#2C1710]">
+              {transformationCards.map((item) => (
+                <div key={item.title} className="rounded-[2rem] border-2 border-[#2C1710] bg-white p-7 shadow-[7px_7px_0_#2C1710]">
                   <div className="mb-5 text-5xl" aria-hidden="true">{item.emoji}</div>
                   <h3 className="mb-3 text-2xl font-black">{item.title}</h3>
                   <p className="text-base font-medium leading-relaxed text-[#5F453A]">{item.text}</p>
@@ -577,53 +440,21 @@ export default function LandingPageRodizioBrinquedos() {
           </div>
         </section>
 
-        <section className="border-b-2 border-[#2C1710] bg-[#FFE9D2]">
-          <div className="mx-auto max-w-7xl px-5 py-20 md:px-8">
-            <div className="grid gap-10 lg:grid-cols-[0.9fr_1.1fr] lg:items-start">
-              <div>
-                <p className="mb-3 text-sm font-black uppercase tracking-[0.25em] text-[#FF5A3D]">Desenvolvimento infantil</p>
-                <h2 className="font-serif text-5xl font-black leading-tight md:text-6xl">Por que o rodízio funciona?</h2>
-                <p className="mt-5 text-xl font-bold leading-relaxed text-[#5F453A]">
-                  Menos estímulos à vista podem facilitar foco, escolha e brincadeiras mais profundas.
-                </p>
-                <div className="mt-7 space-y-5 text-lg font-medium leading-relaxed text-[#5F453A]">
-                  <p>
-                    Na primeira infância, a criança ainda está desenvolvendo habilidades como foco, memória de trabalho, autocontrole e flexibilidade cognitiva.
-                  </p>
-                  <p>
-                    Quando há brinquedos demais à vista, o ambiente pode ficar visualmente carregado e a escolha se torna mais difícil. O rodízio ajuda a simplificar esse cenário: menos brinquedos disponíveis, mais clareza para escolher e mais tempo para explorar cada brincadeira.
-                  </p>
-                  <p>
-                    O resultado é uma rotina mais calma, organizada e favorável a brincadeiras mais profundas.
-                  </p>
-                </div>
-              </div>
-
-              <div className="grid gap-5">
-                {educationalCards.map((item) => (
-                  <div key={item.title} className="rounded-[2rem] border-2 border-[#2C1710] bg-white p-7 shadow-[7px_7px_0_#2C1710]">
-                    <div className="mb-5 flex h-14 w-14 items-center justify-center rounded-2xl border-2 border-[#2C1710] bg-[#CFE8D8]">
-                      <EmojiIcon className="text-3xl">{item.icon}</EmojiIcon>
-                    </div>
-                    <h3 className="mb-3 text-2xl font-black">{item.title}</h3>
-                    <p className="text-base font-medium leading-relaxed text-[#5F453A]">{item.text}</p>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
-        </section>
-
         <section id="como-funciona" className="scroll-mt-28 mx-auto max-w-7xl px-5 py-20 md:px-8">
           <div className="mb-12 max-w-3xl">
             <p className="mb-3 text-sm font-black uppercase tracking-[0.25em] text-[#FF5A3D]">Como funciona</p>
-            <h2 className="font-serif text-5xl font-black leading-tight md:text-6xl">Um sistema simples para organizar sem complicar.</h2>
+            <h2 className="font-serif text-5xl font-black leading-tight md:text-6xl">Um método simples antes de ser um app.</h2>
+            <p className="mt-6 text-xl font-medium leading-relaxed text-[#5F453A]">
+              Primeiro vem a lógica: menos brinquedos disponíveis, mais clareza para escolher e uma troca planejada para manter o interesse vivo.
+            </p>
           </div>
 
           <div className="grid gap-5 md:grid-cols-3">
             {howItWorksCards.map((item, index) => (
               <div key={item.title} className="rounded-[2rem] border-2 border-[#2C1710] bg-white p-7 shadow-[7px_7px_0_#2C1710]">
-                <div className="mb-6 flex h-14 w-14 items-center justify-center rounded-2xl border-2 border-[#2C1710] bg-[#FFE1B7]"><EmojiIcon className="text-3xl">{item.icon}</EmojiIcon></div>
+                <div className="mb-6 flex h-14 w-14 items-center justify-center rounded-2xl border-2 border-[#2C1710] bg-[#FFE1B7]">
+                  <EmojiIcon>{item.icon}</EmojiIcon>
+                </div>
                 <p className="mb-3 text-sm font-black text-[#FF5A3D]">0{index + 1}</p>
                 <h3 className="mb-3 text-2xl font-black">{item.title}</h3>
                 <p className="text-base font-medium leading-relaxed text-[#5F453A]">{item.text}</p>
@@ -636,8 +467,10 @@ export default function LandingPageRodizioBrinquedos() {
           <div className="mx-auto grid max-w-7xl gap-10 px-5 py-20 md:grid-cols-[0.9fr_1.1fr] md:px-8">
             <div>
               <p className="mb-3 text-sm font-black uppercase tracking-[0.25em] text-[#FF5A3D]">Benefícios</p>
-              <h2 className="font-serif text-5xl font-black leading-tight md:text-6xl">Menos brinquedos à vista. Mais atenção na brincadeira.</h2>
-              <p className="mt-6 text-xl font-medium leading-relaxed text-[#5F453A]">O Rodízio de Brinquedos foi pensado para transformar o excesso em uma rotina simples, visual e fácil de manter.</p>
+              <h2 className="font-serif text-5xl font-black leading-tight md:text-6xl">A casa fica mais leve quando a escolha fica menor.</h2>
+              <p className="mt-6 text-xl font-medium leading-relaxed text-[#5F453A]">
+                O Rodízio de Brinquedos transforma organização em cuidado diário: menos excesso para administrar e mais chance de uma brincadeira profunda acontecer.
+              </p>
             </div>
 
             <div className="grid gap-4 sm:grid-cols-2">
@@ -654,9 +487,11 @@ export default function LandingPageRodizioBrinquedos() {
         <section id="telas" className="scroll-mt-28 border-b-2 border-[#2C1710] bg-[#FFF4E8]">
           <div className="mx-auto max-w-7xl px-5 py-20 md:px-8">
             <div className="mx-auto max-w-4xl text-center">
-              <p className="mb-3 text-sm font-black uppercase tracking-[0.25em] text-[#FF5A3D]">Telas do app</p>
-              <h2 className="font-serif text-5xl font-black leading-tight md:text-6xl">Veja como a organização aparece na prática.</h2>
-              <p className="mt-6 text-xl font-medium leading-relaxed text-[#5F453A]">As imagens abaixo usam os screenshots reais do app. Elas mostram a Home, o catálogo de brinquedos e a organização por caixas.</p>
+              <p className="mb-3 text-sm font-black uppercase tracking-[0.25em] text-[#FF5A3D]">O app entra para sustentar a rotina</p>
+              <h2 className="font-serif text-5xl font-black leading-tight md:text-6xl">Depois que a ideia faz sentido, o app ajuda a manter.</h2>
+              <p className="mt-6 text-xl font-medium leading-relaxed text-[#5F453A]">
+                Cadastre brinquedos, organize caixas, escolha categorias e monte rodadas semanais sem depender da memória ou de listas soltas.
+              </p>
             </div>
 
             <div className="mt-12 grid gap-8 lg:grid-cols-3">
@@ -671,28 +506,16 @@ export default function LandingPageRodizioBrinquedos() {
           <div className="mx-auto max-w-7xl px-5 py-20 md:px-8">
             <div className="mx-auto max-w-4xl text-center">
               <p className="mb-3 text-sm font-black uppercase tracking-[0.25em] text-[#2D8C75]">Tutorial visual</p>
-              <h2 className="font-serif text-5xl font-black leading-tight md:text-6xl">Passo a passo com as telas do aplicativo.</h2>
-              <p className="mt-6 text-xl font-medium leading-relaxed text-[#5F453A]">Use esta seção para explicar, com imagens, como o usuário sai da Home, entende a sugestão de rodada, ajusta categorias e configura o planejamento semanal.</p>
+              <h2 className="font-serif text-5xl font-black leading-tight md:text-6xl">Da primeira rodada ao planejamento semanal.</h2>
+              <p className="mt-6 text-xl font-medium leading-relaxed text-[#5F453A]">
+                As telas mostram como a familia sai da ideia para a pratica: catalogo, sugestao de rodada, categorias e semana planejada.
+              </p>
             </div>
 
             <div className="mt-12 grid gap-8 md:grid-cols-2 lg:grid-cols-3">
               {tutorialScreens.map((item, index) => (
                 <TutorialScreenshotCard key={item.title} item={item} index={index} />
               ))}
-            </div>
-
-            <div className="mt-12 rounded-[2rem] border-2 border-[#2C1710] bg-[#FFE9D2] p-8 text-center shadow-[7px_7px_0_#2C1710]">
-              <p className="mb-3 text-sm font-black uppercase tracking-[0.2em] text-[#FF5A3D]">Aprendizado rápido</p>
-              <h3 className="mx-auto max-w-3xl text-3xl font-black">Em poucos minutos, a família entende como organizar, sugerir a rodada e planejar a semana.</h3>
-              <p className="mx-auto mt-5 max-w-3xl text-lg font-medium leading-relaxed text-[#5F453A]">O tutorial visual ajuda o usuário a perceber que o app não é apenas uma lista de brinquedos: ele é um método simples para decidir o que fica disponível, o que fica guardado e quando trocar.</p>
-              <a
-                href={APP_STORE_URL}
-                target="_blank"
-                rel="noreferrer"
-                className="mt-8 inline-flex items-center justify-center gap-2 rounded-full border-2 border-[#2C1710] bg-[#FF5A3D] px-8 py-4 font-black text-white shadow-[6px_6px_0_#2C1710] transition hover:-translate-y-0.5 hover:shadow-[8px_8px_0_#2C1710]"
-              >
-                Baixar e começar <SvgIcon name="arrow-right" className="h-5 w-5" />
-              </a>
             </div>
           </div>
         </section>
@@ -701,11 +524,10 @@ export default function LandingPageRodizioBrinquedos() {
           <div className="mx-auto max-w-7xl px-5 py-20 md:px-8">
             <div className="mx-auto max-w-4xl text-center">
               <p className="mb-3 text-sm font-black uppercase tracking-[0.25em] text-[#FF5A3D]">Tutorial</p>
-              <h2 className="font-serif text-5xl font-black leading-tight md:text-6xl">Como usar Sugerir rodada e Planejamento semanal.</h2>
-              <p className="mt-6 text-xl font-medium leading-relaxed text-[#5F453A]">A nova lógica do app organiza a rodada por categorias. O total de brinquedos aparece para facilitar a leitura, mas ele é calculado automaticamente pela soma das quantidades escolhidas em cada categoria.</p>
+              <h2 className="font-serif text-5xl font-black leading-tight md:text-6xl">Como transformar excesso em uma rodada possivel.</h2>
             </div>
 
-            <div className="mt-12 grid gap-5 md:grid-cols-2 lg:grid-cols-4">
+            <div className="mt-12 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
               {tutorialSteps.map((item) => (
                 <div key={item.number} className="rounded-[2rem] border-2 border-[#2C1710] bg-[#FFF4E8] p-7 shadow-[7px_7px_0_#2C1710]">
                   <p className="mb-4 inline-flex rounded-full border-2 border-[#2C1710] bg-[#FF5A3D] px-4 py-2 text-sm font-black text-white">{item.number}</p>
@@ -713,66 +535,6 @@ export default function LandingPageRodizioBrinquedos() {
                   <p className="text-base font-medium leading-relaxed text-[#5F453A]">{item.text}</p>
                 </div>
               ))}
-            </div>
-
-            <div className="mt-12 grid gap-5 lg:grid-cols-[0.9fr_1.1fr]">
-              <div className="rounded-[2rem] border-2 border-[#2C1710] bg-[#FFE9D2] p-8 shadow-[7px_7px_0_#2C1710]">
-                <p className="mb-3 text-sm font-black uppercase tracking-[0.2em] text-[#FF5A3D]">Exemplo de Sugerir rodada</p>
-                <h3 className="mb-5 text-3xl font-black">Configuração por categoria</h3>
-                <div className="space-y-3 text-lg font-bold text-[#5F453A]">
-                  <p>2 brinquedos de montar</p>
-                  <p>1 livro</p>
-                  <p>1 brinquedo sensorial</p>
-                  <p>1 brinquedo de faz de conta</p>
-                  <p>1 brinquedo de movimento</p>
-                </div>
-                <div className="mt-6 rounded-2xl border-2 border-[#2C1710] bg-white p-5 text-lg font-black">Total automático da rodada: 6 brinquedos</div>
-                <p className="mt-5 text-base font-bold leading-relaxed text-[#5F453A]">Ao sugerir a rodada, o app busca brinquedos que respeitem essa composição. Assim, a seleção não fica concentrada em um único tipo de brinquedo.</p>
-              </div>
-
-              <div className="rounded-[2rem] border-2 border-[#2C1710] bg-[#CFE8D8] p-8 shadow-[7px_7px_0_#2C1710]">
-                <p className="mb-3 text-sm font-black uppercase tracking-[0.2em] text-[#2D8C75]">Exemplo de Planejamento semanal</p>
-                <h3 className="mb-5 text-3xl font-black">Cada dia pode ter uma composição diferente</h3>
-                <div className="grid gap-4 md:grid-cols-3">
-                  {weeklyExamples.map((item) => (
-                    <div key={item.day} className="rounded-2xl border-2 border-[#2C1710] bg-white p-5 shadow-[4px_4px_0_#2C1710]">
-                      <p className="text-sm font-black uppercase tracking-[0.14em] text-[#FF5A3D]">{item.mode}</p>
-                      <h4 className="mt-2 text-xl font-black">{item.day}</h4>
-                      <div className="mt-4 space-y-2 text-sm font-bold text-[#5F453A]">
-                        {item.rows.map((row) => (
-                          <p key={row}>{row}</p>
-                        ))}
-                      </div>
-                      <div className="mt-4 rounded-xl bg-[#FFF4E8] p-3 text-sm font-black">{item.total}</div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </div>
-
-            <div className="mt-12 rounded-[2rem] border-2 border-[#2C1710] bg-white p-8 shadow-[7px_7px_0_#2C1710]">
-              <div className="grid gap-8 lg:grid-cols-[0.8fr_1.2fr] lg:items-center">
-                <div>
-                  <p className="mb-3 text-sm font-black uppercase tracking-[0.2em] text-[#FF5A3D]">Regra simples</p>
-                  <h3 className="text-3xl font-black">O total não manda na rodada. As categorias mandam.</h3>
-                </div>
-                <div className="space-y-4 text-lg font-medium leading-relaxed text-[#5F453A]">
-                  <p>Se o dia estiver marcado como usar padrão, o app usa as quantidades padrão por categoria.</p>
-                  <p>Se o dia estiver personalizado, o app usa as quantidades daquele dia específico.</p>
-                  <p>Depois disso, o botão Sugerir rodada monta uma seleção coerente com a configuração efetiva do dia.</p>
-                </div>
-              </div>
-            </div>
-
-            <div className="mt-12 rounded-[2rem] border-2 border-[#2C1710] bg-[#FFF4E8] p-8 shadow-[7px_7px_0_#2C1710]">
-              <p className="mb-3 text-sm font-black uppercase tracking-[0.2em] text-[#2D8C75]">Controle flexível</p>
-              <h3 className="mb-5 text-3xl font-black">Categorias acompanham a sua casa</h3>
-              <p className="text-lg font-medium leading-relaxed text-[#5F453A]">Se a criança cresceu, se os interesses mudaram ou se a família prefere outro jeito de organizar, as categorias podem ser ajustadas. Você pode mudar nomes, reorganizar brinquedos e remover categorias que não combinam mais com a rotina.</p>
-              <div className="mt-6 grid gap-3 sm:grid-cols-3">
-                <div className="rounded-2xl border-2 border-[#2C1710] bg-white p-4 text-center font-black">Editar</div>
-                <div className="rounded-2xl border-2 border-[#2C1710] bg-white p-4 text-center font-black">Renomear</div>
-                <div className="rounded-2xl border-2 border-[#2C1710] bg-white p-4 text-center font-black">Excluir</div>
-              </div>
             </div>
           </div>
         </section>
@@ -785,7 +547,9 @@ export default function LandingPageRodizioBrinquedos() {
           </div>
 
           <div className="mx-auto mt-12 max-w-md rounded-[2rem] border-2 border-[#2C1710] bg-white p-8 shadow-[9px_9px_0_#2C1710]">
-            <div className="mb-6 inline-flex items-center gap-2 rounded-full bg-[#FFE1B7] px-4 py-2 text-sm font-black"><SvgIcon name="shield" className="h-4 w-4" /> Plano Premium</div>
+            <div className="mb-6 inline-flex items-center gap-2 rounded-full bg-[#FFE1B7] px-4 py-2 text-sm font-black">
+              <SvgIcon name="shield" className="h-4 w-4" /> Plano Premium
+            </div>
             <h3 className="text-3xl font-black">Teste grátis disponível</h3>
             <p className="mt-2 text-lg font-medium text-[#5F453A]">Plano Premium com cobrança mensal após o período de teste, conforme as condições exibidas na App Store.</p>
             <div className="my-7 h-px bg-[#E8D5C6]" />
