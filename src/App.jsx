@@ -449,7 +449,7 @@ if (typeof window !== "undefined") {
 export default function LandingPageRodizioBrinquedos() {
   return (
     <div className="min-h-screen overflow-x-hidden bg-[#FFF4E8] text-[#2C1710]">
-      <header className="sticky top-0 z-50 border-b-2 border-[#2C1710] bg-[#FFF4E8]/95 backdrop-blur">
+      <header className="sticky top-0 z-[100] border-b-2 border-[#2C1710] bg-[#FFF4E8]/90 shadow-[0_8px_24px_rgba(44,23,16,0.10)] backdrop-blur-xl supports-[backdrop-filter]:bg-[#FFF4E8]/75">
         <div className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-5 py-4 md:px-8">
           <a href="#inicio" className="flex shrink-0 items-center gap-3" aria-label="Ir para o início">
             <div className="flex h-11 w-11 items-center justify-center rounded-full border-2 border-[#2C1710] bg-[#FF5A3D] shadow-[4px_4px_0_#2C1710]">
