@@ -464,7 +464,7 @@ export default function LandingPageRodizioBrinquedos() {
         <section id="como-funciona" className="scroll-mt-28 mx-auto max-w-7xl px-5 py-20 md:px-8">
           <div className="mb-12 max-w-3xl">
             <p className="mb-3 text-sm font-black uppercase tracking-[0.25em] text-[#FF5A3D]">Como funciona</p>
-            <h2 className="font-serif text-5xl font-black leading-tight md:text-6xl">Um método simples antes de ser um app.</h2>
+            <h2 className="font-serif text-5xl font-black leading-tight md:text-6xl">Por que o rodízio funciona?</h2>
             <p className="mt-6 text-xl font-medium leading-relaxed text-[#5F453A]">
               Primeiro vem a lógica: menos brinquedos disponíveis, mais clareza para escolher e uma troca planejada para manter o interesse vivo.
             </p>
