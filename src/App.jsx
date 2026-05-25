@@ -449,7 +449,7 @@ if (typeof window !== "undefined") {
 export default function LandingPageRodizioBrinquedos() {
   return (
     <div className="min-h-screen overflow-x-hidden bg-[#FFF4E8] text-[#2C1710]">
-      <header className="sticky top-0 z-[100] border-b-2 border-[#2C1710] bg-[#FFF4E8]/90 shadow-[0_8px_24px_rgba(44,23,16,0.10)] backdrop-blur-xl supports-[backdrop-filter]:bg-[#FFF4E8]/75">
+      <header className="fixed left-0 right-0 top-0 z-[100] border-b-2 border-[#2C1710] bg-[#FFF4E8]/90 shadow-[0_8px_24px_rgba(44,23,16,0.10)] backdrop-blur-xl supports-[backdrop-filter]:bg-[#FFF4E8]/75">
         <div className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-5 py-4 md:px-8">
           <a href="#inicio" className="flex shrink-0 items-center gap-3" aria-label="Ir para o início">
             <div className="flex h-11 w-11 items-center justify-center rounded-full border-2 border-[#2C1710] bg-[#FF5A3D] shadow-[4px_4px_0_#2C1710]">
@@ -477,7 +477,7 @@ export default function LandingPageRodizioBrinquedos() {
         </div>
       </header>
 
-      <main id="inicio">
+      <main id="inicio" className="pt-[78px] md:pt-[84px]">
         <section className="relative overflow-hidden border-b-2 border-[#2C1710]">
           <div className="absolute right-0 top-0 h-full w-1/2 bg-gradient-to-br from-[#FFD7B8] via-[#FFB68F] to-[#FFF4E8] opacity-80" />
           <div className="absolute bottom-0 left-0 h-56 w-56 rounded-full bg-[#CFE8D8] blur-3xl" />
@@ -614,7 +614,7 @@ export default function LandingPageRodizioBrinquedos() {
           </div>
         </section>
 
-        <section id="como-funciona" className="mx-auto max-w-7xl px-5 py-20 md:px-8">
+        <section id="como-funciona" className="scroll-mt-28 mx-auto max-w-7xl px-5 py-20 md:px-8">
           <div className="mb-12 max-w-3xl">
             <p className="mb-3 text-sm font-black uppercase tracking-[0.25em] text-[#FF5A3D]">Como funciona</p>
             <h2 className="font-serif text-5xl font-black leading-tight md:text-6xl">Um sistema simples para organizar sem complicar.</h2>
@@ -632,7 +632,7 @@ export default function LandingPageRodizioBrinquedos() {
           </div>
         </section>
 
-        <section id="beneficios" className="border-y-2 border-[#2C1710] bg-[#FFE9D2]">
+        <section id="beneficios" className="scroll-mt-28 border-y-2 border-[#2C1710] bg-[#FFE9D2]">
           <div className="mx-auto grid max-w-7xl gap-10 px-5 py-20 md:grid-cols-[0.9fr_1.1fr] md:px-8">
             <div>
               <p className="mb-3 text-sm font-black uppercase tracking-[0.25em] text-[#FF5A3D]">Benefícios</p>
@@ -651,7 +651,7 @@ export default function LandingPageRodizioBrinquedos() {
           </div>
         </section>
 
-        <section id="telas" className="border-b-2 border-[#2C1710] bg-[#FFF4E8]">
+        <section id="telas" className="scroll-mt-28 border-b-2 border-[#2C1710] bg-[#FFF4E8]">
           <div className="mx-auto max-w-7xl px-5 py-20 md:px-8">
             <div className="mx-auto max-w-4xl text-center">
               <p className="mb-3 text-sm font-black uppercase tracking-[0.25em] text-[#FF5A3D]">Telas do app</p>
@@ -667,7 +667,7 @@ export default function LandingPageRodizioBrinquedos() {
           </div>
         </section>
 
-        <section id="tutorial-visual" className="border-b-2 border-[#2C1710] bg-white">
+        <section id="tutorial-visual" className="scroll-mt-28 border-b-2 border-[#2C1710] bg-white">
           <div className="mx-auto max-w-7xl px-5 py-20 md:px-8">
             <div className="mx-auto max-w-4xl text-center">
               <p className="mb-3 text-sm font-black uppercase tracking-[0.25em] text-[#2D8C75]">Tutorial visual</p>
@@ -697,7 +697,7 @@ export default function LandingPageRodizioBrinquedos() {
           </div>
         </section>
 
-        <section id="tutorial" className="border-b-2 border-[#2C1710] bg-white">
+        <section id="tutorial" className="scroll-mt-28 border-b-2 border-[#2C1710] bg-white">
           <div className="mx-auto max-w-7xl px-5 py-20 md:px-8">
             <div className="mx-auto max-w-4xl text-center">
               <p className="mb-3 text-sm font-black uppercase tracking-[0.25em] text-[#FF5A3D]">Tutorial</p>
@@ -777,7 +777,7 @@ export default function LandingPageRodizioBrinquedos() {
           </div>
         </section>
 
-        <section id="planos" className="mx-auto max-w-7xl px-5 py-20 md:px-8">
+        <section id="planos" className="scroll-mt-28 mx-auto max-w-7xl px-5 py-20 md:px-8">
           <div className="mx-auto max-w-3xl text-center">
             <p className="mb-3 text-sm font-black uppercase tracking-[0.25em] text-[#FF5A3D]">Planos</p>
             <h2 className="font-serif text-5xl font-black leading-tight md:text-6xl">Comece simples. Organize no seu ritmo.</h2>
