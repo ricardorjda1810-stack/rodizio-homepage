@@ -285,7 +285,7 @@ function EmotionalVideo() {
             </p>
           </div>
           <div className="overflow-hidden rounded-[2rem] border-2 border-[#2C1710] bg-[#2C1710] p-2 shadow-[9px_9px_0_#2C1710]">
-            <video className="aspect-video w-full rounded-[1.5rem] bg-[#FFF4E8] object-cover" src="/videos/rodizio-transformacao.mp4" poster="/og-whatsapp.jpg" autoPlay muted loop playsInline controls={false} />
+            <video className="aspect-video w-full rounded-[1.5rem] bg-[#FFF4E8] object-cover" src="/videos/rodizio-transformacao.mp4" poster="/og-whatsapp.jpg" playsInline controls preload="metadata" />
           </div>
         </div>
       </div>
