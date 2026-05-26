@@ -126,6 +126,23 @@ const premiumFeatures = [
   "Fotos para encontrar tudo rápido"
 ];
 
+function trackGoogleAdsAppStoreConversion() {
+  if (typeof window === "undefined") return;
+
+  if (typeof window.gtag === "function") {
+    window.gtag("event", "conversion", {
+      send_to: "AW-18175877623/6uH9CNqm0rAcEPfD99pD"
+    });
+    return;
+  }
+
+  window.dataLayer = window.dataLayer || [];
+  window.dataLayer.push({
+    event: "google_ads_app_store_conversion",
+    send_to: "AW-18175877623/6uH9CNqm0rAcEPfD99pD"
+  });
+}
+
 function SvgIcon({ name, className = "h-5 w-5", title }) {
   const commonProps = {
     className,
@@ -186,9 +203,14 @@ function CTAButton({ children, href = APP_STORE_URL, variant = "primary", classN
   const isHashLink = href.startsWith("#");
   const baseClass = "inline-flex items-center justify-center gap-2 rounded-full border-2 border-[#2C1710] px-8 py-4 font-black shadow-[6px_6px_0_#2C1710] transition hover:-translate-y-0.5 hover:shadow-[8px_8px_0_#2C1710]";
   const variantClass = variant === "secondary" ? "bg-white text-[#2C1710]" : "bg-[#FF5A3D] text-white";
+  const handleClick = () => {
+    if (href === APP_STORE_URL) {
+      trackGoogleAdsAppStoreConversion();
+    }
+  };
 
   return (
-    <a href={href} target={isHashLink ? undefined : "_blank"} rel={isHashLink ? undefined : "noreferrer"} className={`${baseClass} ${variantClass} ${className}`}>
+    <a href={href} target={isHashLink ? undefined : "_blank"} rel={isHashLink ? undefined : "noreferrer"} onClick={handleClick} className={`${baseClass} ${variantClass} ${className}`}>
       {children}
     </a>
   );
@@ -330,7 +352,7 @@ export default function LandingPageRodizioBrinquedos() {
             <a href="#telas" className="hover:text-[#FF5A3D]">Telas</a>
             <a href="#planos" className="hover:text-[#FF5A3D]">Baixar</a>
           </nav>
-          <a href={APP_STORE_URL} target="_blank" rel="noreferrer" className="rounded-full border-2 border-[#2C1710] bg-[#FF5A3D] px-5 py-3 text-center text-sm font-black text-white shadow-[4px_4px_0_#2C1710] transition hover:-translate-y-0.5 hover:shadow-[6px_6px_0_#2C1710]">
+          <a href={APP_STORE_URL} target="_blank" rel="noreferrer" onClick={trackGoogleAdsAppStoreConversion} className="rounded-full border-2 border-[#2C1710] bg-[#FF5A3D] px-5 py-3 text-center text-sm font-black text-white shadow-[4px_4px_0_#2C1710] transition hover:-translate-y-0.5 hover:shadow-[6px_6px_0_#2C1710]">
             App Store
           </a>
         </div>
@@ -536,7 +558,7 @@ export default function LandingPageRodizioBrinquedos() {
           <div className="flex flex-wrap gap-5 text-sm font-bold text-white/80">
             <a href={PRIVACY_URL} target="_blank" rel="noreferrer" className="hover:text-white">Privacidade</a>
             <a href={TERMS_URL} target="_blank" rel="noreferrer" className="hover:text-white">Termos</a>
-            <a href={APP_STORE_URL} target="_blank" rel="noreferrer" className="hover:text-white">App Store</a>
+            <a href={APP_STORE_URL} target="_blank" rel="noreferrer" onClick={trackGoogleAdsAppStoreConversion} className="hover:text-white">App Store</a>
           </div>
         </div>
       </footer>
