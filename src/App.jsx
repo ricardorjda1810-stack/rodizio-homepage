@@ -216,6 +216,19 @@ function CTAButton({ children, href = APP_STORE_URL, variant = "primary", classN
   );
 }
 
+function AndroidSoonButton({ className = "" }) {
+  return (
+    <button
+      type="button"
+      disabled
+      aria-disabled="true"
+      className={`inline-flex cursor-not-allowed items-center justify-center gap-2 rounded-full border-2 border-[#2C1710] bg-white px-8 py-4 font-black text-[#2C1710] opacity-80 shadow-[6px_6px_0_#2C1710] ${className}`}
+    >
+      Google Play em breve
+    </button>
+  );
+}
+
 function SectionHeading({ eyebrow, title, children, align = "center", eyebrowColor = "text-[#FF5A3D]" }) {
   const alignmentClass = align === "center" ? "mx-auto max-w-4xl text-center" : "max-w-3xl";
 
@@ -374,9 +387,10 @@ export default function LandingPageRodizioBrinquedos() {
               <p className="mt-7 max-w-xl text-xl font-medium leading-relaxed text-[#5F453A]">
                 Descubra como o rodízio de brinquedos pode aumentar foco, organização e interesse nas brincadeiras.
               </p>
-              <div className="mt-9 flex flex-col gap-4 sm:flex-row">
+              <div className="mt-9 flex flex-col gap-4 sm:flex-row sm:flex-wrap">
                 <CTAButton href="#como-funciona" variant="primary">Veja como funciona <SvgIcon name="arrow-right" className="h-5 w-5" /></CTAButton>
                 <CTAButton variant="secondary">Baixar na App Store</CTAButton>
+                <AndroidSoonButton />
               </div>
               <div className="mt-8 grid gap-3 sm:grid-cols-3">
                 {emotionalQuestions.map((question) => (
@@ -545,6 +559,10 @@ export default function LandingPageRodizioBrinquedos() {
               ))}
             </ul>
             <CTAButton className="mt-8 w-full">Baixar na App Store <SvgIcon name="arrow-right" className="h-5 w-5" /></CTAButton>
+            <AndroidSoonButton className="mt-4 w-full" />
+            <p className="mt-4 text-center text-sm font-bold text-[#5F453A]">
+              Versão Android prevista para breve.
+            </p>
           </div>
         </section>
       </main>
