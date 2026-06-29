@@ -71,37 +71,73 @@ const benefits = [
   "Sistema simples para pais"
 ];
 
+const featureCards = [
+  {
+    title: "Rodada por categoria",
+    emoji: "🎯",
+    text: "Escolha quantos brinquedos de cada tipo entram na rodada."
+  },
+  {
+    title: "Sugerir rodada",
+    emoji: "✨",
+    text: "O app ajuda a montar uma seleção equilibrada para o dia."
+  },
+  {
+    title: "Planejamento semanal",
+    emoji: "🗓️",
+    text: "Personalize a composição de cada dia da semana."
+  },
+  {
+    title: "Categorias flexíveis",
+    emoji: "🏷️",
+    text: "Edite, renomeie ou remova categorias conforme a rotina da casa."
+  },
+  {
+    title: "Caixas e locais",
+    emoji: "📦",
+    text: "Saiba onde cada brinquedo está guardado."
+  },
+  {
+    title: "Visual mais limpo",
+    emoji: "🌿",
+    text: "Uma experiência mais clara, bonita e fácil de usar."
+  }
+];
+
 const appScreens = [
   {
-    title: "Rodada do dia",
-    subtitle: "Veja o que fica disponível hoje e sugira uma nova seleção em poucos toques.",
+    title: "Veja a rodada do dia",
+    subtitle: "Acompanhe os brinquedos disponíveis, fotos e categorias em uma tela mais clara.",
     emoji: "🏠",
-    imageSrc: "/screenshots/home-rodada.png",
-    rows: ["Planejamento semanal", "Sugerir rodada", "Brinquedos disponíveis"]
+    imageSrc: "/screenshots/home-nova.png",
+    fallbackImageSrc: "/screenshots/home-rodada.png",
+    rows: ["Rodada por categoria", "Fotos dos brinquedos", "Resumo da semana"]
   },
   {
-    title: "Brinquedos organizados",
-    subtitle: "Filtre por categoria, caixa e local para saber onde cada brinquedo está.",
+    title: "Gere uma sugestão",
+    subtitle: "O app monta uma seleção equilibrada para o dia com base nas categorias.",
     emoji: "🧸",
-    imageSrc: "/screenshots/catalogo-brinquedos.png",
-    rows: ["Filtros do catálogo", "Lista de brinquedos", "Categorias visíveis"]
+    imageSrc: "/screenshots/sugerir-rodada.png",
+    fallbackImageSrc: "/screenshots/composicao-rodada.png",
+    rows: ["Sugerir rodada", "Composição equilibrada", "Poucos toques"]
   },
   {
-    title: "Caixas da casa",
-    subtitle: "Guarde o que não está na rodada e mantenha o sistema fácil de repetir.",
-    emoji: "📦",
-    imageSrc: "/screenshots/caixas.png",
-    rows: ["Caixa Montessori", "Ver brinquedos", "Criar caixa"]
+    title: "Planeje a semana",
+    subtitle: "Personalize dias, quantidades e categorias para manter a rotina previsível.",
+    emoji: "🗓️",
+    imageSrc: "/screenshots/planejamento-semanal-novo.png",
+    fallbackImageSrc: "/screenshots/planejamento-semanal.png",
+    rows: ["Planejamento semanal", "Categorias por dia", "Rotina mais leve"]
   }
 ];
 
 const tutorialScreens = [
-  { title: "1. Veja a rodada", text: "Na Home, confira os brinquedos disponíveis e o resumo do planejamento semanal.", imageSrc: "/screenshots/home-rodada.png" },
-  { title: "2. Sugira uma nova seleção", text: "O botão Sugerir rodada monta uma seleção equilibrada a partir das categorias configuradas.", imageSrc: "/screenshots/home-rodada.png" },
-  { title: "3. Revise o catálogo", text: "Use filtros por categoria, caixa e local para entender o acervo da casa.", imageSrc: "/screenshots/catalogo-brinquedos.png" },
-  { title: "4. Ajuste a composição", text: "Defina quantos brinquedos de cada categoria entram na rodada.", imageSrc: "/screenshots/composicao-rodada.png" },
-  { title: "5. Gerencie categorias", text: "Crie, edite, renomeie ou remova categorias conforme a rotina da família.", imageSrc: "/screenshots/gerenciar-categorias.png" },
-  { title: "6. Planeje a semana", text: "Escolha dias padrão ou personalize quantidades por categoria em cada dia.", imageSrc: "/screenshots/planejamento-semanal.png" }
+  { title: "Veja a rodada do dia", text: "Confira os brinquedos disponíveis, fotos e categorias em uma visão simples.", imageSrc: "/screenshots/home-nova.png", fallbackImageSrc: "/screenshots/home-rodada.png" },
+  { title: "Gere uma sugestão", text: "Monte uma seleção equilibrada para o dia sem começar do zero.", imageSrc: "/screenshots/sugerir-rodada.png", fallbackImageSrc: "/screenshots/composicao-rodada.png" },
+  { title: "Ajuste categorias", text: "Edite, renomeie ou remova categorias para acompanhar a rotina da casa.", imageSrc: "/screenshots/gerenciar-categorias-novo.png", fallbackImageSrc: "/screenshots/gerenciar-categorias.png" },
+  { title: "Planeje a semana", text: "Personalize a composição de cada dia e deixe a semana mais previsível.", imageSrc: "/screenshots/planejamento-semanal-novo.png", fallbackImageSrc: "/screenshots/planejamento-semanal.png" },
+  { title: "Organize caixas", text: "Saiba onde cada brinquedo está guardado e mantenha o acervo fácil de encontrar.", imageSrc: "/screenshots/caixas-novo.png", fallbackImageSrc: "/screenshots/caixas.png" },
+  { title: "Revise o catálogo", text: "Veja todos os brinquedos com filtros, fotos, categorias, caixas e locais.", imageSrc: "/screenshots/catalogo-novo.png", fallbackImageSrc: "/screenshots/catalogo-brinquedos.png" }
 ];
 
 const tutorialSteps = [
@@ -254,14 +290,29 @@ function Card({ item, cardBg = "bg-white" }) {
 }
 
 function PhoneMockup({ screen }) {
+  const [imageSrc, setImageSrc] = React.useState(screen.imageSrc);
   const [imageFailed, setImageFailed] = React.useState(false);
+
+  React.useEffect(() => {
+    setImageSrc(screen.imageSrc);
+    setImageFailed(false);
+  }, [screen.imageSrc]);
+
+  const handleImageError = () => {
+    if (screen.fallbackImageSrc && imageSrc !== screen.fallbackImageSrc) {
+      setImageSrc(screen.fallbackImageSrc);
+      return;
+    }
+
+    setImageFailed(true);
+  };
 
   return (
     <div className="relative mx-auto w-full max-w-[320px]">
       <div className="rounded-[2.4rem] border-2 border-[#2C1710] bg-[#2C1710] p-2 shadow-[8px_8px_0_#2C1710]">
         <div className="relative aspect-[9/19.5] overflow-hidden rounded-[1.8rem] bg-[#FFF4E8]">
-          {screen.imageSrc && !imageFailed ? (
-            <img src={screen.imageSrc} alt={screen.title} className="h-full w-full bg-[#FFF4E8] object-contain object-top" onError={() => setImageFailed(true)} />
+          {imageSrc && !imageFailed ? (
+            <img src={imageSrc} alt={screen.title} className="h-full w-full bg-[#FFF4E8] object-contain object-top" onError={handleImageError} />
           ) : (
             <div className="flex h-full items-center justify-center p-5 text-center">
               <div>
@@ -282,14 +333,29 @@ function PhoneMockup({ screen }) {
 }
 
 function TutorialScreenshotCard({ item, index }) {
+  const [imageSrc, setImageSrc] = React.useState(item.imageSrc);
   const [imageFailed, setImageFailed] = React.useState(false);
+
+  React.useEffect(() => {
+    setImageSrc(item.imageSrc);
+    setImageFailed(false);
+  }, [item.imageSrc]);
+
+  const handleImageError = () => {
+    if (item.fallbackImageSrc && imageSrc !== item.fallbackImageSrc) {
+      setImageSrc(item.fallbackImageSrc);
+      return;
+    }
+
+    setImageFailed(true);
+  };
 
   return (
     <div className="rounded-[2rem] border-2 border-[#2C1710] bg-[#FFF4E8] p-5 shadow-[7px_7px_0_#2C1710]">
       <div className="overflow-hidden rounded-[1.8rem] border-2 border-[#2C1710] bg-[#2C1710] p-2">
-        {item.imageSrc && !imageFailed ? (
+        {imageSrc && !imageFailed ? (
           <div className="aspect-[9/19.5] overflow-hidden rounded-[1.4rem] bg-[#FFF4E8]">
-            <img src={item.imageSrc} alt={item.title} className="h-full w-full bg-[#FFF4E8] object-contain object-top" onError={() => setImageFailed(true)} />
+            <img src={imageSrc} alt={item.title} className="h-full w-full bg-[#FFF4E8] object-contain object-top" onError={handleImageError} />
           </div>
         ) : (
           <div className="flex aspect-[9/19.5] items-center justify-center rounded-[1.4rem] bg-white p-8 text-center">
@@ -336,6 +402,7 @@ function runLandingPageSelfTests() {
   results.push({ name: "transformationCardsHaveTwoStates", passed: transformationCards.length === 2 && transformationCards.some((item) => item.title === "Antes") && transformationCards.some((item) => item.title === "Depois") });
   results.push({ name: "educationalCardsHaveThreeUniqueItems", passed: educationalCards.length === 3 && new Set(educationalCards.map((item) => item.title)).size === 3 });
   results.push({ name: "howItWorksCardsHaveThreeSteps", passed: howItWorksCards.length === 3 });
+  results.push({ name: "featureCardsHighlightNewAppFeatures", passed: featureCards.length === 6 && featureCards.some((item) => item.title === "Rodada por categoria") && featureCards.some((item) => item.title === "Visual mais limpo") });
   results.push({ name: "appScreensHaveThreeMockups", passed: appScreens.length === 3 && appScreens.every((item) => item.imageSrc.startsWith("/screenshots/")) });
   results.push({ name: "tutorialScreensHaveRealImagePaths", passed: tutorialScreens.length >= 6 && tutorialScreens.every((item) => item.imageSrc.startsWith("/screenshots/")) });
   results.push({ name: "tutorialExplainsCategoryQuantities", passed: tutorialSteps.some((item) => item.text.includes("quantos brinquedos de cada categoria")) });
@@ -472,9 +539,16 @@ export default function LandingPageRodizioBrinquedos() {
 
         <section id="telas" className="scroll-mt-28 border-b-2 border-[#2C1710] bg-[#FFF4E8]">
           <div className="mx-auto max-w-7xl px-5 py-20 md:px-8">
-            <SectionHeading eyebrow="Agora entra o app" title="Uma ferramenta simples para aplicar o sistema na vida real.">
-              <p className="mt-6 text-xl font-medium leading-relaxed text-[#5F453A]">Depois de entender a transformação, o app ajuda você a repetir o método com menos esforço: rodada, caixas, categorias e planejamento semanal.</p>
+            <SectionHeading eyebrow="Agora entra o app" title="Agora o app ficou ainda mais inteligente.">
+              <p className="mt-6 text-xl font-medium leading-relaxed text-[#5F453A]">
+                O Rodízio de Brinquedos agora permite montar rodadas por categoria, planejar a semana e organizar caixas, locais e brinquedos com mais clareza.
+              </p>
             </SectionHeading>
+            <div className="mt-12 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
+              {featureCards.map((item, index) => (
+                <Card key={item.title} item={item} cardBg={index % 2 === 0 ? "bg-white" : "bg-[#FFE9D2]"} />
+              ))}
+            </div>
             <div className="mt-12 grid gap-8 lg:grid-cols-3">
               {appScreens.map((screen) => <PhoneMockup key={screen.title} screen={screen} />)}
             </div>
@@ -484,7 +558,7 @@ export default function LandingPageRodizioBrinquedos() {
         <section id="tutorial-visual" className="scroll-mt-28 border-b-2 border-[#2C1710] bg-white">
           <div className="mx-auto max-w-7xl px-5 py-20 md:px-8">
             <SectionHeading eyebrow="Tutorial visual" title="Como transformar a casa em poucos passos." eyebrowColor="text-[#2D8C75]">
-              <p className="mt-6 text-xl font-medium leading-relaxed text-[#5F453A]">Veja como sair do excesso e criar uma rodada mais equilibrada usando as telas do aplicativo.</p>
+              <p className="mt-6 text-xl font-medium leading-relaxed text-[#5F453A]">Veja como navegar pelas novas telas para sugerir rodadas, ajustar categorias, planejar a semana e organizar caixas.</p>
             </SectionHeading>
             <div className="mt-12 grid gap-8 md:grid-cols-2 lg:grid-cols-3">
               {tutorialScreens.map((item, index) => <TutorialScreenshotCard key={item.title} item={item} index={index} />)}
