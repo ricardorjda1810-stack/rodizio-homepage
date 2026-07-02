@@ -2,6 +2,9 @@ import React from "react";
 import { motion } from "framer-motion";
 
 const APP_STORE_URL = "https://apps.apple.com/br/app/rodizio-brinquedos/id6759603735";
+const ANDROID_OPEN_TEST_URL =
+  import.meta.env.VITE_ANDROID_OPEN_TEST_URL ||
+  "https://play.google.com/store/apps/details?id=com.rodiziobrinquedos.v3";
 const PRIVACY_URL = "https://first-lime-7b2.notion.site/Pol-tica-de-Privacidade-Rod-zio-de-Brinquedos-d40b83abf35f4d089e1ae5f46423b4ca?pvs=143";
 const TERMS_URL = "https://first-lime-7b2.notion.site/Termos-de-Uso-Rod-zio-de-Brinquedos-34c496b60a598015ba29cb3322ebfbc6?pvs=143";
 
@@ -162,6 +165,31 @@ const premiumFeatures = [
   "Fotos para encontrar tudo rápido"
 ];
 
+const androidOpenTestCards = [
+  "Instalação pela Google Play",
+  "Feedback antes do lançamento oficial",
+  "Ideal para testar em celular e tablet Android"
+];
+
+const tabletHighlights = [
+  {
+    title: "Dashboard em tela grande",
+    text: "Rodada do dia, ações principais e organização da casa com mais espaço visual."
+  },
+  {
+    title: "Planejamento semanal mais claro",
+    text: "Visualize a semana com mais calma e ajuste a composição dos dias."
+  },
+  {
+    title: "Catálogo mais organizado",
+    text: "Fotos, categorias, caixas e locais ficam mais fáceis de revisar."
+  }
+];
+
+const tabletMockItems = ["Rodada de hoje", "Planejamento semanal", "Caixas", "Novo brinquedo", "Montar rodízio"];
+const TABLET_SCREENSHOT = "/screenshots/simulator-captures/ipadpro13-home.png";
+const TABLET_MOCKUP_IMAGE_CLASS = "h-full w-full bg-[#FFF4E8] object-contain object-top";
+
 function trackGoogleAdsAppStoreConversion() {
   if (typeof window === "undefined") return;
 
@@ -176,6 +204,25 @@ function trackGoogleAdsAppStoreConversion() {
   window.dataLayer.push({
     event: "google_ads_app_store_conversion",
     send_to: "AW-18175877623/6uH9CNqm0rAcEPfD99pD"
+  });
+}
+
+function trackAndroidOpenTestClick() {
+  if (typeof window === "undefined") return;
+
+  if (typeof window.gtag === "function") {
+    window.gtag("event", "android_open_test_click", {
+      event_category: "engagement",
+      event_label: "homepage_android_open_test"
+    });
+    return;
+  }
+
+  window.dataLayer = window.dataLayer || [];
+  window.dataLayer.push({
+    event: "android_open_test_click",
+    event_category: "engagement",
+    event_label: "homepage_android_open_test"
   });
 }
 
@@ -252,16 +299,17 @@ function CTAButton({ children, href = APP_STORE_URL, variant = "primary", classN
   );
 }
 
-function AndroidSoonButton({ className = "" }) {
+function AndroidTestButton({ className = "" }) {
   return (
-    <button
-      type="button"
-      disabled
-      aria-disabled="true"
-      className={`inline-flex cursor-not-allowed items-center justify-center gap-2 rounded-full border-2 border-[#2C1710] bg-white px-8 py-4 font-black text-[#2C1710] opacity-80 shadow-[6px_6px_0_#2C1710] ${className}`}
+    <a
+      href={ANDROID_OPEN_TEST_URL}
+      target="_blank"
+      rel="noreferrer"
+      onClick={trackAndroidOpenTestClick}
+      className={`inline-flex items-center justify-center gap-2 rounded-full border-2 border-[#2C1710] bg-white px-8 py-4 text-center font-black text-[#2C1710] shadow-[6px_6px_0_#2C1710] transition hover:-translate-y-0.5 hover:shadow-[8px_8px_0_#2C1710] ${className}`}
     >
-      Google Play em breve
-    </button>
+      Testar no Android
+    </a>
   );
 }
 
@@ -373,6 +421,62 @@ function TutorialScreenshotCard({ item, index }) {
   );
 }
 
+function TabletMockup({ imageSrc = TABLET_SCREENSHOT, fallbackImageSrc, title = "Versão tablet" }) {
+  const [currentSrc, setCurrentSrc] = React.useState(imageSrc);
+  const [imageFailed, setImageFailed] = React.useState(false);
+
+  React.useEffect(() => {
+    setCurrentSrc(imageSrc);
+    setImageFailed(false);
+  }, [imageSrc]);
+
+  const handleImageError = () => {
+    if (fallbackImageSrc && currentSrc !== fallbackImageSrc) {
+      setCurrentSrc(fallbackImageSrc);
+      return;
+    }
+
+    setImageFailed(true);
+  };
+
+  return (
+    <div className="relative mx-auto w-full max-w-[560px]">
+      <div className="rounded-[2.6rem] border-2 border-[#2C1710] bg-[#2C1710] p-3 shadow-[10px_10px_0_#2C1710]">
+        <div className="relative aspect-[3/4] overflow-hidden rounded-[2rem] bg-[#FFF4E8]">
+          {currentSrc && !imageFailed ? (
+            <img
+              src={currentSrc}
+              alt={title}
+              className={TABLET_MOCKUP_IMAGE_CLASS}
+              onError={handleImageError}
+            />
+          ) : (
+            <div className="grid h-full gap-3 sm:grid-cols-[1.1fr_0.9fr]">
+              <div className="rounded-3xl border-2 border-[#2C1710] bg-white p-5">
+                <p className="text-sm font-black uppercase tracking-[0.18em] text-[#FF5A3D]">Rodada de hoje</p>
+                <div className="mt-5 grid gap-3">
+                  {tabletMockItems.slice(0, 3).map((item) => (
+                    <div key={item} className="rounded-2xl border-2 border-[#2C1710] bg-[#FFE9D2] p-4 text-sm font-black">
+                      {item}
+                    </div>
+                  ))}
+                </div>
+              </div>
+              <div className="grid gap-3">
+                {tabletMockItems.slice(3).map((item) => (
+                  <div key={item} className="rounded-3xl border-2 border-[#2C1710] bg-[#CFE8D8] p-5 text-sm font-black">
+                    {item}
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+}
+
 function EmotionalVideo() {
   return (
     <section className="border-b-2 border-[#2C1710] bg-white">
@@ -407,6 +511,13 @@ function runLandingPageSelfTests() {
   results.push({ name: "tutorialScreensHaveRealImagePaths", passed: tutorialScreens.length >= 6 && tutorialScreens.every((item) => item.imageSrc.startsWith("/screenshots/")) });
   results.push({ name: "tutorialExplainsCategoryQuantities", passed: tutorialSteps.some((item) => item.text.includes("quantos brinquedos de cada categoria")) });
   results.push({ name: "weeklyExamplesExplainTotals", passed: weeklyExamples.length === 3 && weeklyExamples.every((item) => item.total.includes("Total")) });
+  results.push({ name: "androidOpenTestUrlIsConfigurable", passed: typeof ANDROID_OPEN_TEST_URL === "string" });
+  results.push({ name: "androidButtonDoesNotUseFakeUrl", passed: ANDROID_OPEN_TEST_URL === "" || /^https:\/\//.test(ANDROID_OPEN_TEST_URL) });
+  results.push({ name: "tabletSectionHasHighlights", passed: tabletHighlights.length === 3 && tabletHighlights.every((item) => item.title && item.text) });
+  results.push({ name: "androidOpenTestUrlUsesRealPlayStoreLink", passed: ANDROID_OPEN_TEST_URL.includes("play.google.com/store/apps/details?id=com.rodiziobrinquedos.v3") });
+  results.push({ name: "androidOpenTestButtonAvailable", passed: /^https:\/\/play\.google\.com\/store\/apps\/details\?id=com\.rodiziobrinquedos\.v3/.test(ANDROID_OPEN_TEST_URL) });
+  results.push({ name: "tabletSectionExists", passed: TABLET_SCREENSHOT.startsWith("/screenshots/") && tabletHighlights.length === 3 });
+  results.push({ name: "tabletMockupUsesContainFit", passed: TABLET_MOCKUP_IMAGE_CLASS.includes("object-contain") && TABLET_MOCKUP_IMAGE_CLASS.includes("object-top") });
   results.push({ name: "footerLinksAreComplete", passed: [PRIVACY_URL, TERMS_URL, APP_STORE_URL].every((url) => url.startsWith("https://")) });
   return results;
 }
@@ -426,13 +537,14 @@ export default function LandingPageRodizioBrinquedos() {
             </div>
             <span className="font-serif text-2xl font-black tracking-tight">Rodízio</span>
           </a>
-          <nav className="hidden items-center gap-10 text-sm font-bold md:flex" aria-label="Navegação principal">
+          <nav className="hidden items-center gap-6 text-sm font-bold lg:gap-8 md:flex" aria-label="Navegação principal">
             <a href="#como-funciona" className="hover:text-[#FF5A3D]">Como funciona</a>
             <a href="#transformacao" className="hover:text-[#FF5A3D]">Transformação</a>
             <a href="#telas" className="hover:text-[#FF5A3D]">Telas</a>
+            <a href="#tablet" className="hover:text-[#FF5A3D]">Tablet</a>
             <a href="#planos" className="hover:text-[#FF5A3D]">Baixar</a>
           </nav>
-          <a href={APP_STORE_URL} target="_blank" rel="noreferrer" onClick={trackGoogleAdsAppStoreConversion} className="rounded-full border-2 border-[#2C1710] bg-[#FF5A3D] px-5 py-3 text-center text-sm font-black text-white shadow-[4px_4px_0_#2C1710] transition hover:-translate-y-0.5 hover:shadow-[6px_6px_0_#2C1710]">
+          <a href={APP_STORE_URL} target="_blank" rel="noreferrer" onClick={trackGoogleAdsAppStoreConversion} className="rounded-full border-2 border-[#2C1710] bg-[#FF5A3D] px-3 py-2 text-center text-xs font-black text-white shadow-[4px_4px_0_#2C1710] transition hover:-translate-y-0.5 hover:shadow-[6px_6px_0_#2C1710] sm:px-5 sm:py-3 sm:text-sm">
             App Store
           </a>
         </div>
@@ -457,7 +569,7 @@ export default function LandingPageRodizioBrinquedos() {
               <div className="mt-9 flex flex-col gap-4 sm:flex-row sm:flex-wrap">
                 <CTAButton href="#como-funciona" variant="primary">Veja como funciona <SvgIcon name="arrow-right" className="h-5 w-5" /></CTAButton>
                 <CTAButton variant="secondary">Baixar na App Store</CTAButton>
-                <AndroidSoonButton />
+                <AndroidTestButton />
               </div>
               <div className="mt-8 grid gap-3 sm:grid-cols-3">
                 {emotionalQuestions.map((question) => (
@@ -555,6 +667,53 @@ export default function LandingPageRodizioBrinquedos() {
           </div>
         </section>
 
+        <section id="android-teste" className="scroll-mt-28 border-b-2 border-[#2C1710] bg-[#CFE8D8]">
+          <div className="mx-auto grid max-w-7xl gap-10 px-5 py-20 md:px-8 lg:grid-cols-[0.9fr_1.1fr] lg:items-center">
+            <div>
+              <p className="mb-3 text-sm font-black uppercase tracking-[0.25em] text-[#2D8C75]">Teste aberto Android</p>
+              <h2 className="font-serif text-5xl font-black leading-tight md:text-6xl">Agora o Rodízio de Brinquedos também está chegando ao Android.</h2>
+              <p className="mt-6 text-xl font-medium leading-relaxed text-[#5F453A]">
+                Participe do teste aberto, experimente a versão Android e ajude a melhorar a experiência em celulares e tablets.
+              </p>
+              <p className="mt-5 rounded-3xl border-2 border-[#2C1710] bg-white px-5 py-4 text-base font-bold text-[#5F453A] shadow-[5px_5px_0_#2C1710]">
+                Entre pelo Google Play e ajude a testar a versão Android.
+              </p>
+              <AndroidTestButton className="mt-8" />
+            </div>
+            <div className="grid gap-4 sm:grid-cols-3 lg:grid-cols-1">
+              {androidOpenTestCards.map((item) => (
+                <div key={item} className="flex items-start gap-3 rounded-[2rem] border-2 border-[#2C1710] bg-white p-5 shadow-[6px_6px_0_#2C1710]">
+                  <SvgIcon name="check" className="mt-0.5 h-6 w-6 shrink-0 text-[#2D8C75]" />
+                  <p className="font-black leading-snug">{item}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        <section id="tablet" className="scroll-mt-28 border-b-2 border-[#2C1710] bg-white">
+          <div className="mx-auto max-w-7xl px-5 py-20 md:px-8">
+            <div className="grid gap-10 lg:grid-cols-[0.9fr_1.1fr] lg:items-center">
+              <div>
+                <p className="mb-3 text-sm font-black uppercase tracking-[0.25em] text-[#FF5A3D]">Versão tablet</p>
+                <h2 className="font-serif text-5xl font-black leading-tight md:text-6xl">Uma visão maior para organizar a semana da casa.</h2>
+                <p className="mt-6 text-xl font-medium leading-relaxed text-[#5F453A]">
+                  No tablet, o Rodízio de Brinquedos vira um painel visual para acompanhar a rodada do dia, planejar a semana e encontrar brinquedos por caixas e locais com mais clareza.
+                </p>
+              </div>
+              <TabletMockup />
+            </div>
+            <div className="mt-12 grid gap-5 md:grid-cols-3">
+              {tabletHighlights.map((item, index) => (
+                <div key={item.title} className={`rounded-[2rem] border-2 border-[#2C1710] p-7 shadow-[7px_7px_0_#2C1710] ${index === 1 ? "bg-[#FFE9D2]" : "bg-[#FFF4E8]"}`}>
+                  <h3 className="text-2xl font-black">{item.title}</h3>
+                  <p className="mt-3 text-base font-medium leading-relaxed text-[#5F453A]">{item.text}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
         <section id="tutorial-visual" className="scroll-mt-28 border-b-2 border-[#2C1710] bg-white">
           <div className="mx-auto max-w-7xl px-5 py-20 md:px-8">
             <SectionHeading eyebrow="Tutorial visual" title="Como transformar a casa em poucos passos." eyebrowColor="text-[#2D8C75]">
@@ -633,9 +792,9 @@ export default function LandingPageRodizioBrinquedos() {
               ))}
             </ul>
             <CTAButton className="mt-8 w-full">Baixar na App Store <SvgIcon name="arrow-right" className="h-5 w-5" /></CTAButton>
-            <AndroidSoonButton className="mt-4 w-full" />
+            <AndroidTestButton className="mt-4 w-full" />
             <p className="mt-4 text-center text-sm font-bold text-[#5F453A]">
-              Versão Android prevista para breve.
+              Teste aberto disponível no Android.
             </p>
           </div>
         </section>
