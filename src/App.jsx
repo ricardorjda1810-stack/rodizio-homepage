@@ -1,5 +1,6 @@
 import React from "react";
 import { motion } from "framer-motion";
+import { Analytics } from "@vercel/analytics/react";
 
 const APP_STORE_URL = "https://apps.apple.com/br/app/rodizio-brinquedos/id6759603735";
 const ANDROID_OPEN_TEST_URL =
@@ -813,6 +814,7 @@ export default function LandingPageRodizioBrinquedos() {
           </div>
         </div>
       </footer>
+      <Analytics />
     </div>
   );
 }
