@@ -1,818 +1,532 @@
 import React from "react";
-import { motion } from "framer-motion";
+import { motion, useReducedMotion } from "framer-motion";
 
-const APP_STORE_URL = "https://apps.apple.com/br/app/rodizio-brinquedos/id6759603735";
+const APP_STORE_URL =
+  "https://apps.apple.com/br/app/rodizio-brinquedos/id6759603735";
 const ANDROID_OPEN_TEST_URL =
   import.meta.env.VITE_ANDROID_OPEN_TEST_URL ||
   "https://play.google.com/store/apps/details?id=com.rodiziobrinquedos.v3";
-const PRIVACY_URL = "https://first-lime-7b2.notion.site/Pol-tica-de-Privacidade-Rod-zio-de-Brinquedos-d40b83abf35f4d089e1ae5f46423b4ca?pvs=143";
-const TERMS_URL = "https://first-lime-7b2.notion.site/Termos-de-Uso-Rod-zio-de-Brinquedos-34c496b60a598015ba29cb3322ebfbc6?pvs=143";
+const PRIVACY_URL =
+  "https://first-lime-7b2.notion.site/Pol-tica-de-Privacidade-Rod-zio-de-Brinquedos-d40b83abf35f4d089e1ae5f46423b4ca?pvs=143";
+const TERMS_URL =
+  "https://first-lime-7b2.notion.site/Termos-de-Uso-Rod-zio-de-Brinquedos-34c496b60a598015ba29cb3322ebfbc6?pvs=143";
 
-const emotionalQuestions = [
-  "Brinquedos espalhados pela casa?",
-  "Seu filho perde o interesse rapidamente?",
-  "Você organiza tudo e, em poucos minutos, parece bagunçado de novo?"
+const ageOptions = [
+  { label: "0–6 meses", count: 4 },
+  { label: "6–12 meses", count: 5 },
+  { label: "1–2 anos", count: 6 },
+  { label: "2–3 anos", count: 7 },
+  { label: "3–4 anos", count: 7 },
+  { label: "4–7 anos", count: 8 },
 ];
 
-const transformationCards = [
-  {
-    title: "Antes",
-    emoji: "🧺",
-    tone: "Excesso",
-    text: "Muitos brinquedos à vista, escolhas demais, ambiente carregado e brincadeiras que duram pouco."
-  },
-  {
-    title: "Depois",
-    emoji: "✨",
-    tone: "Calma",
-    text: "Poucos brinquedos disponíveis, mais clareza para escolher, casa mais leve e brincadeira com mais foco."
-  }
+const sampleToys = [
+  { emoji: "⚽", name: "Bola macia", category: "Corpo e Respiração", color: "#FFE1D6" },
+  { emoji: "🔎", name: "Lupa infantil", category: "Sentidos e Exploração", color: "#DDEBFF" },
+  { emoji: "🧱", name: "Blocos", category: "Mãos e Construção", color: "#FFF0C7" },
+  { emoji: "🎭", name: "Fantasias", category: "Imaginação e Criatividade", color: "#EDE2FF" },
+  { emoji: "📚", name: "Livro cartonado", category: "Comunicação e Histórias", color: "#DDEBFF" },
+  { emoji: "🎵", name: "Instrumentos", category: "Sentidos e Exploração", color: "#FFE1D6" },
+  { emoji: "🧩", name: "Quebra-cabeça", category: "Mãos e Construção", color: "#FFF0C7" },
+  { emoji: "🛝", name: "Túnel infantil", category: "Corpo e Respiração", color: "#EDE2FF" },
+  { emoji: "🫖", name: "Cozinha", category: "Imaginação e Criatividade", color: "#FFE1D6" },
+  { emoji: "🃏", name: "Cartões", category: "Comunicação e Histórias", color: "#DDEBFF" },
+  { emoji: "🎨", name: "Pintura", category: "Imaginação e Criatividade", color: "#EDE2FF" },
+  { emoji: "🪇", name: "Chocalho", category: "Sentidos e Exploração", color: "#FFF0C7" },
 ];
 
-const educationalCards = [
-  {
-    title: "Foco e atenção",
-    emoji: "🎯",
-    text: "Com menos estímulos visuais, a criança tem mais chance de permanecer na brincadeira por mais tempo."
-  },
-  {
-    title: "Escolha mais simples",
-    emoji: "🧠",
-    text: "Menos opções à vista reduzem a sobrecarga de escolha e tornam a rotina mais previsível."
-  },
-  {
-    title: "Redescoberta",
-    emoji: "🧸",
-    text: "Quando um brinquedo volta para a rodada, ele pode despertar novo interesse e novas formas de brincar."
-  }
+const categories = [
+  ["Corpo e Respiração", "#FF7448"],
+  ["Sentidos e Exploração", "#3974D9"],
+  ["Mãos e Construção", "#B36B00"],
+  ["Imaginação e Criatividade", "#7B51C8"],
+  ["Comunicação e Histórias", "#C94F78"],
 ];
 
-const howItWorksCards = [
+const appViews = [
   {
-    icon: "🧸",
-    title: "Escolha poucos brinquedos",
-    text: "Em vez de deixar tudo disponível, selecione uma pequena rodada para a criança explorar melhor."
+    id: "hoje",
+    label: "Rodada de hoje",
+    eyebrow: "Hoje",
+    title: "A seleção certa, sem começar do zero.",
+    text: "Veja quantos brinquedos entram na rodada e prepare tudo com um checklist simples.",
+    image: "/screenshots/home-nova.png",
   },
   {
-    icon: "📦",
-    title: "Guarde o restante",
-    text: "Os brinquedos fora da rodada ficam organizados por caixas, categorias e locais."
+    id: "sugestao",
+    label: "Sugestão",
+    eyebrow: "Sugestão equilibrada",
+    title: "O aplicativo combina variedade e redescoberta.",
+    text: "Ele respeita as categorias definidas e prioriza brinquedos menos usados.",
+    image: "/screenshots/sugerir-rodada.png",
   },
   {
-    icon: "🔁",
-    title: "Troque no momento certo",
-    text: "Depois de alguns dias, a rodada muda e os brinquedos voltam com sensação de novidade."
-  }
+    id: "semana",
+    label: "Semana",
+    eyebrow: "Hoje + 6 dias",
+    title: "A rotina fica previsível sem ficar rígida.",
+    text: "Visualize a semana inteira e ajuste a quantidade de cada dia quando precisar.",
+    image: "/screenshots/planejamento-semanal-novo.png",
+  },
+  {
+    id: "catalogo",
+    label: "Catálogo",
+    eyebrow: "Tudo localizado",
+    title: "Você sabe o que tem e onde encontrar.",
+    text: "Fotos, categorias, caixas e locais deixam o acervo fácil de revisar.",
+    image: "/screenshots/catalogo-novo.png",
+  },
 ];
 
-const benefits = [
-  "Menos bagunça visual",
-  "Mais foco na brincadeira",
-  "Brinquedos menos esquecidos",
-  "Rotina mais previsível",
-  "Casa mais leve",
-  "Sistema simples para pais"
-];
-
-const featureCards = [
-  {
-    title: "Rodada por categoria",
-    emoji: "🎯",
-    text: "Escolha quantos brinquedos de cada tipo entram na rodada."
-  },
-  {
-    title: "Sugerir rodada",
-    emoji: "✨",
-    text: "O app ajuda a montar uma seleção equilibrada para o dia."
-  },
-  {
-    title: "Planejamento semanal",
-    emoji: "🗓️",
-    text: "Personalize a composição de cada dia da semana."
-  },
-  {
-    title: "Categorias flexíveis",
-    emoji: "🏷️",
-    text: "Edite, renomeie ou remova categorias conforme a rotina da casa."
-  },
-  {
-    title: "Caixas e locais",
-    emoji: "📦",
-    text: "Saiba onde cada brinquedo está guardado."
-  },
-  {
-    title: "Visual mais limpo",
-    emoji: "🌿",
-    text: "Uma experiência mais clara, bonita e fácil de usar."
-  }
-];
-
-const appScreens = [
-  {
-    title: "Veja a rodada do dia",
-    subtitle: "Acompanhe os brinquedos disponíveis, fotos e categorias em uma tela mais clara.",
-    emoji: "🏠",
-    imageSrc: "/screenshots/home-nova.png",
-    fallbackImageSrc: "/screenshots/home-rodada.png",
-    rows: ["Rodada por categoria", "Fotos dos brinquedos", "Resumo da semana"]
-  },
-  {
-    title: "Gere uma sugestão",
-    subtitle: "O app monta uma seleção equilibrada para o dia com base nas categorias.",
-    emoji: "🧸",
-    imageSrc: "/screenshots/sugerir-rodada.png",
-    fallbackImageSrc: "/screenshots/composicao-rodada.png",
-    rows: ["Sugerir rodada", "Composição equilibrada", "Poucos toques"]
-  },
-  {
-    title: "Planeje a semana",
-    subtitle: "Personalize dias, quantidades e categorias para manter a rotina previsível.",
-    emoji: "🗓️",
-    imageSrc: "/screenshots/planejamento-semanal-novo.png",
-    fallbackImageSrc: "/screenshots/planejamento-semanal.png",
-    rows: ["Planejamento semanal", "Categorias por dia", "Rotina mais leve"]
-  }
-];
-
-const tutorialScreens = [
-  { title: "Veja a rodada do dia", text: "Confira os brinquedos disponíveis, fotos e categorias em uma visão simples.", imageSrc: "/screenshots/home-nova.png", fallbackImageSrc: "/screenshots/home-rodada.png" },
-  { title: "Gere uma sugestão", text: "Monte uma seleção equilibrada para o dia sem começar do zero.", imageSrc: "/screenshots/sugerir-rodada.png", fallbackImageSrc: "/screenshots/composicao-rodada.png" },
-  { title: "Ajuste categorias", text: "Edite, renomeie ou remova categorias para acompanhar a rotina da casa.", imageSrc: "/screenshots/gerenciar-categorias-novo.png", fallbackImageSrc: "/screenshots/gerenciar-categorias.png" },
-  { title: "Planeje a semana", text: "Personalize a composição de cada dia e deixe a semana mais previsível.", imageSrc: "/screenshots/planejamento-semanal-novo.png", fallbackImageSrc: "/screenshots/planejamento-semanal.png" },
-  { title: "Organize caixas", text: "Saiba onde cada brinquedo está guardado e mantenha o acervo fácil de encontrar.", imageSrc: "/screenshots/caixas-novo.png", fallbackImageSrc: "/screenshots/caixas.png" },
-  { title: "Revise o catálogo", text: "Veja todos os brinquedos com filtros, fotos, categorias, caixas e locais.", imageSrc: "/screenshots/catalogo-novo.png", fallbackImageSrc: "/screenshots/catalogo-brinquedos.png" }
-];
-
-const tutorialSteps = [
-  { number: "01", title: "Cadastre", text: "Adicione brinquedos com nome, foto, categoria, caixa e local." },
-  { number: "02", title: "Separe", text: "Organize por tipos: montar, livros, sensorial, movimento ou faz de conta." },
-  { number: "03", title: "Defina quantidades", text: "Escolha quantos brinquedos de cada categoria entram na rodada." },
-  { number: "04", title: "Sugira a rodada", text: "O app monta uma seleção equilibrada para o dia." },
-  { number: "05", title: "Planeje a semana", text: "Cada dia pode usar o padrão ou uma composição personalizada." },
-  { number: "06", title: "Troque com calma", text: "Mantenha poucos brinquedos à vista e renove a seleção no momento certo." }
-];
-
-const weeklyExamples = [
-  { day: "Segunda", mode: "Padrão", rows: ["Montar: 2", "Livro: 1", "Sensorial: 1"], total: "Total: 4" },
-  { day: "Quarta", mode: "Personalizado", rows: ["Movimento: 2", "Faz de conta: 2", "Livro: 1"], total: "Total: 5" },
-  { day: "Sábado", mode: "Personalizado", rows: ["Montar: 1", "Sensorial: 2", "Movimento: 2"], total: "Total: 5" }
-];
-
-const premiumFeatures = [
-  "Rodadas por categoria",
-  "Planejamento semanal",
-  "Organização por caixas e locais",
-  "Fotos para encontrar tudo rápido"
-];
-
-const androidOpenTestCards = [
-  "Instalação pela Google Play",
-  "Feedback antes do lançamento oficial",
-  "Ideal para testar em celular e tablet Android"
-];
-
-const tabletHighlights = [
-  {
-    title: "Dashboard em tela grande",
-    text: "Rodada do dia, ações principais e organização da casa com mais espaço visual."
-  },
-  {
-    title: "Planejamento semanal mais claro",
-    text: "Visualize a semana com mais calma e ajuste a composição dos dias."
-  },
-  {
-    title: "Catálogo mais organizado",
-    text: "Fotos, categorias, caixas e locais ficam mais fáceis de revisar."
-  }
-];
-
-const tabletMockItems = ["Rodada de hoje", "Planejamento semanal", "Caixas", "Novo brinquedo", "Montar rodízio"];
-const TABLET_SCREENSHOT = "/screenshots/simulator-captures/ipadpro13-home.png";
-const TABLET_MOCKUP_IMAGE_CLASS = "h-full w-full bg-[#FFF4E8] object-contain object-top";
-
-function trackGoogleAdsAppStoreConversion() {
+function trackEvent(event, params = {}) {
   if (typeof window === "undefined") return;
 
   if (typeof window.gtag === "function") {
-    window.gtag("event", "conversion", {
-      send_to: "AW-18175877623/6uH9CNqm0rAcEPfD99pD"
-    });
+    window.gtag("event", event, params);
     return;
   }
 
   window.dataLayer = window.dataLayer || [];
-  window.dataLayer.push({
-    event: "google_ads_app_store_conversion",
-    send_to: "AW-18175877623/6uH9CNqm0rAcEPfD99pD"
-  });
+  window.dataLayer.push({ event, ...params });
 }
 
-function trackAndroidOpenTestClick() {
-  if (typeof window === "undefined") return;
-
-  if (typeof window.gtag === "function") {
-    window.gtag("event", "android_open_test_click", {
-      event_category: "engagement",
-      event_label: "homepage_android_open_test"
-    });
+function trackStoreClick(store, source) {
+  if (store === "app_store") {
+    if (typeof window !== "undefined" && typeof window.gtag === "function") {
+      window.gtag("event", "conversion", {
+        send_to: "AW-18175877623/6uH9CNqm0rAcEPfD99pD",
+      });
+    } else if (typeof window !== "undefined") {
+      window.dataLayer = window.dataLayer || [];
+      window.dataLayer.push({
+        event: "google_ads_app_store_conversion",
+        send_to: "AW-18175877623/6uH9CNqm0rAcEPfD99pD",
+      });
+    }
+    trackEvent("app_store_click", { source });
     return;
   }
 
-  window.dataLayer = window.dataLayer || [];
-  window.dataLayer.push({
-    event: "android_open_test_click",
-    event_category: "engagement",
-    event_label: "homepage_android_open_test"
-  });
+  trackEvent("android_open_test_click", { source });
 }
 
-function SvgIcon({ name, className = "h-5 w-5", title }) {
-  const commonProps = {
+function Icon({ name, className = "h-5 w-5" }) {
+  const props = {
     className,
     viewBox: "0 0 24 24",
     fill: "none",
     stroke: "currentColor",
-    strokeWidth: 2.2,
+    strokeWidth: 2,
     strokeLinecap: "round",
     strokeLinejoin: "round",
-    role: title ? "img" : "presentation",
-    "aria-label": title,
-    "aria-hidden": title ? undefined : true
+    "aria-hidden": true,
   };
 
-  if (name === "arrow-right") {
-    return (
-      <svg {...commonProps}>
-        <path d="M5 12h14" />
-        <path d="m13 6 6 6-6 6" />
-      </svg>
-    );
+  if (name === "arrow") {
+    return <svg {...props}><path d="M5 12h14" /><path d="m13 6 6 6-6 6" /></svg>;
   }
-
-  if (name === "play") {
-    return (
-      <svg {...commonProps}>
-        <path d="M8 5v14l11-7Z" />
-      </svg>
-    );
-  }
-
   if (name === "check") {
-    return (
-      <svg {...commonProps}>
-        <circle cx="12" cy="12" r="9" />
-        <path d="m8 12 2.5 2.5L16 9" />
-      </svg>
-    );
+    return <svg {...props}><path d="m5 12 4 4L19 6" /></svg>;
   }
-
-  if (name === "shield") {
-    return (
-      <svg {...commonProps}>
-        <path d="M12 3 5 6v5c0 4.5 2.9 8.4 7 10 4.1-1.6 7-5.5 7-10V6l-7-3Z" />
-        <path d="m9 12 2 2 4-5" />
-      </svg>
-    );
+  if (name === "spark") {
+    return <svg {...props}><path d="m12 3 1.6 4.4L18 9l-4.4 1.6L12 15l-1.6-4.4L6 9l4.4-1.6L12 3Z" /><path d="m18.5 15 .8 2.2 2.2.8-2.2.8-.8 2.2-.8-2.2-2.2-.8 2.2-.8.8-2.2Z" /></svg>;
   }
-
-  return (
-    <svg {...commonProps}>
-      <circle cx="12" cy="12" r="9" />
-    </svg>
-  );
+  if (name === "box") {
+    return <svg {...props}><path d="m4 7 8-4 8 4-8 4-8-4Z" /><path d="m4 7 8 4 8-4v10l-8 4-8-4V7Z" /><path d="M12 11v10" /></svg>;
+  }
+  if (name === "calendar") {
+    return <svg {...props}><rect x="3" y="5" width="18" height="16" rx="2" /><path d="M16 3v4M8 3v4M3 10h18" /></svg>;
+  }
+  return <svg {...props}><circle cx="12" cy="12" r="9" /></svg>;
 }
 
-function CTAButton({ children, href = APP_STORE_URL, variant = "primary", className = "" }) {
-  const isHashLink = href.startsWith("#");
-  const baseClass = "inline-flex items-center justify-center gap-2 rounded-full border-2 border-[#2C1710] px-8 py-4 font-black shadow-[6px_6px_0_#2C1710] transition hover:-translate-y-0.5 hover:shadow-[8px_8px_0_#2C1710]";
-  const variantClass = variant === "secondary" ? "bg-white text-[#2C1710]" : "bg-[#FF5A3D] text-white";
-  const handleClick = () => {
-    if (href === APP_STORE_URL) {
-      trackGoogleAdsAppStoreConversion();
-    }
-  };
+function StoreLink({ store = "app_store", source, children, className = "", compact = false }) {
+  const isApple = store === "app_store";
+  const href = isApple ? APP_STORE_URL : ANDROID_OPEN_TEST_URL;
 
-  return (
-    <a href={href} target={isHashLink ? undefined : "_blank"} rel={isHashLink ? undefined : "noreferrer"} onClick={handleClick} className={`${baseClass} ${variantClass} ${className}`}>
-      {children}
-    </a>
-  );
-}
-
-function AndroidTestButton({ className = "" }) {
   return (
     <a
-      href={ANDROID_OPEN_TEST_URL}
+      href={href}
       target="_blank"
       rel="noreferrer"
-      onClick={trackAndroidOpenTestClick}
-      className={`inline-flex items-center justify-center gap-2 rounded-full border-2 border-[#2C1710] bg-white px-8 py-4 text-center font-black text-[#2C1710] shadow-[6px_6px_0_#2C1710] transition hover:-translate-y-0.5 hover:shadow-[8px_8px_0_#2C1710] ${className}`}
+      onClick={() => trackStoreClick(store, source)}
+      className={`${isApple ? "button-primary" : "button-secondary"} ${compact ? "button-compact" : ""} ${className}`}
     >
-      Testar no Android
+      {children}
     </a>
   );
 }
 
-function SectionHeading({ eyebrow, title, children, align = "center", eyebrowColor = "text-[#FF5A3D]" }) {
-  const alignmentClass = align === "center" ? "mx-auto max-w-4xl text-center" : "max-w-3xl";
-
-  return (
-    <div className={alignmentClass}>
-      <p className={`mb-3 text-sm font-black uppercase tracking-[0.25em] ${eyebrowColor}`}>{eyebrow}</p>
-      <h2 className="font-serif text-5xl font-black leading-tight md:text-6xl">{title}</h2>
-      {children}
-    </div>
-  );
+function Eyebrow({ children, light = false }) {
+  return <p className={`eyebrow ${light ? "text-[#FFD6C8]" : "text-[#E34B24]"}`}>{children}</p>;
 }
 
-function Card({ item, cardBg = "bg-white" }) {
-  return (
-    <div className={`rounded-[2rem] border-2 border-[#2C1710] ${cardBg} p-7 shadow-[7px_7px_0_#2C1710]`}>
-      {item.emoji && <div className="mb-5 text-5xl" aria-hidden="true">{item.emoji}</div>}
-      {item.icon && <div className="mb-6 flex h-14 w-14 items-center justify-center rounded-2xl border-2 border-[#2C1710] bg-[#FFE1B7] text-3xl">{item.icon}</div>}
-      {item.tone && <p className="mb-3 text-sm font-black uppercase tracking-[0.18em] text-[#FF5A3D]">{item.tone}</p>}
-      <h3 className="mb-3 text-2xl font-black">{item.title}</h3>
-      <p className="text-base font-medium leading-relaxed text-[#5F453A]">{item.text}</p>
-    </div>
-  );
-}
+function RotationDemo() {
+  const [selectedAge, setSelectedAge] = React.useState("2–3 anos");
+  const [visibleCount, setVisibleCount] = React.useState(7);
 
-function PhoneMockup({ screen }) {
-  const [imageSrc, setImageSrc] = React.useState(screen.imageSrc);
-  const [imageFailed, setImageFailed] = React.useState(false);
+  const handleAgeChange = (event) => {
+    const nextAge = event.target.value;
+    const nextOption = ageOptions.find((option) => option.label === nextAge);
+    setSelectedAge(nextAge);
+    setVisibleCount(nextOption.count);
+    trackEvent("rotation_demo_age_selected", {
+      age_range: nextAge,
+      suggested_count: nextOption.count,
+    });
+  };
 
-  React.useEffect(() => {
-    setImageSrc(screen.imageSrc);
-    setImageFailed(false);
-  }, [screen.imageSrc]);
+  const handleCountChange = (event) => {
+    const nextCount = Number(event.target.value);
+    setVisibleCount(nextCount);
+  };
 
-  const handleImageError = () => {
-    if (screen.fallbackImageSrc && imageSrc !== screen.fallbackImageSrc) {
-      setImageSrc(screen.fallbackImageSrc);
-      return;
-    }
-
-    setImageFailed(true);
+  const handleCountCommit = (event) => {
+    const nextCount = Number(event.currentTarget.value);
+    trackEvent("rotation_demo_count_changed", { visible_count: nextCount });
   };
 
   return (
-    <div className="relative mx-auto w-full max-w-[320px]">
-      <div className="rounded-[2.4rem] border-2 border-[#2C1710] bg-[#2C1710] p-2 shadow-[8px_8px_0_#2C1710]">
-        <div className="relative aspect-[9/19.5] overflow-hidden rounded-[1.8rem] bg-[#FFF4E8]">
-          {imageSrc && !imageFailed ? (
-            <img src={imageSrc} alt={screen.title} className="h-full w-full bg-[#FFF4E8] object-contain object-top" onError={handleImageError} />
-          ) : (
-            <div className="flex h-full items-center justify-center p-5 text-center">
-              <div>
-                <p className="text-6xl" aria-hidden="true">📱</p>
-                <h3 className="mt-4 text-2xl font-black">{screen.title}</h3>
-                <p className="mt-3 text-sm font-bold text-[#5F453A]">Imagem em {screen.imageSrc}</p>
-              </div>
-            </div>
-          )}
+    <div className="demo-shell">
+      <div className="demo-controls">
+        <div>
+          <label htmlFor="age-range" className="control-label">Faixa etária</label>
+          <select id="age-range" value={selectedAge} onChange={handleAgeChange} className="select-control">
+            {ageOptions.map((option) => (
+              <option key={option.label} value={option.label}>{option.label}</option>
+            ))}
+          </select>
+        </div>
+
+        <div className="slider-wrap">
+          <div className="flex items-end justify-between gap-4">
+            <label htmlFor="toy-count" className="control-label mb-0">Brinquedos disponíveis</label>
+            <output htmlFor="toy-count" className="count-output">{visibleCount}</output>
+          </div>
+          <input
+            id="toy-count"
+            type="range"
+            min="4"
+            max="12"
+            value={visibleCount}
+            onChange={handleCountChange}
+            onPointerUp={handleCountCommit}
+            onKeyUp={handleCountCommit}
+            className="range-control"
+          />
+          <div className="flex justify-between text-xs font-bold text-[#7B655B]">
+            <span>Seleção menor</span>
+            <span>Mais opções</span>
+          </div>
         </div>
       </div>
-      <div className="mt-5 text-center">
-        <h3 className="text-2xl font-black">{screen.title}</h3>
-        <p className="mt-2 text-base font-bold leading-relaxed text-[#5F453A]">{screen.subtitle}</p>
-      </div>
-    </div>
-  );
-}
 
-function TutorialScreenshotCard({ item, index }) {
-  const [imageSrc, setImageSrc] = React.useState(item.imageSrc);
-  const [imageFailed, setImageFailed] = React.useState(false);
-
-  React.useEffect(() => {
-    setImageSrc(item.imageSrc);
-    setImageFailed(false);
-  }, [item.imageSrc]);
-
-  const handleImageError = () => {
-    if (item.fallbackImageSrc && imageSrc !== item.fallbackImageSrc) {
-      setImageSrc(item.fallbackImageSrc);
-      return;
-    }
-
-    setImageFailed(true);
-  };
-
-  return (
-    <div className="rounded-[2rem] border-2 border-[#2C1710] bg-[#FFF4E8] p-5 shadow-[7px_7px_0_#2C1710]">
-      <div className="overflow-hidden rounded-[1.8rem] border-2 border-[#2C1710] bg-[#2C1710] p-2">
-        {imageSrc && !imageFailed ? (
-          <div className="aspect-[9/19.5] overflow-hidden rounded-[1.4rem] bg-[#FFF4E8]">
-            <img src={imageSrc} alt={item.title} className="h-full w-full bg-[#FFF4E8] object-contain object-top" onError={handleImageError} />
-          </div>
-        ) : (
-          <div className="flex aspect-[9/19.5] items-center justify-center rounded-[1.4rem] bg-white p-8 text-center">
-            <div>
-              <p className="text-6xl" aria-hidden="true">📱</p>
-              <p className="mt-5 text-lg font-black">Screenshot {index + 1}</p>
-            </div>
-          </div>
-        )}
-      </div>
-      <p className="mt-5 text-sm font-black uppercase tracking-[0.18em] text-[#FF5A3D]">Passo {index + 1}</p>
-      <h3 className="mt-2 text-2xl font-black">{item.title}</h3>
-      <p className="mt-3 text-base font-medium leading-relaxed text-[#5F453A]">{item.text}</p>
-    </div>
-  );
-}
-
-function TabletMockup({ imageSrc = TABLET_SCREENSHOT, fallbackImageSrc, title = "Versão tablet" }) {
-  const [currentSrc, setCurrentSrc] = React.useState(imageSrc);
-  const [imageFailed, setImageFailed] = React.useState(false);
-
-  React.useEffect(() => {
-    setCurrentSrc(imageSrc);
-    setImageFailed(false);
-  }, [imageSrc]);
-
-  const handleImageError = () => {
-    if (fallbackImageSrc && currentSrc !== fallbackImageSrc) {
-      setCurrentSrc(fallbackImageSrc);
-      return;
-    }
-
-    setImageFailed(true);
-  };
-
-  return (
-    <div className="relative mx-auto w-full max-w-[560px]">
-      <div className="rounded-[2.6rem] border-2 border-[#2C1710] bg-[#2C1710] p-3 shadow-[10px_10px_0_#2C1710]">
-        <div className="relative aspect-[3/4] overflow-hidden rounded-[2rem] bg-[#FFF4E8]">
-          {currentSrc && !imageFailed ? (
-            <img
-              src={currentSrc}
-              alt={title}
-              className={TABLET_MOCKUP_IMAGE_CLASS}
-              onError={handleImageError}
-            />
-          ) : (
-            <div className="grid h-full gap-3 sm:grid-cols-[1.1fr_0.9fr]">
-              <div className="rounded-3xl border-2 border-[#2C1710] bg-white p-5">
-                <p className="text-sm font-black uppercase tracking-[0.18em] text-[#FF5A3D]">Rodada de hoje</p>
-                <div className="mt-5 grid gap-3">
-                  {tabletMockItems.slice(0, 3).map((item) => (
-                    <div key={item} className="rounded-2xl border-2 border-[#2C1710] bg-[#FFE9D2] p-4 text-sm font-black">
-                      {item}
-                    </div>
-                  ))}
-                </div>
-              </div>
-              <div className="grid gap-3">
-                {tabletMockItems.slice(3).map((item) => (
-                  <div key={item} className="rounded-3xl border-2 border-[#2C1710] bg-[#CFE8D8] p-5 text-sm font-black">
-                    {item}
-                  </div>
-                ))}
-              </div>
-            </div>
-          )}
-        </div>
-      </div>
-    </div>
-  );
-}
-
-function EmotionalVideo() {
-  return (
-    <section className="border-b-2 border-[#2C1710] bg-white">
-      <div className="mx-auto max-w-7xl px-5 py-16 md:px-8">
-        <div className="grid gap-8 lg:grid-cols-[0.85fr_1.15fr] lg:items-center">
+      <div className="demo-stage">
+        <div className="demo-summary" aria-live="polite">
           <div>
-            <p className="mb-3 text-sm font-black uppercase tracking-[0.25em] text-[#FF5A3D]">Veja a transformação</p>
-            <h2 className="font-serif text-5xl font-black leading-tight md:text-6xl">De brinquedos espalhados para uma brincadeira que prende a atenção.</h2>
-            <p className="mt-5 text-xl font-medium leading-relaxed text-[#5F453A]">
-              Primeiro a casa parece caótica. Depois, poucos brinquedos escolhidos com intenção criam um ambiente mais calmo, bonito e fácil de manter.
-            </p>
+            <p className="text-xs font-black uppercase tracking-[0.16em] text-[#E34B24]">Rodada de hoje</p>
+            <p className="mt-1 text-2xl font-black text-[#2B211D]">{visibleCount} para brincar</p>
           </div>
-          <div className="overflow-hidden rounded-[2rem] border-2 border-[#2C1710] bg-[#2C1710] p-2 shadow-[9px_9px_0_#2C1710]">
-            <video className="aspect-video w-full rounded-[1.5rem] bg-[#FFF4E8] object-cover" src="/videos/rodizio-transformacao.mp4" poster="/og-whatsapp.jpg" playsInline controls preload="metadata" />
+          <div className="text-right">
+            <p className="text-2xl font-black text-[#2B211D]">{50 - visibleCount}</p>
+            <p className="text-xs font-bold text-[#7B655B]">guardados para depois</p>
           </div>
         </div>
+
+        <div className="toy-grid" aria-label={`${visibleCount} brinquedos na rodada de hoje`}>
+          {sampleToys.map((toy, index) => {
+            const active = index < visibleCount;
+            return (
+              <motion.div
+                key={toy.name}
+                layout
+                initial={false}
+                animate={{ opacity: active ? 1 : 0.28, scale: active ? 1 : 0.94 }}
+                transition={{ duration: 0.22 }}
+                className={`toy-card ${active ? "toy-card-active" : "toy-card-resting"}`}
+                aria-hidden={!active}
+              >
+                <div className="toy-emoji" style={{ background: toy.color }}>{toy.emoji}</div>
+                <p className="mt-3 font-black text-[#2B211D]">{toy.name}</p>
+                <p className="mt-1 line-clamp-1 text-xs font-bold text-[#7B655B]">{toy.category}</p>
+              </motion.div>
+            );
+          })}
+        </div>
+
+        <div className="mt-6 flex flex-wrap gap-2">
+          {categories.map(([label, color]) => (
+            <span key={label} className="category-pill">
+              <span className="h-2 w-2 rounded-full" style={{ background: color }} />
+              {label}
+            </span>
+          ))}
+        </div>
+        <p className="mt-4 text-sm font-semibold leading-relaxed text-[#7B655B]">
+          Este é um exemplo visual. No aplicativo, a quantidade pode ser ajustada para a rotina da família.
+        </p>
       </div>
-    </section>
+    </div>
   );
 }
 
-function runLandingPageSelfTests() {
-  const results = [];
-  results.push({ name: "appStoreUrlUsesAppleId", passed: /id6759603735$/.test(APP_STORE_URL) });
-  results.push({ name: "legalLinksUseHttps", passed: PRIVACY_URL.startsWith("https://") && TERMS_URL.startsWith("https://") });
-  results.push({ name: "problemQuestionsHaveThreeItems", passed: emotionalQuestions.length === 3 });
-  results.push({ name: "transformationCardsHaveTwoStates", passed: transformationCards.length === 2 && transformationCards.some((item) => item.title === "Antes") && transformationCards.some((item) => item.title === "Depois") });
-  results.push({ name: "educationalCardsHaveThreeUniqueItems", passed: educationalCards.length === 3 && new Set(educationalCards.map((item) => item.title)).size === 3 });
-  results.push({ name: "howItWorksCardsHaveThreeSteps", passed: howItWorksCards.length === 3 });
-  results.push({ name: "featureCardsHighlightNewAppFeatures", passed: featureCards.length === 6 && featureCards.some((item) => item.title === "Rodada por categoria") && featureCards.some((item) => item.title === "Visual mais limpo") });
-  results.push({ name: "appScreensHaveThreeMockups", passed: appScreens.length === 3 && appScreens.every((item) => item.imageSrc.startsWith("/screenshots/")) });
-  results.push({ name: "tutorialScreensHaveRealImagePaths", passed: tutorialScreens.length >= 6 && tutorialScreens.every((item) => item.imageSrc.startsWith("/screenshots/")) });
-  results.push({ name: "tutorialExplainsCategoryQuantities", passed: tutorialSteps.some((item) => item.text.includes("quantos brinquedos de cada categoria")) });
-  results.push({ name: "weeklyExamplesExplainTotals", passed: weeklyExamples.length === 3 && weeklyExamples.every((item) => item.total.includes("Total")) });
-  results.push({ name: "androidOpenTestUrlIsConfigurable", passed: typeof ANDROID_OPEN_TEST_URL === "string" });
-  results.push({ name: "androidButtonDoesNotUseFakeUrl", passed: ANDROID_OPEN_TEST_URL === "" || /^https:\/\//.test(ANDROID_OPEN_TEST_URL) });
-  results.push({ name: "tabletSectionHasHighlights", passed: tabletHighlights.length === 3 && tabletHighlights.every((item) => item.title && item.text) });
-  results.push({ name: "androidOpenTestUrlUsesRealPlayStoreLink", passed: ANDROID_OPEN_TEST_URL.includes("play.google.com/store/apps/details?id=com.rodiziobrinquedos.v3") });
-  results.push({ name: "androidOpenTestButtonAvailable", passed: /^https:\/\/play\.google\.com\/store\/apps\/details\?id=com\.rodiziobrinquedos\.v3/.test(ANDROID_OPEN_TEST_URL) });
-  results.push({ name: "tabletSectionExists", passed: TABLET_SCREENSHOT.startsWith("/screenshots/") && tabletHighlights.length === 3 });
-  results.push({ name: "tabletMockupUsesContainFit", passed: TABLET_MOCKUP_IMAGE_CLASS.includes("object-contain") && TABLET_MOCKUP_IMAGE_CLASS.includes("object-top") });
-  results.push({ name: "footerLinksAreComplete", passed: [PRIVACY_URL, TERMS_URL, APP_STORE_URL].every((url) => url.startsWith("https://")) });
-  return results;
-}
+function AppExperience() {
+  const [activeId, setActiveId] = React.useState(appViews[0].id);
+  const activeView = appViews.find((view) => view.id === activeId);
 
-if (typeof window !== "undefined") {
-  window.__rodizioLandingPageTests = runLandingPageSelfTests;
-}
+  const selectView = (id) => {
+    setActiveId(id);
+    trackEvent("app_experience_viewed", { view: id });
+  };
 
-export default function LandingPageRodizioBrinquedos() {
   return (
-    <div className="min-h-screen overflow-x-hidden bg-[#FFF4E8] text-[#2C1710]">
-      <header className="fixed left-0 right-0 top-0 z-[100] border-b-2 border-[#2C1710] bg-[#FFF4E8]/90 shadow-[0_8px_24px_rgba(44,23,16,0.10)] backdrop-blur-xl supports-[backdrop-filter]:bg-[#FFF4E8]/75">
-        <div className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-5 py-4 md:px-8">
-          <a href="#inicio" className="flex shrink-0 items-center gap-3" aria-label="Ir para o início">
-            <div className="flex h-11 w-11 items-center justify-center rounded-full border-2 border-[#2C1710] bg-[#FF5A3D] shadow-[4px_4px_0_#2C1710]">
-              <span className="text-xl" aria-hidden="true">🧸</span>
-            </div>
-            <span className="font-serif text-2xl font-black tracking-tight">Rodízio</span>
+    <div className="app-experience">
+      <div className="app-copy">
+        <div className="app-tabs" role="tablist" aria-label="Telas do aplicativo">
+          {appViews.map((view) => (
+            <button
+              key={view.id}
+              type="button"
+              role="tab"
+              aria-selected={activeId === view.id}
+              aria-controls="app-view-panel"
+              onClick={() => selectView(view.id)}
+              className={`app-tab ${activeId === view.id ? "app-tab-active" : ""}`}
+            >
+              {view.label}
+            </button>
+          ))}
+        </div>
+
+        <motion.div
+          id="app-view-panel"
+          role="tabpanel"
+          key={activeView.id}
+          initial={{ opacity: 0, y: 8 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.24 }}
+          className="mt-9"
+        >
+          <Eyebrow>{activeView.eyebrow}</Eyebrow>
+          <h3 className="mt-4 max-w-xl text-4xl font-black leading-[1.05] tracking-[-0.035em] text-[#2B211D] md:text-5xl">
+            {activeView.title}
+          </h3>
+          <p className="mt-5 max-w-lg text-lg font-medium leading-relaxed text-[#68554C]">
+            {activeView.text}
+          </p>
+          <ul className="mt-7 space-y-3 text-base font-bold text-[#3B2D27]">
+            <li className="feature-line"><Icon name="check" /> Rodízio diário e planejamento de sete dias</li>
+            <li className="feature-line"><Icon name="check" /> Categorias, caixas e locais em uma só rotina</li>
+            <li className="feature-line"><Icon name="check" /> Checklist para deixar a brincadeira pronta</li>
+          </ul>
+        </motion.div>
+      </div>
+
+      <div className="phone-scene">
+        <div className="phone-glow" />
+        <motion.div
+          key={activeView.image}
+          initial={{ opacity: 0, scale: 0.98 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.3 }}
+          className="phone-frame"
+        >
+          <div className="phone-speaker" />
+          <img src={activeView.image} alt={`Tela ${activeView.label} do aplicativo Rodízio de Brinquedos`} />
+        </motion.div>
+      </div>
+    </div>
+  );
+}
+
+function App() {
+  const reduceMotion = useReducedMotion();
+  const reveal = reduceMotion
+    ? {}
+    : {
+        initial: { opacity: 0, y: 18 },
+        whileInView: { opacity: 1, y: 0 },
+        viewport: { once: true, amount: 0.2 },
+        transition: { duration: 0.5 },
+      };
+
+  return (
+    <div className="min-h-screen overflow-x-hidden bg-[#FFF9F2] text-[#2B211D]">
+      <a href="#conteudo" className="skip-link">Ir para o conteúdo</a>
+
+      <header className="site-header">
+        <div className="header-inner">
+          <a href="#inicio" className="brand" aria-label="Rodízio de Brinquedos — início">
+            <img src="/favicon.png" alt="" className="h-10 w-10 rounded-xl" />
+            <span className="hidden sm:inline">Rodízio de Brinquedos</span>
           </a>
-          <nav className="hidden items-center gap-6 text-sm font-bold lg:gap-8 md:flex" aria-label="Navegação principal">
-            <a href="#como-funciona" className="hover:text-[#FF5A3D]">Como funciona</a>
-            <a href="#transformacao" className="hover:text-[#FF5A3D]">Transformação</a>
-            <a href="#telas" className="hover:text-[#FF5A3D]">Telas</a>
-            <a href="#tablet" className="hover:text-[#FF5A3D]">Tablet</a>
-            <a href="#planos" className="hover:text-[#FF5A3D]">Baixar</a>
+          <nav aria-label="Navegação principal" className="main-nav">
+            <a href="#beneficios">Benefícios</a>
+            <a href="#demonstracao">Experimente</a>
+            <a href="#aplicativo">O aplicativo</a>
           </nav>
-          <a href={APP_STORE_URL} target="_blank" rel="noreferrer" onClick={trackGoogleAdsAppStoreConversion} className="rounded-full border-2 border-[#2C1710] bg-[#FF5A3D] px-3 py-2 text-center text-xs font-black text-white shadow-[4px_4px_0_#2C1710] transition hover:-translate-y-0.5 hover:shadow-[6px_6px_0_#2C1710] sm:px-5 sm:py-3 sm:text-sm">
-            App Store
-          </a>
+          <StoreLink source="header" compact>Começar agora</StoreLink>
         </div>
       </header>
 
-      <main id="inicio" className="pt-[78px] md:pt-[84px]">
-        <section className="relative overflow-hidden border-b-2 border-[#2C1710]">
-          <div className="absolute right-0 top-0 h-full w-1/2 bg-gradient-to-br from-[#FFD7B8] via-[#FFB68F] to-[#FFF4E8] opacity-80" />
-          <div className="absolute bottom-0 left-0 h-56 w-56 rounded-full bg-[#CFE8D8] blur-3xl" />
-          <div className="relative mx-auto grid max-w-7xl items-center gap-10 px-5 py-14 md:grid-cols-2 md:px-8 md:py-24">
-            <motion.div initial={false} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}>
-              <div className="mb-7 inline-flex items-center gap-2 rounded-full border-2 border-[#2C1710] bg-white px-5 py-3 text-sm font-bold shadow-[3px_3px_0_#2C1710]">
-                <span className="h-2.5 w-2.5 rounded-full bg-[#2D8C75]" />
-                Menos bagunça. Mais brincadeira.
-              </div>
-              <h1 className="max-w-2xl font-serif text-5xl font-black leading-[0.98] tracking-tight sm:text-6xl md:text-7xl lg:text-8xl">
-                Seu filho tem muitos brinquedos… e brinca cada vez menos?
+      <main id="conteudo">
+        <section id="inicio" className="hero-section">
+          <div className="hero-orbit hero-orbit-one" />
+          <div className="hero-orbit hero-orbit-two" />
+          <div className="section-container hero-grid">
+            <motion.div {...reveal}>
+              <div className="hero-badge"><Icon name="spark" /> Uma casa mais leve começa com menos escolhas de cada vez</div>
+              <h1 className="hero-title">
+                Menos brinquedos à vista.
+                <span>Mais brincadeira de verdade.</span>
               </h1>
-              <p className="mt-7 max-w-xl text-xl font-medium leading-relaxed text-[#5F453A]">
-                Descubra como o rodízio de brinquedos pode aumentar foco, organização e interesse nas brincadeiras.
+              <p className="hero-copy">
+                O rodízio transforma muitos brinquedos em pequenas seleções intencionais — para a criança explorar com mais calma e a família manter uma rotina mais leve.
               </p>
-              <div className="mt-9 flex flex-col gap-4 sm:flex-row sm:flex-wrap">
-                <CTAButton href="#como-funciona" variant="primary">Veja como funciona <SvgIcon name="arrow-right" className="h-5 w-5" /></CTAButton>
-                <CTAButton variant="secondary">Baixar na App Store</CTAButton>
-                <AndroidTestButton />
+              <div className="hero-actions">
+                <StoreLink source="hero">Começar meu rodízio <Icon name="arrow" /></StoreLink>
+                <a href="#demonstracao" className="button-secondary" onClick={() => trackEvent("demo_cta_click", { source: "hero" })}>
+                  Experimentar a ideia
+                </a>
               </div>
-              <div className="mt-8 grid gap-3 sm:grid-cols-3">
-                {emotionalQuestions.map((question) => (
-                  <div key={question} className="rounded-3xl border-2 border-[#2C1710] bg-white px-4 py-3 text-sm font-black shadow-[4px_4px_0_#2C1710]">
-                    {question}
+              <p className="mt-5 text-sm font-bold text-[#7B655B]">7 dias para experimentar · use os brinquedos que você já tem</p>
+            </motion.div>
+
+            <motion.div {...reveal} transition={{ duration: 0.55, delay: 0.08 }} className="hero-visual" aria-label="De muitos brinquedos para uma rodada com sete itens">
+              <div className="shelf-card shelf-card-back">
+                <p className="shelf-label">Guardados para depois</p>
+                <div className="shelf-icons opacity-40">🧸 🚗 🎨 🥁 🧩 🪁 🪇</div>
+              </div>
+              <div className="shelf-card shelf-card-front">
+                <div className="flex items-center justify-between gap-4">
+                  <div>
+                    <p className="shelf-label text-[#E34B24]">Rodada de hoje</p>
+                    <p className="mt-1 text-3xl font-black">7 brinquedos</p>
                   </div>
-                ))}
-              </div>
-            </motion.div>
-            <motion.div initial={false} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.7, delay: 0.15 }} className="relative mx-auto flex h-[420px] w-full max-w-[560px] items-center justify-center sm:h-[560px]" aria-hidden="true">
-              <div className="absolute h-[300px] w-[300px] rounded-full border-2 border-[#2C1710] bg-gradient-to-br from-[#FFA46B] to-[#FF5A3D] shadow-[10px_10px_0_#2C1710] sm:h-[410px] sm:w-[410px]" />
-              <div className="absolute right-8 top-14 rounded-full border-2 border-[#2C1710] bg-white px-5 py-3 text-sm font-black shadow-[6px_6px_0_#2C1710] rotate-[7deg]">Brinquedos demais?</div>
-              <div className="absolute bottom-20 left-4 rounded-full border-2 border-[#2C1710] bg-white px-5 py-3 text-sm font-black shadow-[6px_6px_0_#2C1710] rotate-[-8deg]">Poucos à vista</div>
-              <div className="relative z-10 text-center">
-                <div className="text-8xl">🧸</div>
-                <p className="mt-3 font-serif text-3xl font-black italic text-white drop-shadow">brincar melhor</p>
-              </div>
-            </motion.div>
-          </div>
-        </section>
-
-        <EmotionalVideo />
-
-        <section id="transformacao" className="scroll-mt-28 border-b-2 border-[#2C1710] bg-white">
-          <div className="mx-auto max-w-7xl px-5 py-20 md:px-8">
-            <SectionHeading eyebrow="Transformação" title="Não é sobre guardar brinquedos. É sobre mudar o clima da casa.">
-              <p className="mt-6 text-xl font-medium leading-relaxed text-[#5F453A]">
-                O rodízio transforma excesso em escolha. A casa fica mais leve e a criança encontra menos distrações para mergulhar melhor na brincadeira.
-              </p>
-            </SectionHeading>
-            <div className="mt-12 grid gap-6 lg:grid-cols-2">
-              {transformationCards.map((item) => <Card key={item.title} item={item} cardBg={item.title === "Antes" ? "bg-[#FFF4E8]" : "bg-[#CFE8D8]"} />)}
-            </div>
-          </div>
-        </section>
-
-        <section className="border-b-2 border-[#2C1710] bg-[#FFE9D2]">
-          <div className="mx-auto max-w-7xl px-5 py-20 md:px-8">
-            <SectionHeading eyebrow="Desenvolvimento infantil" title="Por que o rodízio funciona?" eyebrowColor="text-[#2D8C75]">
-              <p className="mt-4 text-xl font-black leading-relaxed text-[#FF5A3D]">Menos estímulos à vista podem facilitar foco, escolha e brincadeiras mais profundas.</p>
-            </SectionHeading>
-            <div className="mt-12 grid gap-5 md:grid-cols-3">
-              {educationalCards.map((item) => <Card key={item.title} item={item} />)}
-            </div>
-          </div>
-        </section>
-
-        <section id="como-funciona" className="scroll-mt-28 mx-auto max-w-7xl px-5 py-20 md:px-8">
-          <SectionHeading eyebrow="Como funciona" title="Um sistema simples: menos à vista, mais valor em cada brinquedo." align="left" />
-          <div className="mt-12 grid gap-5 md:grid-cols-3">
-            {howItWorksCards.map((item, index) => (
-              <div key={item.title} className="rounded-[2rem] border-2 border-[#2C1710] bg-white p-7 shadow-[7px_7px_0_#2C1710]">
-                <div className="mb-6 flex h-14 w-14 items-center justify-center rounded-2xl border-2 border-[#2C1710] bg-[#FFE1B7] text-3xl">{item.icon}</div>
-                <p className="mb-3 text-sm font-black text-[#FF5A3D]">0{index + 1}</p>
-                <h3 className="mb-3 text-2xl font-black">{item.title}</h3>
-                <p className="text-base font-medium leading-relaxed text-[#5F453A]">{item.text}</p>
-              </div>
-            ))}
-          </div>
-        </section>
-
-        <section id="beneficios" className="scroll-mt-28 border-y-2 border-[#2C1710] bg-[#FFE9D2]">
-          <div className="mx-auto grid max-w-7xl gap-10 px-5 py-20 md:grid-cols-[0.9fr_1.1fr] md:px-8">
-            <div>
-              <p className="mb-3 text-sm font-black uppercase tracking-[0.25em] text-[#FF5A3D]">O que muda na rotina</p>
-              <h2 className="font-serif text-5xl font-black leading-tight md:text-6xl">Menos bagunça. Mais brincadeira de verdade.</h2>
-              <p className="mt-6 text-xl font-medium leading-relaxed text-[#5F453A]">Quando o excesso sai de cena, cada brinquedo volta a ter espaço, atenção e propósito.</p>
-            </div>
-            <div className="grid gap-4 sm:grid-cols-2">
-              {benefits.map((text) => (
-                <div key={text} className="flex items-start gap-3 rounded-3xl border-2 border-[#2C1710] bg-white p-5 shadow-[5px_5px_0_#2C1710]">
-                  <SvgIcon name="check" className="mt-0.5 h-6 w-6 shrink-0 text-[#2D8C75]" />
-                  <p className="font-black">{text}</p>
+                  <span className="rounded-full bg-[#FFF0E8] px-3 py-1 text-sm font-black text-[#E34B24]">pronta</span>
                 </div>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        <section id="telas" className="scroll-mt-28 border-b-2 border-[#2C1710] bg-[#FFF4E8]">
-          <div className="mx-auto max-w-7xl px-5 py-20 md:px-8">
-            <SectionHeading eyebrow="Agora entra o app" title="Agora o app ficou ainda mais inteligente.">
-              <p className="mt-6 text-xl font-medium leading-relaxed text-[#5F453A]">
-                O Rodízio de Brinquedos agora permite montar rodadas por categoria, planejar a semana e organizar caixas, locais e brinquedos com mais clareza.
-              </p>
-            </SectionHeading>
-            <div className="mt-12 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
-              {featureCards.map((item, index) => (
-                <Card key={item.title} item={item} cardBg={index % 2 === 0 ? "bg-white" : "bg-[#FFE9D2]"} />
-              ))}
-            </div>
-            <div className="mt-12 grid gap-8 lg:grid-cols-3">
-              {appScreens.map((screen) => <PhoneMockup key={screen.title} screen={screen} />)}
-            </div>
-          </div>
-        </section>
-
-        <section id="android-teste" className="scroll-mt-28 border-b-2 border-[#2C1710] bg-[#CFE8D8]">
-          <div className="mx-auto grid max-w-7xl gap-10 px-5 py-20 md:px-8 lg:grid-cols-[0.9fr_1.1fr] lg:items-center">
-            <div>
-              <p className="mb-3 text-sm font-black uppercase tracking-[0.25em] text-[#2D8C75]">Teste aberto Android</p>
-              <h2 className="font-serif text-5xl font-black leading-tight md:text-6xl">Agora o Rodízio de Brinquedos também está chegando ao Android.</h2>
-              <p className="mt-6 text-xl font-medium leading-relaxed text-[#5F453A]">
-                Participe do teste aberto, experimente a versão Android e ajude a melhorar a experiência em celulares e tablets.
-              </p>
-              <p className="mt-5 rounded-3xl border-2 border-[#2C1710] bg-white px-5 py-4 text-base font-bold text-[#5F453A] shadow-[5px_5px_0_#2C1710]">
-                Entre pelo Google Play e ajude a testar a versão Android.
-              </p>
-              <AndroidTestButton className="mt-8" />
-            </div>
-            <div className="grid gap-4 sm:grid-cols-3 lg:grid-cols-1">
-              {androidOpenTestCards.map((item) => (
-                <div key={item} className="flex items-start gap-3 rounded-[2rem] border-2 border-[#2C1710] bg-white p-5 shadow-[6px_6px_0_#2C1710]">
-                  <SvgIcon name="check" className="mt-0.5 h-6 w-6 shrink-0 text-[#2D8C75]" />
-                  <p className="font-black leading-snug">{item}</p>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        <section id="tablet" className="scroll-mt-28 border-b-2 border-[#2C1710] bg-white">
-          <div className="mx-auto max-w-7xl px-5 py-20 md:px-8">
-            <div className="grid gap-10 lg:grid-cols-[0.9fr_1.1fr] lg:items-center">
-              <div>
-                <p className="mb-3 text-sm font-black uppercase tracking-[0.25em] text-[#FF5A3D]">Versão tablet</p>
-                <h2 className="font-serif text-5xl font-black leading-tight md:text-6xl">Uma visão maior para organizar a semana da casa.</h2>
-                <p className="mt-6 text-xl font-medium leading-relaxed text-[#5F453A]">
-                  No tablet, o Rodízio de Brinquedos vira um painel visual para acompanhar a rodada do dia, planejar a semana e encontrar brinquedos por caixas e locais com mais clareza.
-                </p>
-              </div>
-              <TabletMockup />
-            </div>
-            <div className="mt-12 grid gap-5 md:grid-cols-3">
-              {tabletHighlights.map((item, index) => (
-                <div key={item.title} className={`rounded-[2rem] border-2 border-[#2C1710] p-7 shadow-[7px_7px_0_#2C1710] ${index === 1 ? "bg-[#FFE9D2]" : "bg-[#FFF4E8]"}`}>
-                  <h3 className="text-2xl font-black">{item.title}</h3>
-                  <p className="mt-3 text-base font-medium leading-relaxed text-[#5F453A]">{item.text}</p>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        <section id="tutorial-visual" className="scroll-mt-28 border-b-2 border-[#2C1710] bg-white">
-          <div className="mx-auto max-w-7xl px-5 py-20 md:px-8">
-            <SectionHeading eyebrow="Tutorial visual" title="Como transformar a casa em poucos passos." eyebrowColor="text-[#2D8C75]">
-              <p className="mt-6 text-xl font-medium leading-relaxed text-[#5F453A]">Veja como navegar pelas novas telas para sugerir rodadas, ajustar categorias, planejar a semana e organizar caixas.</p>
-            </SectionHeading>
-            <div className="mt-12 grid gap-8 md:grid-cols-2 lg:grid-cols-3">
-              {tutorialScreens.map((item, index) => <TutorialScreenshotCard key={item.title} item={item} index={index} />)}
-            </div>
-            <div className="mt-12 rounded-[2rem] border-2 border-[#2C1710] bg-[#FFE9D2] p-8 text-center shadow-[7px_7px_0_#2C1710]">
-              <p className="mb-3 text-sm font-black uppercase tracking-[0.2em] text-[#FF5A3D]">Próximo passo</p>
-              <h3 className="mx-auto max-w-3xl text-3xl font-black">Menos bagunça pode começar com uma única rodada.</h3>
-              <p className="mx-auto mt-5 max-w-3xl text-lg font-medium leading-relaxed text-[#5F453A]">Você não precisa reorganizar a casa inteira hoje. Comece escolhendo poucos brinquedos e deixando o restante fora de vista.</p>
-              <CTAButton className="mt-8">Transforme a rotina <SvgIcon name="arrow-right" className="h-5 w-5" /></CTAButton>
-            </div>
-          </div>
-        </section>
-
-        <section id="tutorial" className="scroll-mt-28 border-b-2 border-[#2C1710] bg-white">
-          <div className="mx-auto max-w-7xl px-5 py-20 md:px-8">
-            <SectionHeading eyebrow="O sistema na prática" title="Sugerir rodada e Planejamento semanal.">
-              <p className="mt-6 text-xl font-medium leading-relaxed text-[#5F453A]">A rodada é pensada por categoria. O total aparece automaticamente, mas quem manda é a composição: montar, livros, sensorial, movimento e faz de conta.</p>
-            </SectionHeading>
-            <div className="mt-12 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
-              {tutorialSteps.map((item) => (
-                <div key={item.number} className="rounded-[2rem] border-2 border-[#2C1710] bg-[#FFF4E8] p-7 shadow-[7px_7px_0_#2C1710]">
-                  <p className="mb-4 inline-flex rounded-full border-2 border-[#2C1710] bg-[#FF5A3D] px-4 py-2 text-sm font-black text-white">{item.number}</p>
-                  <h3 className="mb-3 text-2xl font-black">{item.title}</h3>
-                  <p className="text-base font-medium leading-relaxed text-[#5F453A]">{item.text}</p>
-                </div>
-              ))}
-            </div>
-            <div className="mt-12 grid gap-5 lg:grid-cols-[0.9fr_1.1fr]">
-              <div className="rounded-[2rem] border-2 border-[#2C1710] bg-[#FFE9D2] p-8 shadow-[7px_7px_0_#2C1710]">
-                <p className="mb-3 text-sm font-black uppercase tracking-[0.2em] text-[#FF5A3D]">Exemplo</p>
-                <h3 className="mb-5 text-3xl font-black">Uma rodada equilibrada</h3>
-                <div className="space-y-3 text-lg font-bold text-[#5F453A]">
-                  <p>2 brinquedos de montar</p>
-                  <p>1 livro</p>
-                  <p>1 brinquedo sensorial</p>
-                  <p>1 brinquedo de movimento</p>
-                </div>
-                <div className="mt-6 rounded-2xl border-2 border-[#2C1710] bg-white p-5 text-lg font-black">Total automático: 5 brinquedos</div>
-              </div>
-              <div className="rounded-[2rem] border-2 border-[#2C1710] bg-[#CFE8D8] p-8 shadow-[7px_7px_0_#2C1710]">
-                <p className="mb-3 text-sm font-black uppercase tracking-[0.2em] text-[#2D8C75]">Planejamento semanal</p>
-                <h3 className="mb-5 text-3xl font-black">Cada dia pode ter uma composição diferente</h3>
-                <div className="grid gap-4 md:grid-cols-3">
-                  {weeklyExamples.map((item) => (
-                    <div key={item.day} className="rounded-2xl border-2 border-[#2C1710] bg-white p-5 shadow-[4px_4px_0_#2C1710]">
-                      <p className="text-sm font-black uppercase tracking-[0.14em] text-[#FF5A3D]">{item.mode}</p>
-                      <h4 className="mt-2 text-xl font-black">{item.day}</h4>
-                      <div className="mt-4 space-y-2 text-sm font-bold text-[#5F453A]">
-                        {item.rows.map((row) => <p key={row}>{row}</p>)}
-                      </div>
-                      <div className="mt-4 rounded-xl bg-[#FFF4E8] p-3 text-sm font-black">{item.total}</div>
-                    </div>
+                <div className="hero-toys">
+                  {sampleToys.slice(0, 7).map((toy) => (
+                    <div key={toy.name} className="hero-toy" style={{ background: toy.color }} title={toy.name}>{toy.emoji}</div>
                   ))}
                 </div>
+                <div className="mt-5 flex items-center gap-3 rounded-2xl bg-[#2F3632] px-4 py-3 text-sm font-bold text-white">
+                  <Icon name="box" /> O restante descansa nas caixas
+                </div>
               </div>
-            </div>
+            </motion.div>
           </div>
         </section>
 
-        <section id="planos" className="scroll-mt-28 mx-auto max-w-7xl px-5 py-20 md:px-8">
-          <SectionHeading eyebrow="Comece hoje" title="Teste uma casa com menos brinquedos à vista.">
-            <p className="mt-5 text-xl font-medium text-[#5F453A]">O app é a ferramenta. A transformação começa quando a rotina fica mais simples.</p>
-          </SectionHeading>
-          <div className="mx-auto mt-12 max-w-md rounded-[2rem] border-2 border-[#2C1710] bg-white p-8 shadow-[9px_9px_0_#2C1710]">
-            <div className="mb-6 inline-flex items-center gap-2 rounded-full bg-[#FFE1B7] px-4 py-2 text-sm font-black"><SvgIcon name="shield" className="h-4 w-4" /> Rodízio de Brinquedos</div>
-            <h3 className="text-3xl font-black">Teste grátis disponível</h3>
-            <p className="mt-2 text-lg font-medium text-[#5F453A]">Crie sua primeira rodada, organize caixas e descubra quais brinquedos voltam a chamar atenção.</p>
-            <div className="my-7 h-px bg-[#E8D5C6]" />
-            <ul className="space-y-4">
-              {premiumFeatures.map((item) => (
-                <li key={item} className="flex items-center gap-3 font-bold"><SvgIcon name="check" className="h-5 w-5 shrink-0 text-[#2D8C75]" /> {item}</li>
+        <section id="beneficios" className="section-pad bg-white">
+          <div className="section-container">
+            <motion.div {...reveal} className="section-heading">
+              <Eyebrow>A mudança começa no ambiente</Eyebrow>
+              <h2>O problema não é ter brinquedos.<br />É oferecer todos ao mesmo tempo.</h2>
+              <p>O rodízio não tira possibilidades da criança. Ele organiza quando cada possibilidade aparece.</p>
+            </motion.div>
+
+            <div className="benefit-grid">
+              {[
+                { number: "01", title: "Menos decisões de uma vez", text: "Uma seleção menor pode facilitar o começo da brincadeira e ajudar a criança a permanecer nela por mais tempo." },
+                { number: "02", title: "Brinquedos redescobertos", text: "Depois de um período guardado, um brinquedo conhecido pode voltar a despertar curiosidade e novas formas de brincar." },
+                { number: "03", title: "Uma casa mais leve", text: "Fica mais simples guardar, localizar e perceber o que já não acompanha a fase da criança." },
+              ].map((benefit, index) => (
+                <motion.article key={benefit.number} {...reveal} transition={{ duration: 0.45, delay: index * 0.06 }} className="benefit-card">
+                  <span>{benefit.number}</span>
+                  <h3>{benefit.title}</h3>
+                  <p>{benefit.text}</p>
+                </motion.article>
               ))}
-            </ul>
-            <CTAButton className="mt-8 w-full">Baixar na App Store <SvgIcon name="arrow-right" className="h-5 w-5" /></CTAButton>
-            <AndroidTestButton className="mt-4 w-full" />
-            <p className="mt-4 text-center text-sm font-bold text-[#5F453A]">
-              Teste aberto disponível no Android.
-            </p>
+            </div>
+
+            <motion.div {...reveal} className="principle-strip">
+              <p>Não se trata de comprar mais.</p>
+              <strong>Trata-se de tornar mais significativo o uso do que a família já possui.</strong>
+            </motion.div>
+          </div>
+        </section>
+
+        <section id="demonstracao" className="section-pad bg-[#F8F0E7]">
+          <div className="section-container">
+            <motion.div {...reveal} className="section-heading">
+              <Eyebrow>Entenda experimentando</Eyebrow>
+              <h2>Monte uma rodada antes mesmo de baixar o aplicativo.</h2>
+              <p>Escolha a faixa etária e ajuste quantos brinquedos ficam disponíveis. O restante não some: descansa para voltar em outro momento.</p>
+            </motion.div>
+            <motion.div {...reveal} className="mt-12">
+              <RotationDemo />
+            </motion.div>
+          </div>
+        </section>
+
+        <section id="aplicativo" className="section-pad bg-white">
+          <div className="section-container">
+            <motion.div {...reveal} className="section-heading">
+              <Eyebrow>Da filosofia para a rotina</Eyebrow>
+              <h2>Você aplica a filosofia.<br />O aplicativo cuida da rotina.</h2>
+              <p>Uma visão clara do que oferecer hoje, do que vem nos próximos dias e de onde cada brinquedo está guardado.</p>
+            </motion.div>
+            <motion.div {...reveal} className="mt-14">
+              <AppExperience />
+            </motion.div>
+          </div>
+        </section>
+
+        <section className="tablet-section">
+          <div className="section-container tablet-grid">
+            <motion.div {...reveal}>
+              <Eyebrow light>Também no iPad e em tablets Android</Eyebrow>
+              <h2 className="mt-4 text-4xl font-black leading-[1.04] tracking-[-0.04em] text-white md:text-6xl">Mais espaço para enxergar a semana inteira.</h2>
+              <p className="mt-6 max-w-xl text-lg font-medium leading-relaxed text-[#E9DFD8]">Na tela grande, a rodada do dia, o planejamento semanal e a organização da casa aparecem juntos, como um painel para a família.</p>
+              <div className="mt-8 flex flex-wrap gap-3">
+                <StoreLink source="tablet">Baixar na App Store</StoreLink>
+                <StoreLink store="android" source="tablet">Testar no Android</StoreLink>
+              </div>
+            </motion.div>
+            <motion.div {...reveal} className="tablet-frame">
+              <img src="/screenshots/simulator-captures/ipadpro13-home.png" alt="Tela inicial do Rodízio de Brinquedos no iPad" />
+            </motion.div>
+          </div>
+        </section>
+
+        <section id="baixar" className="final-cta-section">
+          <div className="section-container">
+            <motion.div {...reveal} className="final-cta-card">
+              <div>
+                <Eyebrow>Comece com o que já existe em casa</Eyebrow>
+                <h2>Sua primeira rodada pode começar hoje.</h2>
+                <p>Cadastre os brinquedos, escolha uma seleção menor e deixe o aplicativo organizar os próximos sete dias.</p>
+              </div>
+              <div className="final-actions">
+                <StoreLink source="final_cta">Baixar na App Store <Icon name="arrow" /></StoreLink>
+                <StoreLink store="android" source="final_cta">Testar no Android</StoreLink>
+                <span>7 dias para experimentar</span>
+              </div>
+            </motion.div>
           </div>
         </section>
       </main>
 
-      <footer className="border-t-2 border-[#2C1710] bg-[#2C1710] px-5 py-10 text-white md:px-8">
-        <div className="mx-auto flex max-w-7xl flex-col gap-4 md:flex-row md:items-center md:justify-between">
-          <div>
-            <p className="font-serif text-3xl font-black">Rodízio de Brinquedos</p>
-            <p className="mt-2 text-white/70">Menos bagunça. Mais brincadeira.</p>
+      <footer className="site-footer">
+        <div className="section-container footer-inner">
+          <div className="brand text-white">
+            <img src="/favicon.png" alt="" className="h-9 w-9 rounded-xl" />
+            <span>Rodízio de Brinquedos</span>
           </div>
-          <div className="flex flex-wrap gap-5 text-sm font-bold text-white/80">
-            <a href={PRIVACY_URL} target="_blank" rel="noreferrer" className="hover:text-white">Privacidade</a>
-            <a href={TERMS_URL} target="_blank" rel="noreferrer" className="hover:text-white">Termos</a>
-            <a href={APP_STORE_URL} target="_blank" rel="noreferrer" onClick={trackGoogleAdsAppStoreConversion} className="hover:text-white">App Store</a>
+          <p>Menos brinquedos à vista. Mais brincadeira de verdade.</p>
+          <div className="footer-links">
+            <a href={PRIVACY_URL} target="_blank" rel="noreferrer">Privacidade</a>
+            <a href={TERMS_URL} target="_blank" rel="noreferrer">Termos de uso</a>
           </div>
         </div>
       </footer>
+
+      <div className="mobile-store-bar">
+        <StoreLink source="mobile_sticky" compact>Começar meu rodízio</StoreLink>
+      </div>
     </div>
   );
 }
+
+export default App;
