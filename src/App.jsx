@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { motion } from "framer-motion";
 
 const APP_STORE_URL = "https://apps.apple.com/br/app/rodizio-brinquedos/id6759603735";
@@ -74,6 +74,14 @@ const benefits = [
   "Sistema simples para pais"
 ];
 
+const playDimensions = [
+  { name: "Corpo e Respiração", emoji: "🏃", color: "bg-[#FFD7B8]" },
+  { name: "Sentidos e Exploração", emoji: "🔎", color: "bg-[#CFE8D8]" },
+  { name: "Mãos e Construção", emoji: "🧱", color: "bg-[#FFE1B7]" },
+  { name: "Imaginação e Criatividade", emoji: "🎨", color: "bg-[#FFD2D2]" },
+  { name: "Comunicação e Histórias", emoji: "📚", color: "bg-[#D8D7F2]" }
+];
+
 const featureCards = [
   {
     title: "Rodada por categoria",
@@ -91,9 +99,9 @@ const featureCards = [
     text: "Personalize a composição de cada dia da semana."
   },
   {
-    title: "Categorias flexíveis",
+    title: "Cinco dimensões do brincar",
     emoji: "🏷️",
-    text: "Edite, renomeie ou remova categorias conforme a rotina da casa."
+    text: "Equilibre corpo, sentidos, mãos, imaginação e comunicação."
   },
   {
     title: "Caixas e locais",
@@ -145,7 +153,7 @@ const tutorialScreens = [
 
 const tutorialSteps = [
   { number: "01", title: "Cadastre", text: "Adicione brinquedos com nome, foto, categoria, caixa e local." },
-  { number: "02", title: "Separe", text: "Organize por tipos: montar, livros, sensorial, movimento ou faz de conta." },
+  { number: "02", title: "Separe", text: "Organize pelas cinco dimensões do brincar usadas pelo aplicativo." },
   { number: "03", title: "Defina quantidades", text: "Escolha quantos brinquedos de cada categoria entram na rodada." },
   { number: "04", title: "Sugira a rodada", text: "O app monta uma seleção equilibrada para o dia." },
   { number: "05", title: "Planeje a semana", text: "Cada dia pode usar o padrão ou uma composição personalizada." },
@@ -498,6 +506,60 @@ function EmotionalVideo() {
   );
 }
 
+function RotationPreview() {
+  const [visibleToys, setVisibleToys] = useState(5);
+  const selectedDimensions = playDimensions.slice(0, Math.min(visibleToys, playDimensions.length));
+
+  return (
+    <section className="border-y-2 border-[#2C1710] bg-[#CFE8D8]">
+      <div className="mx-auto grid max-w-7xl gap-10 px-5 py-20 md:px-8 lg:grid-cols-[0.9fr_1.1fr] lg:items-center">
+        <div>
+          <p className="mb-3 text-sm font-black uppercase tracking-[0.25em] text-[#2D8C75]">Experimente a ideia</p>
+          <h2 className="font-serif text-5xl font-black leading-tight md:text-6xl">E se hoje apenas alguns brinquedos estivessem à vista?</h2>
+          <p className="mt-6 text-xl font-medium leading-relaxed text-[#5F453A]">
+            Ajuste a quantidade para visualizar uma rodada pequena e equilibrada. O restante não desaparece: fica guardado para voltar com sensação de novidade.
+          </p>
+          <label htmlFor="toy-count" className="mt-8 block font-black">Brinquedos disponíveis hoje: {visibleToys}</label>
+          <input
+            id="toy-count"
+            type="range"
+            min="3"
+            max="8"
+            value={visibleToys}
+            onChange={(event) => setVisibleToys(Number(event.target.value))}
+            className="mt-4 w-full accent-[#FF5A3D]"
+          />
+          <div className="mt-2 flex justify-between text-sm font-bold text-[#5F453A]"><span>3</span><span>8</span></div>
+        </div>
+        <div className="rounded-[2rem] border-2 border-[#2C1710] bg-white p-6 shadow-[9px_9px_0_#2C1710] sm:p-8">
+          <div className="flex items-center justify-between gap-4 border-b-2 border-[#2C1710] pb-5">
+            <div>
+              <p className="text-sm font-black uppercase tracking-[0.18em] text-[#FF5A3D]">Rodada de hoje</p>
+              <p className="mt-1 font-serif text-3xl font-black">{visibleToys} brinquedos</p>
+            </div>
+            <span className="text-5xl" aria-hidden="true">🧸</span>
+          </div>
+          <div className="mt-5 grid gap-3 sm:grid-cols-2">
+            {selectedDimensions.map((dimension) => (
+              <div key={dimension.name} className={`flex items-center gap-3 rounded-2xl border-2 border-[#2C1710] p-4 ${dimension.color}`}>
+                <span className="text-2xl" aria-hidden="true">{dimension.emoji}</span>
+                <span className="text-sm font-black">{dimension.name}</span>
+              </div>
+            ))}
+            {visibleToys > playDimensions.length && (
+              <div className="flex items-center gap-3 rounded-2xl border-2 border-dashed border-[#2C1710] bg-[#FFF4E8] p-4">
+                <span className="text-2xl" aria-hidden="true">✨</span>
+                <span className="text-sm font-black">+ {visibleToys - playDimensions.length} para reforçar a rodada</span>
+              </div>
+            )}
+          </div>
+          <p className="mt-5 text-sm font-bold leading-relaxed text-[#5F453A]">Uma seleção menor facilita a escolha e ajuda cada brinquedo a receber mais atenção.</p>
+        </div>
+      </div>
+    </section>
+  );
+}
+
 function runLandingPageSelfTests() {
   const results = [];
   results.push({ name: "appStoreUrlUsesAppleId", passed: /id6759603735$/.test(APP_STORE_URL) });
@@ -561,10 +623,10 @@ export default function LandingPageRodizioBrinquedos() {
                 Menos bagunça. Mais brincadeira.
               </div>
               <h1 className="max-w-2xl font-serif text-5xl font-black leading-[0.98] tracking-tight sm:text-6xl md:text-7xl lg:text-8xl">
-                Seu filho tem muitos brinquedos… e brinca cada vez menos?
+                Menos brinquedos à vista. Mais espaço para brincar de verdade.
               </h1>
               <p className="mt-7 max-w-xl text-xl font-medium leading-relaxed text-[#5F453A]">
-                Descubra como o rodízio de brinquedos pode aumentar foco, organização e interesse nas brincadeiras.
+                O aplicativo torna viável uma filosofia simples: reduzir o excesso de escolhas, renovar o interesse e trazer mais calma para a rotina da família.
               </p>
               <div className="mt-9 flex flex-col gap-4 sm:flex-row sm:flex-wrap">
                 <CTAButton href="#como-funciona" variant="primary">Veja como funciona <SvgIcon name="arrow-right" className="h-5 w-5" /></CTAButton>
@@ -631,6 +693,8 @@ export default function LandingPageRodizioBrinquedos() {
           </div>
         </section>
 
+        <RotationPreview />
+
         <section id="beneficios" className="scroll-mt-28 border-y-2 border-[#2C1710] bg-[#FFE9D2]">
           <div className="mx-auto grid max-w-7xl gap-10 px-5 py-20 md:grid-cols-[0.9fr_1.1fr] md:px-8">
             <div>
@@ -651,9 +715,9 @@ export default function LandingPageRodizioBrinquedos() {
 
         <section id="telas" className="scroll-mt-28 border-b-2 border-[#2C1710] bg-[#FFF4E8]">
           <div className="mx-auto max-w-7xl px-5 py-20 md:px-8">
-            <SectionHeading eyebrow="Agora entra o app" title="Agora o app ficou ainda mais inteligente.">
+            <SectionHeading eyebrow="Agora entra o app" title="A filosofia vira uma rotina possível.">
               <p className="mt-6 text-xl font-medium leading-relaxed text-[#5F453A]">
-                O Rodízio de Brinquedos agora permite montar rodadas por categoria, planejar a semana e organizar caixas, locais e brinquedos com mais clareza.
+                O Rodízio de Brinquedos cuida da parte trabalhosa: sugere rodadas equilibradas, planeja a semana e mostra onde cada brinquedo está guardado.
               </p>
             </SectionHeading>
             <div className="mt-12 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
