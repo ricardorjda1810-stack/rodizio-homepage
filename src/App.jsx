@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { motion } from "framer-motion";
 
 const APP_STORE_URL = "https://apps.apple.com/br/app/rodizio-brinquedos/id6759603735";
@@ -74,7 +74,20 @@ const benefits = [
   "Sistema simples para pais"
 ];
 
+const playDimensions = [
+  { name: "Corpo e Respiração", emoji: "🏃", color: "bg-[#FFD7B8]" },
+  { name: "Sentidos e Exploração", emoji: "🔎", color: "bg-[#CFE8D8]" },
+  { name: "Mãos e Construção", emoji: "🧱", color: "bg-[#FFE1B7]" },
+  { name: "Imaginação e Criatividade", emoji: "🎨", color: "bg-[#FFD2D2]" },
+  { name: "Comunicação e Histórias", emoji: "📚", color: "bg-[#D8D7F2]" }
+];
+
 const featureCards = [
+  {
+    title: "Reconhecimento por foto",
+    emoji: "📸",
+    text: "Fotografe um brinquedo e receba sugestões de nome e categoria para revisar."
+  },
   {
     title: "Rodada por categoria",
     emoji: "🎯",
@@ -91,21 +104,36 @@ const featureCards = [
     text: "Personalize a composição de cada dia da semana."
   },
   {
-    title: "Categorias flexíveis",
+    title: "Cinco dimensões do brincar",
     emoji: "🏷️",
-    text: "Edite, renomeie ou remova categorias conforme a rotina da casa."
+    text: "Equilibre corpo, sentidos, mãos, imaginação e comunicação."
   },
   {
     title: "Caixas e locais",
     emoji: "📦",
     text: "Saiba onde cada brinquedo está guardado."
-  },
-  {
-    title: "Visual mais limpo",
-    emoji: "🌿",
-    text: "Uma experiência mais clara, bonita e fácil de usar."
   }
 ];
+
+const recognitionSteps = [
+  {
+    number: "01",
+    title: "Fotografe",
+    text: "Use a câmera ou escolha uma imagem da galeria."
+  },
+  {
+    number: "02",
+    title: "Receba sugestões",
+    text: "O app analisa um brinquedo por vez e sugere nome e categoria."
+  },
+  {
+    number: "03",
+    title: "Revise e confirme",
+    text: "Você decide se quer usar, editar ou descartar as sugestões."
+  }
+];
+
+const recognitionNotice = "Fotografe apenas um brinquedo por vez. As sugestões nunca substituem sua decisão e só são aplicadas após sua confirmação.";
 
 const appScreens = [
   {
@@ -144,8 +172,8 @@ const tutorialScreens = [
 ];
 
 const tutorialSteps = [
-  { number: "01", title: "Cadastre", text: "Adicione brinquedos com nome, foto, categoria, caixa e local." },
-  { number: "02", title: "Separe", text: "Organize por tipos: montar, livros, sensorial, movimento ou faz de conta." },
+  { number: "01", title: "Cadastre", text: "Adicione uma foto e revise as sugestões de nome e categoria antes de aplicar." },
+  { number: "02", title: "Separe", text: "Organize pelas cinco dimensões do brincar usadas pelo aplicativo." },
   { number: "03", title: "Defina quantidades", text: "Escolha quantos brinquedos de cada categoria entram na rodada." },
   { number: "04", title: "Sugira a rodada", text: "O app monta uma seleção equilibrada para o dia." },
   { number: "05", title: "Planeje a semana", text: "Cada dia pode usar o padrão ou uma composição personalizada." },
@@ -159,10 +187,10 @@ const weeklyExamples = [
 ];
 
 const premiumFeatures = [
+  "Reconhecimento de brinquedos por foto",
   "Rodadas por categoria",
   "Planejamento semanal",
-  "Organização por caixas e locais",
-  "Fotos para encontrar tudo rápido"
+  "Organização por caixas e locais"
 ];
 
 const androidOpenTestCards = [
@@ -498,6 +526,60 @@ function EmotionalVideo() {
   );
 }
 
+function RotationPreview() {
+  const [visibleToys, setVisibleToys] = useState(5);
+  const selectedDimensions = playDimensions.slice(0, Math.min(visibleToys, playDimensions.length));
+
+  return (
+    <section className="border-y-2 border-[#2C1710] bg-[#CFE8D8]">
+      <div className="mx-auto grid max-w-7xl gap-10 px-5 py-20 md:px-8 lg:grid-cols-[0.9fr_1.1fr] lg:items-center">
+        <div>
+          <p className="mb-3 text-sm font-black uppercase tracking-[0.25em] text-[#2D8C75]">Experimente a ideia</p>
+          <h2 className="font-serif text-5xl font-black leading-tight md:text-6xl">E se hoje apenas alguns brinquedos estivessem à vista?</h2>
+          <p className="mt-6 text-xl font-medium leading-relaxed text-[#5F453A]">
+            Ajuste a quantidade para visualizar uma rodada pequena e equilibrada. O restante não desaparece: fica guardado para voltar com sensação de novidade.
+          </p>
+          <label htmlFor="toy-count" className="mt-8 block font-black">Brinquedos disponíveis hoje: {visibleToys}</label>
+          <input
+            id="toy-count"
+            type="range"
+            min="3"
+            max="8"
+            value={visibleToys}
+            onChange={(event) => setVisibleToys(Number(event.target.value))}
+            className="mt-4 w-full accent-[#FF5A3D]"
+          />
+          <div className="mt-2 flex justify-between text-sm font-bold text-[#5F453A]"><span>3</span><span>8</span></div>
+        </div>
+        <div className="rounded-[2rem] border-2 border-[#2C1710] bg-white p-6 shadow-[9px_9px_0_#2C1710] sm:p-8">
+          <div className="flex items-center justify-between gap-4 border-b-2 border-[#2C1710] pb-5">
+            <div>
+              <p className="text-sm font-black uppercase tracking-[0.18em] text-[#FF5A3D]">Rodada de hoje</p>
+              <p className="mt-1 font-serif text-3xl font-black">{visibleToys} brinquedos</p>
+            </div>
+            <span className="text-5xl" aria-hidden="true">🧸</span>
+          </div>
+          <div className="mt-5 grid gap-3 sm:grid-cols-2">
+            {selectedDimensions.map((dimension) => (
+              <div key={dimension.name} className={`flex items-center gap-3 rounded-2xl border-2 border-[#2C1710] p-4 ${dimension.color}`}>
+                <span className="text-2xl" aria-hidden="true">{dimension.emoji}</span>
+                <span className="text-sm font-black">{dimension.name}</span>
+              </div>
+            ))}
+            {visibleToys > playDimensions.length && (
+              <div className="flex items-center gap-3 rounded-2xl border-2 border-dashed border-[#2C1710] bg-[#FFF4E8] p-4">
+                <span className="text-2xl" aria-hidden="true">✨</span>
+                <span className="text-sm font-black">+ {visibleToys - playDimensions.length} para reforçar a rodada</span>
+              </div>
+            )}
+          </div>
+          <p className="mt-5 text-sm font-bold leading-relaxed text-[#5F453A]">Uma seleção menor facilita a escolha e ajuda cada brinquedo a receber mais atenção.</p>
+        </div>
+      </div>
+    </section>
+  );
+}
+
 function runLandingPageSelfTests() {
   const results = [];
   results.push({ name: "appStoreUrlUsesAppleId", passed: /id6759603735$/.test(APP_STORE_URL) });
@@ -506,7 +588,10 @@ function runLandingPageSelfTests() {
   results.push({ name: "transformationCardsHaveTwoStates", passed: transformationCards.length === 2 && transformationCards.some((item) => item.title === "Antes") && transformationCards.some((item) => item.title === "Depois") });
   results.push({ name: "educationalCardsHaveThreeUniqueItems", passed: educationalCards.length === 3 && new Set(educationalCards.map((item) => item.title)).size === 3 });
   results.push({ name: "howItWorksCardsHaveThreeSteps", passed: howItWorksCards.length === 3 });
-  results.push({ name: "featureCardsHighlightNewAppFeatures", passed: featureCards.length === 6 && featureCards.some((item) => item.title === "Rodada por categoria") && featureCards.some((item) => item.title === "Visual mais limpo") });
+  results.push({ name: "featureCardsHighlightNewAppFeatures", passed: featureCards.length === 6 && featureCards.some((item) => item.title === "Reconhecimento por foto") && featureCards.some((item) => item.title === "Rodada por categoria") && featureCards.some((item) => item.title === "Cinco dimensões do brincar") });
+  results.push({ name: "playDimensionsAreComplete", passed: playDimensions.length === 5 && new Set(playDimensions.map((item) => item.name)).size === 5 });
+  results.push({ name: "recognitionFlowHasThreeSteps", passed: recognitionSteps.length === 3 });
+  results.push({ name: "recognitionFlowRequiresUserDecision", passed: recognitionSteps.some((item) => `${item.title} ${item.text}`.includes("Você decide")) && recognitionNotice.includes("sua confirmação") });
   results.push({ name: "appScreensHaveThreeMockups", passed: appScreens.length === 3 && appScreens.every((item) => item.imageSrc.startsWith("/screenshots/")) });
   results.push({ name: "tutorialScreensHaveRealImagePaths", passed: tutorialScreens.length >= 6 && tutorialScreens.every((item) => item.imageSrc.startsWith("/screenshots/")) });
   results.push({ name: "tutorialExplainsCategoryQuantities", passed: tutorialSteps.some((item) => item.text.includes("quantos brinquedos de cada categoria")) });
@@ -537,10 +622,11 @@ export default function LandingPageRodizioBrinquedos() {
             </div>
             <span className="font-serif text-2xl font-black tracking-tight">Rodízio</span>
           </a>
-          <nav className="hidden items-center gap-6 text-sm font-bold lg:gap-8 md:flex" aria-label="Navegação principal">
+          <nav className="hidden items-center gap-6 text-sm font-bold xl:flex xl:gap-8" aria-label="Navegação principal">
             <a href="#como-funciona" className="hover:text-[#FF5A3D]">Como funciona</a>
             <a href="#transformacao" className="hover:text-[#FF5A3D]">Transformação</a>
             <a href="#telas" className="hover:text-[#FF5A3D]">Telas</a>
+            <a href="#reconhecimento" className="hover:text-[#FF5A3D]">Reconhecimento</a>
             <a href="#tablet" className="hover:text-[#FF5A3D]">Tablet</a>
             <a href="#planos" className="hover:text-[#FF5A3D]">Baixar</a>
           </nav>
@@ -561,10 +647,10 @@ export default function LandingPageRodizioBrinquedos() {
                 Menos bagunça. Mais brincadeira.
               </div>
               <h1 className="max-w-2xl font-serif text-5xl font-black leading-[0.98] tracking-tight sm:text-6xl md:text-7xl lg:text-8xl">
-                Seu filho tem muitos brinquedos… e brinca cada vez menos?
+                Menos brinquedos à vista. Mais espaço para brincar de verdade.
               </h1>
               <p className="mt-7 max-w-xl text-xl font-medium leading-relaxed text-[#5F453A]">
-                Descubra como o rodízio de brinquedos pode aumentar foco, organização e interesse nas brincadeiras.
+                Reduza o excesso de escolhas, renove o interesse e organize rodadas equilibradas. Fotografe cada brinquedo e revise as sugestões de nome e categoria para cadastrar o acervo com menos esforço.
               </p>
               <div className="mt-9 flex flex-col gap-4 sm:flex-row sm:flex-wrap">
                 <CTAButton href="#como-funciona" variant="primary">Veja como funciona <SvgIcon name="arrow-right" className="h-5 w-5" /></CTAButton>
@@ -631,6 +717,8 @@ export default function LandingPageRodizioBrinquedos() {
           </div>
         </section>
 
+        <RotationPreview />
+
         <section id="beneficios" className="scroll-mt-28 border-y-2 border-[#2C1710] bg-[#FFE9D2]">
           <div className="mx-auto grid max-w-7xl gap-10 px-5 py-20 md:grid-cols-[0.9fr_1.1fr] md:px-8">
             <div>
@@ -651,9 +739,9 @@ export default function LandingPageRodizioBrinquedos() {
 
         <section id="telas" className="scroll-mt-28 border-b-2 border-[#2C1710] bg-[#FFF4E8]">
           <div className="mx-auto max-w-7xl px-5 py-20 md:px-8">
-            <SectionHeading eyebrow="Agora entra o app" title="Agora o app ficou ainda mais inteligente.">
+            <SectionHeading eyebrow="Agora entra o app" title="A filosofia vira uma rotina possível.">
               <p className="mt-6 text-xl font-medium leading-relaxed text-[#5F453A]">
-                O Rodízio de Brinquedos agora permite montar rodadas por categoria, planejar a semana e organizar caixas, locais e brinquedos com mais clareza.
+                O Rodízio de Brinquedos reduz o trabalho de cadastrar o acervo, ajuda a montar rodadas equilibradas, planeja a semana e mostra onde cada brinquedo está guardado.
               </p>
             </SectionHeading>
             <div className="mt-12 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
@@ -663,6 +751,58 @@ export default function LandingPageRodizioBrinquedos() {
             </div>
             <div className="mt-12 grid gap-8 lg:grid-cols-3">
               {appScreens.map((screen) => <PhoneMockup key={screen.title} screen={screen} />)}
+            </div>
+          </div>
+        </section>
+
+        <section id="reconhecimento" className="scroll-mt-28 border-b-2 border-[#2C1710] bg-[#FFE9D2]">
+          <div className="mx-auto grid max-w-7xl gap-12 px-5 py-20 md:px-8 lg:grid-cols-2 lg:items-center">
+            <div>
+              <p className="mb-3 text-sm font-black uppercase tracking-[0.25em] text-[#FF5A3D]">Cadastro com menos esforço</p>
+              <h2 className="font-serif text-5xl font-black leading-tight md:text-6xl">Fotografe o brinquedo. Revise as sugestões. Continue no controle.</h2>
+              <p className="mt-6 text-xl font-medium leading-relaxed text-[#5F453A]">
+                Ao adicionar uma foto, o Rodízio analisa um brinquedo por vez e sugere nome e categoria. Você revisa e confirma o resultado antes de aplicá-lo ao cadastro.
+              </p>
+              <div className="mt-8 grid gap-4">
+                {recognitionSteps.map((item) => (
+                  <div key={item.number} className="flex gap-4 rounded-[2rem] border-2 border-[#2C1710] bg-white p-5 shadow-[5px_5px_0_#2C1710]">
+                    <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full border-2 border-[#2C1710] bg-[#FF5A3D] text-sm font-black text-white">{item.number}</span>
+                    <div>
+                      <h3 className="text-xl font-black">{item.title}</h3>
+                      <p className="mt-1 font-medium leading-relaxed text-[#5F453A]">{item.text}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+              <p className="mt-6 rounded-3xl border-2 border-[#2C1710] bg-[#CFE8D8] p-5 font-bold leading-relaxed text-[#5F453A] shadow-[5px_5px_0_#2C1710]">
+                {recognitionNotice}
+              </p>
+            </div>
+
+            <div className="mx-auto w-full max-w-[520px] rounded-[2.5rem] border-2 border-[#2C1710] bg-[#2C1710] p-3 shadow-[10px_10px_0_#2C1710]">
+              <div className="rounded-[2rem] bg-[#FFF4E8] p-5 sm:p-7">
+                <div className="flex items-center justify-between border-b-2 border-[#2C1710] pb-4">
+                  <p className="text-xl font-black">Novo brinquedo</p>
+                  <span className="rounded-full bg-[#FFE1B7] px-3 py-1 text-xs font-black">Exemplo</span>
+                </div>
+                <h3 className="mt-6 text-2xl font-black">Reconhecimento por foto</h3>
+                <div className="mt-4 flex aspect-[4/3] items-center justify-center rounded-[1.5rem] border-2 border-dashed border-[#2C1710] bg-white">
+                  <div className="text-center">
+                    <div className="text-7xl" aria-hidden="true">🧱</div>
+                    <p className="mt-3 text-sm font-black text-[#5F453A]">Brinquedo analisado</p>
+                  </div>
+                </div>
+                <div className="mt-5 rounded-3xl border-2 border-[#2C1710] bg-[#CFE8D8] p-5">
+                  <p className="text-sm font-black uppercase tracking-[0.16em] text-[#2D8C75]">Sugestões encontradas</p>
+                  <p className="mt-3 text-lg font-black">Blocos de construção</p>
+                  <p className="mt-1 font-bold text-[#5F453A]">Mãos e Construção</p>
+                </div>
+                <div className="mt-5 grid gap-3 sm:grid-cols-2" aria-label="Ações ilustrativas das sugestões">
+                  <span className="rounded-full border-2 border-[#2C1710] bg-[#FF5A3D] px-5 py-3 text-center font-black text-white">Revisar e confirmar</span>
+                  <span className="rounded-full border-2 border-[#2C1710] bg-white px-5 py-3 text-center font-black">Descartar</span>
+                </div>
+                <p className="mt-5 text-center text-sm font-bold leading-relaxed text-[#5F453A]">Exemplo ilustrativo. Nada é aplicado sem sua revisão e confirmação.</p>
+              </div>
             </div>
           </div>
         </section>
@@ -717,7 +857,7 @@ export default function LandingPageRodizioBrinquedos() {
         <section id="tutorial-visual" className="scroll-mt-28 border-b-2 border-[#2C1710] bg-white">
           <div className="mx-auto max-w-7xl px-5 py-20 md:px-8">
             <SectionHeading eyebrow="Tutorial visual" title="Como transformar a casa em poucos passos." eyebrowColor="text-[#2D8C75]">
-              <p className="mt-6 text-xl font-medium leading-relaxed text-[#5F453A]">Veja como navegar pelas novas telas para sugerir rodadas, ajustar categorias, planejar a semana e organizar caixas.</p>
+              <p className="mt-6 text-xl font-medium leading-relaxed text-[#5F453A]">Veja como cadastrar com apoio do reconhecimento por foto, revisar sugestões, montar rodadas, planejar a semana e organizar caixas.</p>
             </SectionHeading>
             <div className="mt-12 grid gap-8 md:grid-cols-2 lg:grid-cols-3">
               {tutorialScreens.map((item, index) => <TutorialScreenshotCard key={item.title} item={item} index={index} />)}
@@ -734,7 +874,7 @@ export default function LandingPageRodizioBrinquedos() {
         <section id="tutorial" className="scroll-mt-28 border-b-2 border-[#2C1710] bg-white">
           <div className="mx-auto max-w-7xl px-5 py-20 md:px-8">
             <SectionHeading eyebrow="O sistema na prática" title="Sugerir rodada e Planejamento semanal.">
-              <p className="mt-6 text-xl font-medium leading-relaxed text-[#5F453A]">A rodada é pensada por categoria. O total aparece automaticamente, mas quem manda é a composição: montar, livros, sensorial, movimento e faz de conta.</p>
+              <p className="mt-6 text-xl font-medium leading-relaxed text-[#5F453A]">Comece fotografando um brinquedo e revisando as sugestões. Depois, monte a rodada pelas cinco dimensões do brincar e ajuste a composição da semana.</p>
             </SectionHeading>
             <div className="mt-12 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
               {tutorialSteps.map((item) => (
@@ -784,7 +924,7 @@ export default function LandingPageRodizioBrinquedos() {
           <div className="mx-auto mt-12 max-w-md rounded-[2rem] border-2 border-[#2C1710] bg-white p-8 shadow-[9px_9px_0_#2C1710]">
             <div className="mb-6 inline-flex items-center gap-2 rounded-full bg-[#FFE1B7] px-4 py-2 text-sm font-black"><SvgIcon name="shield" className="h-4 w-4" /> Rodízio de Brinquedos</div>
             <h3 className="text-3xl font-black">Teste grátis disponível</h3>
-            <p className="mt-2 text-lg font-medium text-[#5F453A]">Crie sua primeira rodada, organize caixas e descubra quais brinquedos voltam a chamar atenção.</p>
+            <p className="mt-2 text-lg font-medium text-[#5F453A]">Cadastre com apoio do reconhecimento por foto, revise as sugestões e crie sua primeira rodada com o acervo organizado.</p>
             <div className="my-7 h-px bg-[#E8D5C6]" />
             <ul className="space-y-4">
               {premiumFeatures.map((item) => (
