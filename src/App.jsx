@@ -181,9 +181,9 @@ const tutorialSteps = [
 ];
 
 const weeklyExamples = [
-  { day: "Segunda", mode: "Padrão", rows: ["Montar: 2", "Livro: 1", "Sensorial: 1"], total: "Total: 4" },
-  { day: "Quarta", mode: "Personalizado", rows: ["Movimento: 2", "Faz de conta: 2", "Livro: 1"], total: "Total: 5" },
-  { day: "Sábado", mode: "Personalizado", rows: ["Montar: 1", "Sensorial: 2", "Movimento: 2"], total: "Total: 5" }
+  { day: "Segunda", mode: "Padrão", rows: ["Mãos e Construção: 2", "Comunicação e Histórias: 1", "Sentidos e Exploração: 1"], total: "Total: 4" },
+  { day: "Quarta", mode: "Personalizado", rows: ["Corpo e Respiração: 2", "Imaginação e Criatividade: 2", "Comunicação e Histórias: 1"], total: "Total: 5" },
+  { day: "Sábado", mode: "Personalizado", rows: ["Mãos e Construção: 1", "Sentidos e Exploração: 2", "Corpo e Respiração: 2"], total: "Total: 5" }
 ];
 
 const premiumFeatures = [
@@ -899,10 +899,10 @@ export default function LandingPageRodizioBrinquedos() {
                 <p className="mb-3 text-sm font-black uppercase tracking-[0.2em] text-[#FF5A3D]">Exemplo</p>
                 <h3 className="mb-5 text-3xl font-black">Uma rodada equilibrada</h3>
                 <div className="space-y-3 text-lg font-bold text-[#5F453A]">
-                  <p>2 brinquedos de montar</p>
-                  <p>1 livro</p>
-                  <p>1 brinquedo sensorial</p>
-                  <p>1 brinquedo de movimento</p>
+                  <p>Mãos e Construção: 2</p>
+                  <p>Comunicação e Histórias: 1</p>
+                  <p>Sentidos e Exploração: 1</p>
+                  <p>Corpo e Respiração: 1</p>
                 </div>
                 <div className="mt-6 rounded-2xl border-2 border-[#2C1710] bg-white p-5 text-lg font-black">Total automático: 5 brinquedos</div>
               </div>
